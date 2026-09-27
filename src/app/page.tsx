@@ -62,6 +62,7 @@ export default function Home() {
   const [search, setSearch] = useState('')
   const [selectedSeason, setSelectedSeason] = useState('all')
   const [selectedRarity, setSelectedRarity] = useState('all')
+  const [selectedColors, setSelectedColors] = useState<string[]>([])
   const [selectedItem, setSelectedItem] = useState<ShopkinItem | null>(null)
   const [modalActiveImage, setModalActiveImage] = useState<string>('')
   const [variants, setVariants] = useState<ShopkinItem[]>([])
@@ -218,6 +219,7 @@ export default function Home() {
     new Set(items.map((item) => item.rarity).filter(Boolean))
   ).sort((a, b) => a.localeCompare(b))
 
+  const availableColors = Object.keys(COLOR_MAP)
   const normalizedSearch = search.trim().toLowerCase()
   const filteredItems = items.filter((item) => {
     const matchesName =
@@ -227,17 +229,33 @@ export default function Home() {
       selectedSeason === 'all' || item.season === Number(selectedSeason)
     const matchesRarity =
       selectedRarity === 'all' || item.rarity === selectedRarity
+    const itemColors = new Set(
+      (item.color_tags ?? []).map((color) => color.toLowerCase())
+    )
+    const matchesColors = selectedColors.every((color) => itemColors.has(color))
 
-    return matchesName && matchesSeason && matchesRarity
+    return matchesName && matchesSeason && matchesRarity && matchesColors
   })
 
   const hasActiveFilters =
-    search !== '' || selectedSeason !== 'all' || selectedRarity !== 'all'
+    search !== '' ||
+    selectedSeason !== 'all' ||
+    selectedRarity !== 'all' ||
+    selectedColors.length > 0
+
+  function toggleColorFilter(color: string) {
+    setSelectedColors((current) =>
+      current.includes(color)
+        ? current.filter((selectedColor) => selectedColor !== color)
+        : [...current, color]
+    )
+  }
 
   function clearFilters() {
     setSearch('')
     setSelectedSeason('all')
     setSelectedRarity('all')
+    setSelectedColors([])
   }
 
   return (
@@ -312,6 +330,51 @@ export default function Home() {
                   Clear filters
                 </button>
               )}
+            </div>
+          </div>
+
+          <div className="mt-3 border-t border-pink-100 pt-3">
+            <div className="mb-2 flex items-center justify-between gap-3">
+              <div>
+                <span className="text-xs font-bold text-pink-600">Colors</span>
+                <span className="ml-2 text-[11px] text-gray-400">
+                  Select multiple for exact color combinations
+                </span>
+              </div>
+              <button
+                type="button"
+                onClick={() => setSelectedColors([])}
+                disabled={selectedColors.length === 0}
+                className="rounded-full bg-gray-100 px-2.5 py-1 text-[10px] font-bold text-gray-500 transition hover:bg-pink-100 hover:text-pink-600 disabled:cursor-default disabled:opacity-40"
+              >
+                Reset colors
+              </button>
+            </div>
+
+            <div className="flex flex-wrap gap-2">
+              {availableColors.map((color) => {
+                const isSelected = selectedColors.includes(color)
+
+                return (
+                  <button
+                    key={color}
+                    type="button"
+                    aria-pressed={isSelected}
+                    onClick={() => toggleColorFilter(color)}
+                    className={`flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[11px] font-semibold capitalize transition ${
+                      isSelected
+                        ? 'border-pink-400 bg-pink-50 text-pink-700 ring-2 ring-pink-200'
+                        : 'border-gray-200 bg-white text-gray-600 hover:border-pink-300'
+                    }`}
+                  >
+                    <span
+                      className="h-3.5 w-3.5 rounded-full border border-black/15 shadow-2xs"
+                      style={{ backgroundColor: COLOR_MAP[color] }}
+                    />
+                    {color}
+                  </button>
+                )
+              })}
             </div>
           </div>
         </div>
