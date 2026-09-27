@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "seed": "npx tsx scripts/seed-season-1.ts"
+    "seed": "npx tsx scripts/seed-season-1.ts",
+    "scrape:season-1-images": "npx tsx scripts/scrape-season-1-images.ts"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",
