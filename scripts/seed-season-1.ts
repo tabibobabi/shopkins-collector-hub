@@ -14,6 +14,14 @@ type SeasonOneShopkin = {
 type CharacterRow = {
   id: string
   name: string
+  base_category: string
+}
+
+type ItemRow = {
+  id: string
+  character_id: string
+  variant_name: string
+  season: number | null
 }
 
 // Baby is intentionally absent: it debuted as Season 2's special-edition team.
@@ -123,6 +131,10 @@ const SEASON_ONE_SHOPKINS: SeasonOneShopkin[] = [
 
 const VARIANT_NAME = 'Season 1 Classic'
 
+function nameKey(name: string) {
+  return name.trim().toLocaleLowerCase()
+}
+
 function throwIfError(error: { message: string } | null, operation: string) {
   if (error) {
     throw new Error(`${operation}: ${error.message}`)
@@ -152,72 +164,112 @@ async function main() {
   const supabase = createClient(supabaseUrl, supabaseKey, {
     auth: { persistSession: false, autoRefreshToken: false },
   })
-  const characterRows = SEASON_ONE_SHOPKINS.map(({ name, team }) => ({
-    name,
-    base_category: team,
-  }))
-  const { data: savedCharacters, error: savedCharacterError } = await supabase
+
+  // Read existing rows before making changes so no database uniqueness constraint is required.
+  const { data: existingCharacters, error: characterLookupError } = await supabase
     .from('characters')
-    .upsert(characterRows, { onConflict: 'name' })
-    .select('id, name')
+    .select('id, name, base_category')
 
-  throwIfError(savedCharacterError, 'Could not upsert characters by name')
+  throwIfError(characterLookupError, 'Could not read characters')
 
-  const savedCharacterByName = new Map(
-    (savedCharacters as CharacterRow[] | null)?.map((character) => [
-      character.name,
+  const { data: existingItems, error: itemLookupError } = await supabase
+    .from('items')
+    .select('id, character_id, variant_name, season')
+
+  throwIfError(itemLookupError, 'Could not read items')
+
+  const characterByName = new Map(
+    (existingCharacters as CharacterRow[] | null)?.map((character) => [
+      nameKey(character.name),
       character,
     ])
   )
-  const characterIds = Array.from(savedCharacterByName.values()).map(({ id }) => id)
 
-  if (characterIds.length !== SEASON_ONE_SHOPKINS.length) {
-    throw new Error('Some character rows were not returned after upserting.')
+  const itemByCharacterId = new Map<string, ItemRow>()
+  for (const item of (existingItems as ItemRow[] | null) ?? []) {
+    if (item.season !== 1) continue
+
+    const current = itemByCharacterId.get(item.character_id)
+    if (!current || item.variant_name === VARIANT_NAME) {
+      itemByCharacterId.set(item.character_id, item)
+    }
   }
 
-  const { data: currentItems, error: itemLookupError } = await supabase
-    .from('items')
-    .select('character_id')
-    .eq('season', 1)
-    .eq('variant_name', VARIANT_NAME)
-    .in('character_id', characterIds)
+  let charactersInserted = 0
+  let charactersUpdated = 0
+  let itemsInserted = 0
+  let itemsUpdated = 0
 
-  throwIfError(itemLookupError, 'Could not read Season 1 items')
+  for (const shopkin of SEASON_ONE_SHOPKINS) {
+    const key = nameKey(shopkin.name)
+    let character = characterByName.get(key)
 
-  const existingCharacterIds = new Set(
-    (currentItems as Array<{ character_id: string }> | null)?.map(
-      ({ character_id }) => character_id
-    )
-  )
-  const itemRows = SEASON_ONE_SHOPKINS.map((shopkin) => {
-    const character = savedCharacterByName.get(shopkin.name)
-    if (!character) {
-      throw new Error(`Missing character ID for ${shopkin.name}`)
+    if (character) {
+      if (character.base_category !== shopkin.team) {
+        const { error } = await supabase
+          .from('characters')
+          .update({ base_category: shopkin.team })
+          .eq('id', character.id)
+
+        throwIfError(error, `Could not update character ${shopkin.name}`)
+        character = { ...character, base_category: shopkin.team }
+        characterByName.set(key, character)
+        charactersUpdated += 1
+      }
+    } else {
+      const { data, error } = await supabase
+        .from('characters')
+        .insert({ name: shopkin.name, base_category: shopkin.team })
+        .select('id, name, base_category')
+        .single()
+
+      throwIfError(error, `Could not insert character ${shopkin.name}`)
+      character = data as CharacterRow
+      characterByName.set(key, character)
+      charactersInserted += 1
     }
 
-    return {
-      character_id: character.id,
-      variant_name: VARIANT_NAME,
-      season: 1,
-      release_type:
-        shopkin.team === 'Exclusive' ? 'Playset Exclusive' : 'Main Season',
+    const itemFields = {
       release_name: 'Season 1',
       release_year: 2014,
+      release_type:
+        shopkin.team === 'Exclusive' ? 'Playset Exclusive' : 'Main Season',
       team: shopkin.team,
       rarity: shopkin.rarity,
       finish: shopkin.finish,
     }
-  })
-  const { error: itemUpsertError } = await supabase
-    .from('items')
-    .upsert(itemRows, { onConflict: 'character_id,variant_name,season' })
+    const existingItem = itemByCharacterId.get(character.id)
 
-  throwIfError(itemUpsertError, 'Could not upsert Season 1 items by character')
+    if (existingItem) {
+      const { error } = await supabase
+        .from('items')
+        .update(itemFields)
+        .eq('id', existingItem.id)
+
+      throwIfError(error, `Could not update item ${shopkin.name}`)
+      itemsUpdated += 1
+    } else {
+      const { data, error } = await supabase
+        .from('items')
+        .insert({
+          character_id: character.id,
+          variant_name: VARIANT_NAME,
+          season: 1,
+          ...itemFields,
+        })
+        .select('id, character_id, variant_name, season')
+        .single()
+
+      throwIfError(error, `Could not insert item ${shopkin.name}`)
+      itemByCharacterId.set(character.id, data as ItemRow)
+      itemsInserted += 1
+    }
+  }
 
   console.log(
-    `Seeded ${SEASON_ONE_SHOPKINS.length} Season 1 Shopkins ` +
-      `(${SEASON_ONE_SHOPKINS.length - existingCharacterIds.size} inserted, ` +
-      `${existingCharacterIds.size} updated without changing photos).`
+    `Seeded ${SEASON_ONE_SHOPKINS.length} Season 1 Shopkins. ` +
+      `Characters: ${charactersInserted} inserted, ${charactersUpdated} updated. ` +
+      `Items: ${itemsInserted} inserted, ${itemsUpdated} updated without changing photos.`
   )
 }
 
