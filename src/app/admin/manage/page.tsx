@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import { supabase } from '../../../utils/supabase'
 
@@ -48,6 +48,12 @@ interface ShopkinItem {
   characters?: Character
 }
 
+interface PendingPhoto {
+  id: string
+  file: File
+  previewUrl: string
+}
+
 export default function AdminManagePage() {
   const [items, setItems] = useState<ShopkinItem[]>([])
   const [characters, setCharacters] = useState<Character[]>([])
@@ -58,10 +64,16 @@ export default function AdminManagePage() {
   const [statusMessage, setStatusMessage] = useState('')
 
   // New photos to append during edit
-  const [newFiles, setNewFiles] = useState<File[]>([])
+  const [pendingPhotos, setPendingPhotos] = useState<PendingPhoto[]>([])
+  const pendingPhotosRef = useRef<PendingPhoto[]>([])
+  const [isDraggingPhoto, setIsDraggingPhoto] = useState(false)
 
   useEffect(() => {
     fetchData()
+
+    return () => {
+      pendingPhotosRef.current.forEach(({ previewUrl }) => URL.revokeObjectURL(previewUrl))
+    }
   }, [])
 
   async function fetchData() {
@@ -79,9 +91,60 @@ export default function AdminManagePage() {
   }
 
   function handleOpenEdit(item: ShopkinItem) {
+    clearPendingPhotos()
     setEditingItem({ ...item })
-    setNewFiles([])
     setStatusMessage('')
+  }
+
+  function updatePendingPhotos(photos: PendingPhoto[]) {
+    pendingPhotosRef.current = photos
+    setPendingPhotos(photos)
+  }
+
+  function clearPendingPhotos() {
+    pendingPhotosRef.current.forEach(({ previewUrl }) => URL.revokeObjectURL(previewUrl))
+    updatePendingPhotos([])
+    setIsDraggingPhoto(false)
+  }
+
+  function closeEditModal() {
+    clearPendingPhotos()
+    setEditingItem(null)
+  }
+
+  function stagePhotos(files: File[]) {
+    const imageFiles = files.filter((file) => file.type.startsWith('image/'))
+    if (imageFiles.length === 0) {
+      setStatusMessage('Please choose an image file.')
+      return
+    }
+
+    const stagedPhotos = imageFiles.map((file) => ({
+      id: crypto.randomUUID(),
+      file,
+      previewUrl: URL.createObjectURL(file)
+    }))
+
+    updatePendingPhotos([...pendingPhotosRef.current, ...stagedPhotos])
+    setStatusMessage('')
+  }
+
+  function removePendingPhoto(id: string) {
+    const photo = pendingPhotosRef.current.find((entry) => entry.id === id)
+    if (photo) URL.revokeObjectURL(photo.previewUrl)
+    updatePendingPhotos(pendingPhotosRef.current.filter((entry) => entry.id !== id))
+  }
+
+  function handlePhotoPaste(e: React.ClipboardEvent<HTMLDivElement>) {
+    const pastedImages = Array.from(e.clipboardData.items)
+      .filter((item) => item.kind === 'file' && item.type.startsWith('image/'))
+      .map((item) => item.getAsFile())
+      .filter((file): file is File => file !== null)
+
+    if (pastedImages.length > 0) {
+      e.preventDefault()
+      stagePhotos(pastedImages)
+    }
   }
 
   function toggleColor(color: string) {
@@ -114,13 +177,16 @@ export default function AdminManagePage() {
     setStatusMessage('Saving changes...')
 
     try {
-      let finalImages = [...editingItem.images]
+      const finalImages = [...editingItem.images]
 
       // Upload any new photos attached during editing
-      for (const file of newFiles) {
-        const fileExt = file.name.split('.').pop()
-        const cleanName = file.name.replace(/[^a-zA-Z0-9]/g, '_')
-        const fileName = `${Date.now()}-${cleanName}.${fileExt}`
+      for (const { file } of pendingPhotos) {
+        const mimeExtension = file.type.split('/')[1]?.replace('jpeg', 'jpg') || 'png'
+        const fileExt = file.name.includes('.') ? file.name.split('.').pop() : mimeExtension
+        const cleanName =
+          file.name.replace(/\.[^.]+$/, '').replace(/[^a-zA-Z0-9]/g, '_') ||
+          'pasted-image'
+        const fileName = `${Date.now()}-${crypto.randomUUID()}-${cleanName}.${fileExt}`
 
         const { error: uploadError } = await supabase.storage
           .from('shopkins-images')
@@ -144,10 +210,10 @@ export default function AdminManagePage() {
         .update({
           character_id: editingItem.character_id,
           variant_name: editingItem.variant_name,
-          season: editingItem.season === null || (editingItem.season as any) === '' ? null : Number(editingItem.season),
+          season: editingItem.season === null ? null : Number(editingItem.season),
           release_type: editingItem.release_type,
           release_name: editingItem.release_name,
-          release_year: editingItem.release_year === null || (editingItem.release_year as any) === '' ? null : Number(editingItem.release_year),
+          release_year: editingItem.release_year === null ? null : Number(editingItem.release_year),
           team: editingItem.team,
           rarity: editingItem.rarity,
           finish: editingItem.finish,
@@ -160,10 +226,11 @@ export default function AdminManagePage() {
       if (updateError) throw updateError
 
       setStatusMessage('Item updated successfully!')
-      setEditingItem(null)
+      closeEditModal()
       fetchData()
-    } catch (err: any) {
-      setStatusMessage(`Error: ${err.message}`)
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : 'An unknown error occurred'
+      setStatusMessage(`Error: ${message}`)
     } finally {
       setSaving(false)
     }
@@ -178,7 +245,7 @@ export default function AdminManagePage() {
       alert(`Error deleting item: ${error.message}`)
     } else {
       setItems((prev) => prev.filter((item) => item.id !== id))
-      if (editingItem?.id === id) setEditingItem(null)
+      if (editingItem?.id === id) closeEditModal()
     }
   }
 
@@ -275,15 +342,23 @@ export default function AdminManagePage() {
       {/* Edit Modal */}
       {editingItem && (
         <div className="fixed inset-0 bg-black/40 backdrop-blur-xs flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-3xl max-w-2xl w-full p-6 max-h-[90vh] overflow-y-auto relative border border-pink-100 shadow-2xl">
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="edit-shopkin-title"
+            tabIndex={-1}
+            autoFocus
+            onPaste={handlePhotoPaste}
+            className="bg-white rounded-3xl max-w-2xl w-full p-6 max-h-[90vh] overflow-y-auto relative border border-pink-100 shadow-2xl outline-none"
+          >
             <button
-              onClick={() => setEditingItem(null)}
+              onClick={closeEditModal}
               className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 font-bold text-xl"
             >
               ×
             </button>
 
-            <h2 className="text-xl font-black text-gray-800 mb-4">Edit Shopkin Listing</h2>
+            <h2 id="edit-shopkin-title" className="text-xl font-black text-gray-800 mb-4">Edit Shopkin Listing</h2>
 
             <form onSubmit={handleUpdateItem} className="space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -441,15 +516,88 @@ export default function AdminManagePage() {
                 </div>
 
                 <label className="text-xs font-semibold text-gray-600 block mb-1">Add More Photos</label>
-                <input
-                  type="file"
-                  multiple
-                  accept="image/*"
-                  onChange={(e) => {
-                    if (e.target.files) setNewFiles(Array.from(e.target.files))
+                <label
+                  onDragEnter={(e) => {
+                    e.preventDefault()
+                    setIsDraggingPhoto(true)
                   }}
-                  className="w-full text-xs text-gray-500 file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-pink-100 file:text-pink-600 hover:file:bg-pink-200"
-                />
+                  onDragOver={(e) => {
+                    e.preventDefault()
+                    e.dataTransfer.dropEffect = 'copy'
+                    setIsDraggingPhoto(true)
+                  }}
+                  onDragLeave={(e) => {
+                    if (!e.currentTarget.contains(e.relatedTarget as Node | null)) {
+                      setIsDraggingPhoto(false)
+                    }
+                  }}
+                  onDrop={(e) => {
+                    e.preventDefault()
+                    setIsDraggingPhoto(false)
+                    stagePhotos(Array.from(e.dataTransfer.files))
+                  }}
+                  className={`flex min-h-32 cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed px-5 py-6 text-center transition ${
+                    isDraggingPhoto
+                      ? 'border-pink-500 bg-pink-100 ring-4 ring-pink-100'
+                      : 'border-pink-200 bg-pink-50/40 hover:border-pink-400 hover:bg-pink-50'
+                  }`}
+                >
+                  <span
+                    aria-hidden="true"
+                    className="mb-2 flex h-10 w-10 items-center justify-center rounded-full bg-white text-xl text-pink-500 shadow-xs"
+                  >
+                    ↑
+                  </span>
+                  <span className="text-sm font-bold text-gray-700">
+                    Drag &amp; drop image here or click to browse
+                  </span>
+                  <span className="mt-1 text-[11px] text-gray-400">
+                    You can also paste an image with Cmd+V
+                  </span>
+                  <input
+                    type="file"
+                    multiple
+                    accept="image/*"
+                    onChange={(e) => {
+                      if (e.target.files) stagePhotos(Array.from(e.target.files))
+                      e.currentTarget.value = ''
+                    }}
+                    className="sr-only"
+                  />
+                </label>
+
+                {pendingPhotos.length > 0 && (
+                  <div className="mt-3">
+                    <p className="mb-2 text-[11px] font-bold uppercase tracking-wider text-pink-600">
+                      Pending uploads ({pendingPhotos.length})
+                    </p>
+                    <div className="flex flex-wrap gap-2">
+                      {pendingPhotos.map((photo) => (
+                        <div
+                          key={photo.id}
+                          className="relative rounded-xl border-2 border-dashed border-pink-300 bg-pink-50 p-1"
+                        >
+                          <img
+                            src={photo.previewUrl}
+                            alt={`Pending upload: ${photo.file.name || 'pasted image'}`}
+                            className="h-20 w-20 rounded-lg bg-white object-contain"
+                          />
+                          <span className="absolute bottom-1 left-1 rounded bg-pink-500 px-1 text-[9px] font-bold text-white">
+                            Pending
+                          </span>
+                          <button
+                            type="button"
+                            aria-label={`Remove ${photo.file.name || 'pasted image'}`}
+                            onClick={() => removePendingPhoto(photo.id)}
+                            className="absolute -right-1.5 -top-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-[11px] font-bold text-white shadow-xs"
+                          >
+                            ×
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
 
               <div className="flex gap-2 pt-2">
@@ -462,7 +610,7 @@ export default function AdminManagePage() {
                 </button>
                 <button
                   type="button"
-                  onClick={() => setEditingItem(null)}
+                  onClick={closeEditModal}
                   className="w-1/3 py-3 bg-gray-100 hover:bg-gray-200 text-gray-600 font-bold rounded-xl text-xs transition"
                 >
                   Cancel
