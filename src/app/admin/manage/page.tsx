@@ -306,11 +306,20 @@ export default function AdminManagePage() {
                 {filteredItems.map((item) => (
                   <tr key={item.id} className="hover:bg-pink-50/30 transition">
                     <td className="p-3">
-                      <img
-                        src={item.cover_image_url}
-                        alt=""
-                        className="w-10 h-10 object-contain rounded-lg bg-pink-50/50 p-1 border border-pink-100"
-                      />
+                      {item.cover_image_url?.trim() ? (
+                        <img
+                          src={item.cover_image_url}
+                          alt=""
+                          className="w-10 h-10 object-contain rounded-lg bg-pink-50/50 p-1 border border-pink-100"
+                        />
+                      ) : (
+                        <div
+                          aria-label={`No image for ${item.characters?.name || 'this Shopkin'}`}
+                          className="flex h-10 w-10 items-center justify-center rounded-lg border border-pink-100 bg-pink-50 text-sm font-black text-pink-500"
+                        >
+                          {item.characters?.name?.charAt(0).toUpperCase() || '?'}
+                        </div>
+                      )}
                     </td>
                     <td className="p-3 font-bold text-gray-800">{item.characters?.name}</td>
                     <td className="p-3 font-medium text-pink-600">{item.variant_name}</td>
