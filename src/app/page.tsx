@@ -72,17 +72,24 @@ function CatalogCard({
   onOpen: (item: ShopkinItem) => void
 }) {
   const [activePhotoIndex, setActivePhotoIndex] = useState(0)
-  const imageUrls = (item.images ?? []).filter((url) => Boolean(url?.trim()))
-  const photos =
-    imageUrls.length > 0
-      ? imageUrls
-      : item.cover_image_url?.trim()
-        ? [item.cover_image_url]
-        : []
+  const uploadedPhotos = (item.images ?? [])
+    .map((url, index) => ({
+      url,
+      type: item.image_types?.[index],
+    }))
+    .filter((photo) => Boolean(photo.url?.trim()))
+  const coverUrl = item.cover_image_url?.trim()
+  const coverPhoto = uploadedPhotos.find((photo) => photo.url === coverUrl)
+  const photos = coverUrl
+    ? [
+        coverPhoto ?? { url: coverUrl, type: undefined },
+        ...uploadedPhotos.filter((photo) => photo.url !== coverUrl),
+      ]
+    : uploadedPhotos
   const hasMultiplePhotos = photos.length > 1
   const activeIndex = activePhotoIndex % Math.max(photos.length, 1)
   const activePhoto = photos[activeIndex]
-  const activePhotoType = photoTypeLabel(item.image_types?.[activeIndex])
+  const activePhotoType = photoTypeLabel(activePhoto?.type)
   const isOwned = statusEntry?.status === 'owned'
   const isWishlist = statusEntry?.status === 'wishlist'
 
@@ -114,9 +121,9 @@ function CatalogCard({
       )}
 
       <div className="relative mb-3 h-28 w-28 overflow-hidden rounded-lg bg-pink-50/40">
-        {activePhoto ? (
+        {activePhoto?.url ? (
           <img
-            src={activePhoto}
+            src={activePhoto.url}
             alt={item.characters?.name || item.variant_name}
             className="h-full w-full object-contain transition-opacity duration-200"
           />
@@ -153,7 +160,7 @@ function CatalogCard({
             <div className="absolute inset-x-0 bottom-1.5 flex justify-center gap-1">
               {photos.map((photo, index) => (
                 <span
-                  key={`${photo}-${index}`}
+                  key={`${photo.url}-${index}`}
                   className={`h-1.5 w-1.5 rounded-full shadow-xs transition ${
                     index === activeIndex ? 'bg-pink-500' : 'bg-white/90 ring-1 ring-gray-300'
                   }`}
