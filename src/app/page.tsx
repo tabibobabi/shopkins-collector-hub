@@ -23,6 +23,7 @@ interface ShopkinItem {
   finish: string
   color_tags: string[]
   images: string[]
+  image_types?: string[]
   cover_image_url: string
   characters?: Character
 }
@@ -54,6 +55,150 @@ const RARITY_STYLES: Record<string, string> = {
   'Ultra Rare': 'bg-pink-100 text-pink-700 border-pink-200',
   'Special Edition': 'bg-blue-100 text-blue-700 border-blue-200',
   'Limited Edition': 'bg-amber-100 text-amber-700 border-amber-300',
+}
+
+function photoTypeLabel(type: string | undefined) {
+  if (type === 'Stock / Catalog') return 'Stock Art'
+  return type
+}
+
+function CatalogCard({
+  item,
+  statusEntry,
+  onOpen,
+}: {
+  item: ShopkinItem
+  statusEntry?: UserItem
+  onOpen: (item: ShopkinItem) => void
+}) {
+  const [activePhotoIndex, setActivePhotoIndex] = useState(0)
+  const imageUrls = (item.images ?? []).filter((url) => Boolean(url?.trim()))
+  const photos =
+    imageUrls.length > 0
+      ? imageUrls
+      : item.cover_image_url?.trim()
+        ? [item.cover_image_url]
+        : []
+  const hasMultiplePhotos = photos.length > 1
+  const activeIndex = activePhotoIndex % Math.max(photos.length, 1)
+  const activePhoto = photos[activeIndex]
+  const activePhotoType = photoTypeLabel(item.image_types?.[activeIndex])
+  const isOwned = statusEntry?.status === 'owned'
+  const isWishlist = statusEntry?.status === 'wishlist'
+
+  function cyclePhoto(
+    event: React.MouseEvent<HTMLButtonElement>,
+    direction: -1 | 1
+  ) {
+    event.preventDefault()
+    event.stopPropagation()
+    setActivePhotoIndex((current) => (current + direction + photos.length) % photos.length)
+  }
+
+  return (
+    <div
+      onClick={() => onOpen(item)}
+      className={`group relative flex cursor-pointer flex-col items-center rounded-2xl border bg-white p-4 text-center shadow-xs transition hover:-translate-y-1 hover:shadow-md ${
+        isOwned ? 'border-green-300 ring-2 ring-green-100' : 'border-pink-100'
+      }`}
+    >
+      {isOwned && (
+        <span className="absolute right-2.5 top-2.5 z-10 rounded-full bg-green-500 px-1.5 py-0.5 text-[10px] font-bold text-white shadow-xs">
+          ✓ {statusEntry.quantity > 1 ? `x${statusEntry.quantity}` : 'Owned'}
+        </span>
+      )}
+      {isWishlist && (
+        <span className="absolute right-2.5 top-2.5 z-10 rounded-full bg-amber-400 px-1.5 py-0.5 text-[10px] font-bold text-white shadow-xs">
+          ★ Wish
+        </span>
+      )}
+
+      <div className="relative mb-3 h-28 w-28 overflow-hidden rounded-lg bg-pink-50/40">
+        {activePhoto ? (
+          <img
+            src={activePhoto}
+            alt={item.characters?.name || item.variant_name}
+            className="h-full w-full object-contain transition-opacity duration-200"
+          />
+        ) : (
+          <div className="flex h-full w-full items-center justify-center text-2xl font-black text-pink-300">
+            {item.characters?.name?.charAt(0).toUpperCase() || '?'}
+          </div>
+        )}
+
+        {activePhotoType && (
+          <span className="absolute left-1.5 top-1.5 rounded-full bg-gray-900/70 px-1.5 py-0.5 text-[8px] font-bold text-white backdrop-blur-xs">
+            {activePhotoType}
+          </span>
+        )}
+
+        {hasMultiplePhotos && (
+          <>
+            <button
+              type="button"
+              aria-label="Previous photo"
+              onClick={(event) => cyclePhoto(event, -1)}
+              className="absolute left-1 top-1/2 flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-lg font-bold text-pink-600 opacity-0 shadow-md transition-opacity duration-200 hover:bg-white focus:opacity-100 group-hover:opacity-100"
+            >
+              ‹
+            </button>
+            <button
+              type="button"
+              aria-label="Next photo"
+              onClick={(event) => cyclePhoto(event, 1)}
+              className="absolute right-1 top-1/2 flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-lg font-bold text-pink-600 opacity-0 shadow-md transition-opacity duration-200 hover:bg-white focus:opacity-100 group-hover:opacity-100"
+            >
+              ›
+            </button>
+            <div className="absolute inset-x-0 bottom-1.5 flex justify-center gap-1">
+              {photos.map((photo, index) => (
+                <span
+                  key={`${photo}-${index}`}
+                  className={`h-1.5 w-1.5 rounded-full shadow-xs transition ${
+                    index === activeIndex ? 'bg-pink-500' : 'bg-white/90 ring-1 ring-gray-300'
+                  }`}
+                />
+              ))}
+            </div>
+          </>
+        )}
+      </div>
+
+      <h2 className="text-sm font-bold leading-tight text-gray-800 md:text-base">
+        {item.characters?.name}
+      </h2>
+      <span className="mt-0.5 text-xs font-medium text-pink-500">{item.variant_name}</span>
+
+      <div className="mt-2.5 flex flex-wrap items-center justify-center gap-1.5">
+        {item.season && (
+          <span className="rounded-full bg-pink-100 px-2 py-0.5 text-[10px] font-bold text-pink-600">
+            S{item.season}
+          </span>
+        )}
+        <span
+          className={`rounded-full border px-2 py-0.5 text-[10px] font-medium ${
+            RARITY_STYLES[item.rarity] ??
+            'border-purple-200 bg-purple-100 text-purple-600'
+          }`}
+        >
+          {item.rarity}
+        </span>
+
+        {item.color_tags && item.color_tags.length > 0 && (
+          <div className="ml-0.5 flex items-center gap-1 rounded-full border border-gray-100 bg-gray-50 px-1.5 py-1">
+            {item.color_tags.map((color) => (
+              <span
+                key={color}
+                title={color}
+                className="inline-block h-2.5 w-2.5 rounded-full border border-black/15 shadow-2xs"
+                style={{ backgroundColor: COLOR_MAP[color.toLowerCase()] || '#cbd5e1' }}
+              />
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  )
 }
 
 export default function Home() {
@@ -396,72 +541,14 @@ export default function Home() {
           </div>
         ) : (
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-            {filteredItems.map((item) => {
-              const statusEntry = userCollection[item.id]
-              const isOwned = statusEntry?.status === 'owned'
-              const isWishlist = statusEntry?.status === 'wishlist'
-
-              return (
-                <div
-                  key={item.id}
-                  onClick={() => openItemDetails(item)}
-                  className={`bg-white rounded-2xl p-4 shadow-xs border relative flex flex-col items-center text-center cursor-pointer transition hover:-translate-y-1 hover:shadow-md ${
-                    isOwned ? 'border-green-300 ring-2 ring-green-100' : 'border-pink-100'
-                  }`}
-                >
-                  {/* Status Indicator Badges */}
-                  {isOwned && (
-                    <span className="absolute top-2.5 right-2.5 bg-green-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full shadow-xs">
-                      ✓ {statusEntry.quantity > 1 ? `x${statusEntry.quantity}` : 'Owned'}
-                    </span>
-                  )}
-                  {isWishlist && (
-                    <span className="absolute top-2.5 right-2.5 bg-amber-400 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full shadow-xs">
-                      ★ Wish
-                    </span>
-                  )}
-
-                  <img
-                    src={item.cover_image_url}
-                    alt={item.characters?.name || item.variant_name}
-                    className="w-28 h-28 object-contain rounded-lg mb-3 bg-pink-50/40"
-                  />
-                  <h2 className="font-bold text-gray-800 text-sm md:text-base leading-tight">
-                    {item.characters?.name}
-                  </h2>
-                  <span className="text-xs text-pink-500 font-medium mt-0.5">{item.variant_name}</span>
-
-                  <div className="mt-2.5 flex items-center justify-center gap-1.5 flex-wrap">
-                    {item.season && (
-                      <span className="text-[10px] bg-pink-100 text-pink-600 font-bold px-2 py-0.5 rounded-full">
-                        S{item.season}
-                      </span>
-                    )}
-                    <span
-                      className={`rounded-full border px-2 py-0.5 text-[10px] font-medium ${
-                        RARITY_STYLES[item.rarity] ??
-                        'border-purple-200 bg-purple-100 text-purple-600'
-                      }`}
-                    >
-                      {item.rarity}
-                    </span>
-
-                    {item.color_tags && item.color_tags.length > 0 && (
-                      <div className="flex items-center gap-1 bg-gray-50 border border-gray-100 px-1.5 py-1 rounded-full ml-0.5">
-                        {item.color_tags.map((c) => (
-                          <span
-                            key={c}
-                            title={c}
-                            className="w-2.5 h-2.5 rounded-full border border-black/15 shadow-2xs inline-block"
-                            style={{ backgroundColor: COLOR_MAP[c.toLowerCase()] || '#cbd5e1' }}
-                          />
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                </div>
-              )
-            })}
+            {filteredItems.map((item) => (
+              <CatalogCard
+                key={item.id}
+                item={item}
+                statusEntry={userCollection[item.id]}
+                onOpen={openItemDetails}
+              />
+            ))}
           </div>
         )}
 
