@@ -60,8 +60,10 @@ export default function AdminManagePage() {
   const [loading, setLoading] = useState(true)
   const [search, setSearch] = useState('')
   const [editingItem, setEditingItem] = useState<ShopkinItem | null>(null)
+  const [isDuplicateMode, setIsDuplicateMode] = useState(false)
   const [saving, setSaving] = useState(false)
   const [statusMessage, setStatusMessage] = useState('')
+  const [bannerMessage, setBannerMessage] = useState('')
 
   // New photos to append during edit
   const [pendingPhotos, setPendingPhotos] = useState<PendingPhoto[]>([])
@@ -92,7 +94,21 @@ export default function AdminManagePage() {
 
   function handleOpenEdit(item: ShopkinItem) {
     clearPendingPhotos()
+    setIsDuplicateMode(false)
     setEditingItem({ ...item })
+    setStatusMessage('')
+  }
+
+  function handleOpenDuplicate(item: ShopkinItem) {
+    clearPendingPhotos()
+    const carriedCover = item.cover_image_url?.trim() ? item.cover_image_url : ''
+    setIsDuplicateMode(true)
+    setEditingItem({
+      ...item,
+      variant_name: `${item.variant_name} (Copy)`,
+      images: carriedCover ? [carriedCover] : [],
+      cover_image_url: carriedCover,
+    })
     setStatusMessage('')
   }
 
@@ -110,6 +126,7 @@ export default function AdminManagePage() {
   function closeEditModal() {
     clearPendingPhotos()
     setEditingItem(null)
+    setIsDuplicateMode(false)
   }
 
   function stagePhotos(files: File[]) {
@@ -205,29 +222,38 @@ export default function AdminManagePage() {
         ? editingItem.cover_image_url
         : finalImages[0] || ''
 
-      const { error: updateError } = await supabase
-        .from('items')
-        .update({
-          character_id: editingItem.character_id,
-          variant_name: editingItem.variant_name,
-          season: editingItem.season === null ? null : Number(editingItem.season),
-          release_type: editingItem.release_type,
-          release_name: editingItem.release_name,
-          release_year: editingItem.release_year === null ? null : Number(editingItem.release_year),
-          team: editingItem.team,
-          rarity: editingItem.rarity,
-          finish: editingItem.finish,
-          color_tags: editingItem.color_tags,
-          images: finalImages,
-          cover_image_url: coverUrl
-        })
-        .eq('id', editingItem.id)
+      if (!coverUrl) {
+        throw new Error('Please keep the stock art or add at least one photo.')
+      }
 
-      if (updateError) throw updateError
+      const itemValues = {
+        character_id: editingItem.character_id,
+        variant_name: editingItem.variant_name,
+        season: editingItem.season === null ? null : Number(editingItem.season),
+        release_type: editingItem.release_type,
+        release_name: editingItem.release_name,
+        release_year: editingItem.release_year === null ? null : Number(editingItem.release_year),
+        team: editingItem.team,
+        rarity: editingItem.rarity,
+        finish: editingItem.finish,
+        color_tags: editingItem.color_tags,
+        images: finalImages,
+        cover_image_url: coverUrl
+      }
+      const result = isDuplicateMode
+        ? await supabase.from('items').insert(itemValues)
+        : await supabase.from('items').update(itemValues).eq('id', editingItem.id)
 
-      setStatusMessage('Item updated successfully!')
+      if (result.error) throw result.error
+
+      setBannerMessage(
+        isDuplicateMode
+          ? `Created duplicate “${editingItem.variant_name}”.`
+          : `Updated “${editingItem.variant_name}”.`
+      )
       closeEditModal()
-      fetchData()
+      await fetchData()
+      window.setTimeout(() => setBannerMessage(''), 4000)
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : 'An unknown error occurred'
       setStatusMessage(`Error: ${message}`)
@@ -280,6 +306,15 @@ export default function AdminManagePage() {
           className="w-full max-w-md px-4 py-2 border rounded-xl text-sm bg-white shadow-xs focus:ring-2 focus:ring-pink-300 focus:outline-none"
         />
       </div>
+
+      {bannerMessage && (
+        <div
+          role="status"
+          className="mb-5 rounded-2xl border border-green-200 bg-green-50 px-4 py-3 text-sm font-bold text-green-700 shadow-xs"
+        >
+          ✓ {bannerMessage}
+        </div>
+      )}
 
       {loading ? (
         <div className="text-center py-20 text-pink-400 font-bold">Loading listings...</div>
@@ -334,6 +369,12 @@ export default function AdminManagePage() {
                         Edit
                       </button>
                       <button
+                        onClick={() => handleOpenDuplicate(item)}
+                        className="rounded-lg bg-purple-100 px-2.5 py-1 font-bold text-purple-700 transition hover:bg-purple-200"
+                      >
+                        Duplicate
+                      </button>
+                      <button
                         onClick={() => handleDeleteItem(item.id)}
                         className="bg-gray-100 hover:bg-red-100 text-gray-500 hover:text-red-600 font-bold px-2.5 py-1 rounded-lg transition"
                       >
@@ -367,7 +408,15 @@ export default function AdminManagePage() {
               ×
             </button>
 
-            <h2 id="edit-shopkin-title" className="text-xl font-black text-gray-800 mb-4">Edit Shopkin Listing</h2>
+            <h2 id="edit-shopkin-title" className="text-xl font-black text-gray-800">
+              {isDuplicateMode ? 'Duplicate Shopkin Listing' : 'Edit Shopkin Listing'}
+            </h2>
+            {isDuplicateMode && (
+              <p className="mb-4 mt-1 rounded-xl border border-purple-100 bg-purple-50 px-3 py-2 text-xs text-purple-700">
+                The listing details and cover photo were copied. Adjust the variant and add
+                variant-specific photos before creating it.
+              </p>
+            )}
 
             <form onSubmit={handleUpdateItem} className="space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -494,7 +543,11 @@ export default function AdminManagePage() {
 
               {/* Photos & Cover Selection */}
               <div>
-                <label className="text-xs font-bold text-gray-700 block mb-1">Current Photos (Click to set Cover)</label>
+                <label className="text-xs font-bold text-gray-700 block mb-1">
+                  {isDuplicateMode
+                    ? 'Carried-over Stock Art (Click to set Cover)'
+                    : 'Current Photos (Click to set Cover)'}
+                </label>
                 <div className="flex flex-wrap gap-2 mb-3">
                   {editingItem.images?.map((url, i) => (
                     <div
@@ -613,9 +666,20 @@ export default function AdminManagePage() {
                 <button
                   type="submit"
                   disabled={saving}
-                  className="w-full py-3 bg-pink-500 hover:bg-pink-600 text-white font-bold rounded-xl text-xs transition shadow-xs disabled:bg-gray-300"
+                  className="flex w-full items-center justify-center gap-2 rounded-xl bg-pink-500 py-3 text-xs font-bold text-white shadow-xs transition hover:bg-pink-600 disabled:bg-gray-300"
                 >
-                  {saving ? 'Saving...' : 'Save Changes'}
+                  {saving && (
+                    <span className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-white/40 border-t-white" />
+                  )}
+                  <span>
+                    {saving
+                      ? isDuplicateMode
+                        ? 'Creating Duplicate...'
+                        : 'Saving...'
+                      : isDuplicateMode
+                        ? 'Create Duplicate'
+                        : 'Save Changes'}
+                  </span>
                 </button>
                 <button
                   type="button"
