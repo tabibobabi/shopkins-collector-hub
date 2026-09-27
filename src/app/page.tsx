@@ -52,6 +52,8 @@ export default function Home() {
   const [items, setItems] = useState<ShopkinItem[]>([])
   const [loading, setLoading] = useState(true)
   const [search, setSearch] = useState('')
+  const [selectedSeason, setSelectedSeason] = useState('all')
+  const [selectedRarity, setSelectedRarity] = useState('all')
   const [selectedItem, setSelectedItem] = useState<ShopkinItem | null>(null)
   const [modalActiveImage, setModalActiveImage] = useState<string>('')
   const [variants, setVariants] = useState<ShopkinItem[]>([])
@@ -200,12 +202,35 @@ export default function Home() {
     }
   }
 
+  const seasons = Array.from(
+    new Set(items.flatMap((item) => (item.season === null ? [] : [item.season])))
+  ).sort((a, b) => a - b)
+
+  const rarities = Array.from(
+    new Set(items.map((item) => item.rarity).filter(Boolean))
+  ).sort((a, b) => a.localeCompare(b))
+
+  const normalizedSearch = search.trim().toLowerCase()
   const filteredItems = items.filter((item) => {
-    const nameMatch = item.characters?.name.toLowerCase().includes(search.toLowerCase())
-    const variantMatch = item.variant_name.toLowerCase().includes(search.toLowerCase())
-    const teamMatch = item.team.toLowerCase().includes(search.toLowerCase())
-    return nameMatch || variantMatch || teamMatch
+    const matchesName =
+      normalizedSearch === '' ||
+      item.characters?.name.toLowerCase().includes(normalizedSearch)
+    const matchesSeason =
+      selectedSeason === 'all' || item.season === Number(selectedSeason)
+    const matchesRarity =
+      selectedRarity === 'all' || item.rarity === selectedRarity
+
+    return matchesName && matchesSeason && matchesRarity
   })
+
+  const hasActiveFilters =
+    search !== '' || selectedSeason !== 'all' || selectedRarity !== 'all'
+
+  function clearFilters() {
+    setSearch('')
+    setSelectedSeason('all')
+    setSelectedRarity('all')
+  }
 
   return (
     <main className="p-6 md:p-12">
@@ -217,17 +242,71 @@ export default function Home() {
           <p className="text-pink-400 mt-2 font-medium">
             Search characters, explore finishes, and view every mold variant!
           </p>
-
-          <div className="max-w-md mx-auto mt-6">
-            <input
-              type="text"
-              placeholder="Search by character, team, or variant..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="w-full px-4 py-2.5 rounded-full border border-pink-200 bg-white shadow-xs focus:outline-none focus:ring-2 focus:ring-pink-400 text-sm"
-            />
-          </div>
         </header>
+
+        <div className="sticky top-16 z-30 mb-6 rounded-2xl border border-pink-200 bg-white/95 p-3 shadow-md backdrop-blur-md sm:p-4">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-end">
+            <label className="min-w-0 flex-1">
+              <span className="mb-1 block text-xs font-bold text-pink-600">
+                Shopkin name
+              </span>
+              <input
+                type="search"
+                placeholder="Search Shopkins..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className="w-full rounded-xl border border-pink-200 bg-pink-50/40 px-3.5 py-2.5 text-sm text-gray-800 outline-none transition placeholder:text-gray-400 focus:border-pink-400 focus:bg-white focus:ring-2 focus:ring-pink-200"
+              />
+            </label>
+
+            <label className="sm:w-40">
+              <span className="mb-1 block text-xs font-bold text-pink-600">Season</span>
+              <select
+                value={selectedSeason}
+                onChange={(e) => setSelectedSeason(e.target.value)}
+                className="w-full rounded-xl border border-pink-200 bg-pink-50/40 px-3.5 py-2.5 text-sm text-gray-700 outline-none transition focus:border-pink-400 focus:bg-white focus:ring-2 focus:ring-pink-200"
+              >
+                <option value="all">All seasons</option>
+                {seasons.map((season) => (
+                  <option key={season} value={season}>
+                    Season {season}
+                  </option>
+                ))}
+              </select>
+            </label>
+
+            <label className="sm:w-40">
+              <span className="mb-1 block text-xs font-bold text-pink-600">Rarity</span>
+              <select
+                value={selectedRarity}
+                onChange={(e) => setSelectedRarity(e.target.value)}
+                className="w-full rounded-xl border border-pink-200 bg-pink-50/40 px-3.5 py-2.5 text-sm text-gray-700 outline-none transition focus:border-pink-400 focus:bg-white focus:ring-2 focus:ring-pink-200"
+              >
+                <option value="all">All rarities</option>
+                {rarities.map((rarity) => (
+                  <option key={rarity} value={rarity}>
+                    {rarity}
+                  </option>
+                ))}
+              </select>
+            </label>
+
+            <div className="flex items-center justify-between gap-3 sm:h-10 sm:min-w-28 sm:flex-col sm:items-end sm:justify-center">
+              <span className="text-xs font-semibold text-gray-500">
+                {filteredItems.length} {filteredItems.length === 1 ? 'item' : 'items'}
+              </span>
+              {hasActiveFilters && (
+                <button
+                  type="button"
+                  onClick={clearFilters}
+                  className="text-xs font-bold text-pink-600 transition hover:text-pink-700 hover:underline"
+                >
+                  Clear filters
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
 
         {loading ? (
           <div className="text-center py-20 text-pink-400 font-semibold text-lg">
@@ -235,7 +314,14 @@ export default function Home() {
           </div>
         ) : filteredItems.length === 0 ? (
           <div className="text-center py-20 text-gray-400">
-            No Shopkins found. Head to <code className="bg-pink-100 px-2 py-1 rounded text-pink-600">/admin/add-item</code> to add your first figures!
+            <p className="font-semibold text-gray-500">No Shopkins match these filters.</p>
+            <button
+              type="button"
+              onClick={clearFilters}
+              className="mt-3 rounded-full bg-pink-100 px-4 py-2 text-sm font-bold text-pink-600 transition hover:bg-pink-200"
+            >
+              Clear filters
+            </button>
           </div>
         ) : (
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
