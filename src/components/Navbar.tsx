@@ -7,6 +7,8 @@ import type { User } from '@supabase/supabase-js'
 
 export default function Navbar() {
   const [user, setUser] = useState<User | null>(null)
+  const [profileUsername, setProfileUsername] = useState('')
+  const [profileAvatarUrl, setProfileAvatarUrl] = useState<string | null>(null)
   const [showAuthModal, setShowAuthModal] = useState(false)
   const [isSignUp, setIsSignUp] = useState(false)
   const [email, setEmail] = useState('')
@@ -15,15 +17,49 @@ export default function Navbar() {
   const [authLoading, setAuthLoading] = useState(false)
 
   useEffect(() => {
+    async function loadProfile(userId: string) {
+      const { data } = await supabase
+        .from('profiles')
+        .select('username, avatar_url')
+        .eq('id', userId)
+        .maybeSingle()
+
+      setProfileUsername(data?.username ?? '')
+      setProfileAvatarUrl(data?.avatar_url ?? null)
+    }
+
     supabase.auth.getSession().then(({ data: { session } }) => {
-      setUser(session?.user ?? null)
+      const currentUser = session?.user ?? null
+      setUser(currentUser)
+      if (currentUser) void loadProfile(currentUser.id)
     })
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null)
+      const currentUser = session?.user ?? null
+      setUser(currentUser)
+      if (currentUser) {
+        void loadProfile(currentUser.id)
+      } else {
+        setProfileUsername('')
+        setProfileAvatarUrl(null)
+      }
     })
 
-    return () => subscription.unsubscribe()
+    function handleProfileUpdated(event: Event) {
+      const detail = (event as CustomEvent<{
+        username: string
+        avatarUrl: string | null
+      }>).detail
+      setProfileUsername(detail.username)
+      setProfileAvatarUrl(detail.avatarUrl)
+    }
+
+    window.addEventListener('profile-updated', handleProfileUpdated)
+
+    return () => {
+      subscription.unsubscribe()
+      window.removeEventListener('profile-updated', handleProfileUpdated)
+    }
   }, [])
 
   async function handleAuth(e: React.FormEvent) {
@@ -43,8 +79,8 @@ export default function Navbar() {
       setShowAuthModal(false)
       setEmail('')
       setPassword('')
-    } catch (err: any) {
-      setAuthError(err.message)
+    } catch (err: unknown) {
+      setAuthError(err instanceof Error ? err.message : 'Authentication failed')
     } finally {
       setAuthLoading(false)
     }
@@ -96,9 +132,26 @@ export default function Navbar() {
 
             {user ? (
               <div className="flex items-center gap-3">
-                <span className="text-xs text-gray-500 hidden sm:inline">
-                  {user.email?.split('@')[0]}
-                </span>
+                <Link
+                  href="/profile"
+                  aria-label="Open profile"
+                  className="flex items-center gap-2 text-xs text-gray-500 transition hover:text-pink-600"
+                >
+                  {profileAvatarUrl?.trim() ? (
+                    <img
+                      src={profileAvatarUrl}
+                      alt=""
+                      className="h-7 w-7 rounded-full border border-pink-200 object-cover"
+                    />
+                  ) : (
+                    <span className="flex h-7 w-7 items-center justify-center rounded-full bg-pink-100 font-black text-pink-500">
+                      {(profileUsername || user.email || '?').charAt(0).toUpperCase()}
+                    </span>
+                  )}
+                  <span className="hidden sm:inline">
+                    {profileUsername || user.email?.split('@')[0]}
+                  </span>
+                </Link>
                 <button
                   onClick={handleSignOut}
                   className="bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs px-3 py-1.5 rounded-full font-bold transition"
