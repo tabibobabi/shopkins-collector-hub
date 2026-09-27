@@ -48,9 +48,16 @@ function getCharacterName(item: SeasonOneItem) {
   return item.characters?.name
 }
 
+function isPlaceholder(url: string | null | undefined) {
+  return Boolean(url?.includes('placehold.co/'))
+}
+
 function hasNoPhoto(item: SeasonOneItem) {
-  const hasCover = Boolean(item.cover_image_url?.trim())
-  const hasGalleryImage = Array.isArray(item.images) && item.images.length > 0
+  const hasCover =
+    Boolean(item.cover_image_url?.trim()) && !isPlaceholder(item.cover_image_url)
+  const hasGalleryImage =
+    Array.isArray(item.images) &&
+    item.images.some((url) => Boolean(url?.trim()) && !isPlaceholder(url))
   return !hasCover && !hasGalleryImage
 }
 

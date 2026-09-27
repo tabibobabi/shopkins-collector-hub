@@ -131,6 +131,10 @@ const SEASON_ONE_SHOPKINS: SeasonOneShopkin[] = [
 
 const VARIANT_NAME = 'Season 1 Classic'
 
+function placeholderImage(name: string) {
+  return `https://placehold.co/600x600/FCE7F3/DB2777?text=${encodeURIComponent(name)}`
+}
+
 function nameKey(name: string) {
   return name.trim().toLocaleLowerCase()
 }
@@ -249,12 +253,15 @@ async function main() {
       throwIfError(error, `Could not update item ${shopkin.name}`)
       itemsUpdated += 1
     } else {
+      const placeholderUrl = placeholderImage(shopkin.name)
       const { data, error } = await supabase
         .from('items')
         .insert({
           character_id: character.id,
           variant_name: VARIANT_NAME,
           season: 1,
+          images: [placeholderUrl],
+          cover_image_url: placeholderUrl,
           ...itemFields,
         })
         .select('id, character_id, variant_name, season')
