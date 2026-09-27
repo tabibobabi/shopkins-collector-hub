@@ -48,6 +48,14 @@ const COLOR_MAP: Record<string, string> = {
   silver: '#cbd5e1'
 }
 
+const RARITY_STYLES: Record<string, string> = {
+  Common: 'bg-gray-100 text-gray-600 border-gray-200',
+  Rare: 'bg-green-100 text-green-700 border-green-200',
+  'Ultra Rare': 'bg-pink-100 text-pink-700 border-pink-200',
+  'Special Edition': 'bg-blue-100 text-blue-700 border-blue-200',
+  'Limited Edition': 'bg-amber-100 text-amber-700 border-amber-300',
+}
+
 export default function Home() {
   const [items, setItems] = useState<ShopkinItem[]>([])
   const [loading, setLoading] = useState(true)
@@ -366,7 +374,12 @@ export default function Home() {
                         S{item.season}
                       </span>
                     )}
-                    <span className="text-[10px] bg-purple-100 text-purple-600 font-medium px-2 py-0.5 rounded-full">
+                    <span
+                      className={`rounded-full border px-2 py-0.5 text-[10px] font-medium ${
+                        RARITY_STYLES[item.rarity] ??
+                        'border-purple-200 bg-purple-100 text-purple-600'
+                      }`}
+                    >
                       {item.rarity}
                     </span>
 
