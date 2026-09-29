@@ -3,6 +3,8 @@
 import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import { supabase } from '../../../utils/supabase'
+import Modal from '../../../components/ui/Modal'
+import { rarityClass, swatchColor } from '../../../utils/shopkins'
 
 const RARITIES = ['Common', 'Rare', 'Ultra Rare', 'Special Edition', 'Limited Edition', 'Exclusive']
 const FINISHES = [
@@ -282,137 +284,158 @@ export default function AdminManagePage() {
     return nameMatch || variantMatch || teamMatch
   })
 
-  return (
-    <div className="max-w-6xl mx-auto p-6 md:p-12">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
-        <div>
-          <h1 className="text-2xl font-black text-pink-600">Manage Catalog Listings</h1>
-          <p className="text-xs text-gray-400 mt-1">Edit figure details, update finishes, or manage photos</p>
-        </div>
-        <Link
-          href="/admin/add-item"
-          className="bg-pink-500 hover:bg-pink-600 text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow-xs transition inline-block text-center"
+  function renderCover(item: ShopkinItem) {
+    return item.cover_image_url?.trim() ? (
+      <img
+        src={item.cover_image_url}
+        alt=""
+        className="pattern-dots h-12 w-12 shrink-0 rounded-lg border-2 border-line object-contain p-1"
+      />
+    ) : (
+      <div
+        aria-label={`No image for ${item.characters?.name || 'this Shopkin'}`}
+        className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg border-2 border-line bg-primary-soft font-display text-base font-bold text-primary-ink"
+      >
+        {item.characters?.name?.charAt(0).toUpperCase() || '?'}
+      </div>
+    )
+  }
+
+  function renderActions(item: ShopkinItem) {
+    return (
+      <>
+        <button onClick={() => handleOpenEdit(item)} className="btn-candy btn-sm">
+          Edit
+        </button>
+        <button onClick={() => handleOpenDuplicate(item)} className="btn-candy btn-lavender btn-sm">
+          Duplicate
+        </button>
+        <button
+          onClick={() => handleDeleteItem(item.id)}
+          className="btn-ghost btn-sm hover:border-danger! hover:text-danger!"
         >
+          Delete
+        </button>
+      </>
+    )
+  }
+
+  return (
+    <main className="mx-auto max-w-6xl px-3 py-6 sm:px-6 md:py-10">
+      <div className="mb-6 flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
+        <div>
+          <h1 className="title-pop text-2xl sm:text-3xl">Manage Catalog Listings</h1>
+          <p className="mt-1 text-xs text-ink-soft">Edit figure details, update finishes, or manage photos</p>
+        </div>
+        <Link href="/admin/add-item" className="btn-candy">
           + Add New Figure
         </Link>
       </div>
 
       <div className="mb-6">
         <input
-          type="text"
+          type="search"
           placeholder="Search listing to edit..."
+          aria-label="Search listings"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="w-full max-w-md px-4 py-2 border rounded-xl text-sm bg-white shadow-xs focus:ring-2 focus:ring-pink-300 focus:outline-none"
+          className="field max-w-md"
         />
       </div>
 
       {bannerMessage && (
         <div
           role="status"
-          className="mb-5 rounded-2xl border border-green-200 bg-green-50 px-4 py-3 text-sm font-bold text-green-700 shadow-xs"
+          className="mb-5 rounded-2xl border-2 border-owned bg-mint-soft px-4 py-3 text-sm font-bold text-mint-ink"
         >
           ✓ {bannerMessage}
         </div>
       )}
 
       {loading ? (
-        <div className="text-center py-20 text-pink-400 font-bold">Loading listings...</div>
+        <div className="py-20 text-center font-pixel text-lg text-primary-ink">
+          <span className="sparkle" aria-hidden="true">✦</span> Loading listings...
+        </div>
       ) : filteredItems.length === 0 ? (
-        <div className="text-center py-16 bg-white rounded-3xl border border-pink-100 text-gray-400 text-sm">
+        <div className="window py-16 text-center text-sm font-bold text-ink-soft">
           No listings found.
         </div>
       ) : (
-        <div className="bg-white rounded-3xl border border-pink-100 overflow-hidden shadow-xs">
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs text-gray-600">
-              <thead className="bg-pink-50/60 text-pink-700 uppercase font-bold text-[10px] tracking-wider border-b border-pink-100">
-                <tr>
-                  <th className="p-3">Cover</th>
-                  <th className="p-3">Character</th>
-                  <th className="p-3">Variant</th>
-                  <th className="p-3">Season</th>
-                  <th className="p-3">Rarity</th>
-                  <th className="p-3">Finish</th>
-                  <th className="p-3 text-right">Actions</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-pink-50">
-                {filteredItems.map((item) => (
-                  <tr key={item.id} className="hover:bg-pink-50/30 transition">
-                    <td className="p-3">
-                      {item.cover_image_url?.trim() ? (
-                        <img
-                          src={item.cover_image_url}
-                          alt=""
-                          className="w-10 h-10 object-contain rounded-lg bg-pink-50/50 p-1 border border-pink-100"
-                        />
-                      ) : (
-                        <div
-                          aria-label={`No image for ${item.characters?.name || 'this Shopkin'}`}
-                          className="flex h-10 w-10 items-center justify-center rounded-lg border border-pink-100 bg-pink-50 text-sm font-black text-pink-500"
-                        >
-                          {item.characters?.name?.charAt(0).toUpperCase() || '?'}
-                        </div>
+        <>
+          <ul className="flex flex-col gap-3 md:hidden">
+            {filteredItems.map((item) => (
+              <li key={item.id} className="card-frame p-3">
+                <div className="flex items-center gap-3">
+                  {renderCover(item)}
+                  <div className="min-w-0 flex-1">
+                    <p className="truncate font-display font-semibold text-ink">{item.characters?.name}</p>
+                    <p className="truncate text-xs font-bold text-primary-ink">{item.variant_name}</p>
+                    <div className="mt-1 flex flex-wrap gap-1">
+                      {item.season && (
+                        <span className="chip border-line-strong bg-primary-soft font-pixel font-normal text-primary-ink">
+                          S{item.season}
+                        </span>
                       )}
-                    </td>
-                    <td className="p-3 font-bold text-gray-800">{item.characters?.name}</td>
-                    <td className="p-3 font-medium text-pink-600">{item.variant_name}</td>
-                    <td className="p-3">{item.season ? `S${item.season}` : '—'}</td>
-                    <td className="p-3">{item.rarity}</td>
-                    <td className="p-3">{item.finish}</td>
-                    <td className="p-3 text-right space-x-2">
-                      <button
-                        onClick={() => handleOpenEdit(item)}
-                        className="bg-pink-100 hover:bg-pink-200 text-pink-700 font-bold px-2.5 py-1 rounded-lg transition"
-                      >
-                        Edit
-                      </button>
-                      <button
-                        onClick={() => handleOpenDuplicate(item)}
-                        className="rounded-lg bg-purple-100 px-2.5 py-1 font-bold text-purple-700 transition hover:bg-purple-200"
-                      >
-                        Duplicate
-                      </button>
-                      <button
-                        onClick={() => handleDeleteItem(item.id)}
-                        className="bg-gray-100 hover:bg-red-100 text-gray-500 hover:text-red-600 font-bold px-2.5 py-1 rounded-lg transition"
-                      >
-                        Delete
-                      </button>
-                    </td>
+                      <span className={`chip ${rarityClass(item.rarity)}`}>{item.rarity}</span>
+                      <span className="chip">{item.finish}</span>
+                    </div>
+                  </div>
+                </div>
+                <div className="mt-3 grid grid-cols-3 gap-2">{renderActions(item)}</div>
+              </li>
+            ))}
+          </ul>
+
+          <div className="window hidden md:block">
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-xs text-ink-soft">
+                <thead className="window-titlebar table-header-group">
+                  <tr>
+                    <th className="p-3 font-normal">Cover</th>
+                    <th className="p-3 font-normal">Character</th>
+                    <th className="p-3 font-normal">Variant</th>
+                    <th className="p-3 font-normal">Season</th>
+                    <th className="p-3 font-normal">Rarity</th>
+                    <th className="p-3 font-normal">Finish</th>
+                    <th className="p-3 text-right font-normal">Actions</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody className="divide-y-2 divide-dashed divide-line">
+                  {filteredItems.map((item) => (
+                    <tr key={item.id} className="transition hover:bg-surface-2">
+                      <td className="p-3">{renderCover(item)}</td>
+                      <td className="p-3 font-display text-sm font-semibold text-ink">{item.characters?.name}</td>
+                      <td className="p-3 font-bold text-primary-ink">{item.variant_name}</td>
+                      <td className="p-3 font-pixel">{item.season ? `S${item.season}` : '—'}</td>
+                      <td className="p-3">
+                        <span className={`chip ${rarityClass(item.rarity)}`}>{item.rarity}</span>
+                      </td>
+                      <td className="p-3">{item.finish}</td>
+                      <td className="p-3">
+                        <div className="flex justify-end gap-2">{renderActions(item)}</div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
-        </div>
+        </>
       )}
 
       {/* Edit Modal */}
       {editingItem && (
-        <div className="fixed inset-0 bg-black/40 backdrop-blur-xs flex items-center justify-center p-4 z-50">
-          <div
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="edit-shopkin-title"
-            tabIndex={-1}
-            autoFocus
-            onPaste={handlePhotoPaste}
-            className="bg-white rounded-3xl max-w-2xl w-full p-6 max-h-[90vh] overflow-y-auto relative border border-pink-100 shadow-2xl outline-none"
-          >
-            <button
-              onClick={closeEditModal}
-              className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 font-bold text-xl"
-            >
-              ×
-            </button>
-
-            <h2 id="edit-shopkin-title" className="text-xl font-black text-gray-800">
+        <Modal
+          size="lg"
+          title={isDuplicateMode ? 'duplicate_listing.exe' : 'edit_listing.exe'}
+          onClose={closeEditModal}
+          onPaste={handlePhotoPaste}
+        >
+            <h2 className="title-pop mb-4 text-2xl">
               {isDuplicateMode ? 'Duplicate Shopkin Listing' : 'Edit Shopkin Listing'}
             </h2>
             {isDuplicateMode && (
-              <p className="mb-4 mt-1 rounded-xl border border-purple-100 bg-purple-50 px-3 py-2 text-xs text-purple-700">
+              <p className="-mt-2 mb-4 rounded-xl border-2 border-dashed border-lavender bg-lavender-soft px-3 py-2 text-xs font-semibold text-lavender-ink">
                 The listing details and cover photo were copied. Adjust the variant and add
                 variant-specific photos before creating it.
               </p>
@@ -421,11 +444,11 @@ export default function AdminManagePage() {
             <form onSubmit={handleUpdateItem} className="space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="text-xs font-bold text-gray-700">Base Character (Mold)</label>
+                  <label className="field-label">Base Character (Mold)</label>
                   <select
                     value={editingItem.character_id}
                     onChange={(e) => setEditingItem({ ...editingItem, character_id: e.target.value })}
-                    className="w-full mt-1 p-2 border rounded-xl text-xs bg-white"
+                    className="field"
                   >
                     {characters.map((c) => (
                       <option key={c.id} value={c.id}>
@@ -436,52 +459,52 @@ export default function AdminManagePage() {
                 </div>
 
                 <div>
-                  <label className="text-xs font-bold text-gray-700">Variant Name</label>
+                  <label className="field-label">Variant Name</label>
                   <input
                     type="text"
                     required
                     value={editingItem.variant_name}
                     onChange={(e) => setEditingItem({ ...editingItem, variant_name: e.target.value })}
-                    className="w-full mt-1 p-2 border rounded-xl text-xs"
+                    className="field"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                 <div>
-                  <label className="text-xs font-semibold text-gray-700">Season #</label>
+                  <label className="field-label">Season #</label>
                   <input
                     type="number"
                     value={editingItem.season ?? ''}
                     onChange={(e) => setEditingItem({ ...editingItem, season: e.target.value === '' ? null : Number(e.target.value) })}
-                    className="w-full mt-1 p-2 border rounded-xl text-xs"
+                    className="field"
                   />
                 </div>
                 <div>
-                  <label className="text-xs font-semibold text-gray-700">Year</label>
+                  <label className="field-label">Year</label>
                   <input
                     type="number"
                     value={editingItem.release_year ?? ''}
                     onChange={(e) => setEditingItem({ ...editingItem, release_year: e.target.value === '' ? null : Number(e.target.value) })}
-                    className="w-full mt-1 p-2 border rounded-xl text-xs"
+                    className="field"
                   />
                 </div>
                 <div>
-                  <label className="text-xs font-semibold text-gray-700">Team</label>
+                  <label className="field-label">Team</label>
                   <input
                     type="text"
                     required
                     value={editingItem.team}
                     onChange={(e) => setEditingItem({ ...editingItem, team: e.target.value })}
-                    className="w-full mt-1 p-2 border rounded-xl text-xs"
+                    className="field"
                   />
                 </div>
                 <div>
-                  <label className="text-xs font-semibold text-gray-700">Release Type</label>
+                  <label className="field-label">Release Type</label>
                   <select
                     value={editingItem.release_type}
                     onChange={(e) => setEditingItem({ ...editingItem, release_type: e.target.value })}
-                    className="w-full mt-1 p-2 border rounded-xl text-xs bg-white"
+                    className="field"
                   >
                     {RELEASE_TYPES.map((t) => (
                       <option key={t} value={t}>{t}</option>
@@ -492,11 +515,11 @@ export default function AdminManagePage() {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="text-xs font-semibold text-gray-700">Rarity</label>
+                  <label className="field-label">Rarity</label>
                   <select
                     value={editingItem.rarity}
                     onChange={(e) => setEditingItem({ ...editingItem, rarity: e.target.value })}
-                    className="w-full mt-1 p-2 border rounded-xl text-xs bg-white"
+                    className="field"
                   >
                     {RARITIES.map((r) => (
                       <option key={r} value={r}>{r}</option>
@@ -504,11 +527,11 @@ export default function AdminManagePage() {
                   </select>
                 </div>
                 <div>
-                  <label className="text-xs font-semibold text-gray-700">Finish</label>
+                  <label className="field-label">Finish</label>
                   <select
                     value={editingItem.finish}
                     onChange={(e) => setEditingItem({ ...editingItem, finish: e.target.value })}
-                    className="w-full mt-1 p-2 border rounded-xl text-xs bg-white"
+                    className="field"
                   >
                     {FINISHES.map((f) => (
                       <option key={f} value={f}>{f}</option>
@@ -519,7 +542,7 @@ export default function AdminManagePage() {
 
               {/* Color Tags */}
               <div>
-                <label className="text-xs font-bold text-gray-700 block mb-1">Color Tags</label>
+                <label className="field-label">Color Tags</label>
                 <div className="flex flex-wrap gap-1.5">
                   {AVAILABLE_COLORS.map((c) => {
                     const active = editingItem.color_tags?.includes(c)
@@ -527,13 +550,18 @@ export default function AdminManagePage() {
                       <button
                         key={c}
                         type="button"
+                        aria-pressed={active}
                         onClick={() => toggleColor(c)}
-                        className={`text-xs px-2.5 py-1 rounded-full border transition ${
+                        className={`flex min-h-8 items-center gap-1.5 rounded-full border-2 px-2.5 py-1 text-xs font-bold transition ${
                           active
-                            ? 'bg-pink-500 text-white border-pink-500 font-bold'
-                            : 'bg-gray-50 border-gray-200 text-gray-600'
+                            ? 'border-primary bg-primary-soft text-primary-ink'
+                            : 'border-line bg-surface text-ink-soft hover:border-line-strong'
                         }`}
                       >
+                        <span
+                          className="h-2.5 w-2.5 rounded-full border border-black/10"
+                          style={{ backgroundColor: swatchColor(c) }}
+                        />
                         {c}
                       </button>
                     )
@@ -543,7 +571,7 @@ export default function AdminManagePage() {
 
               {/* Photos & Cover Selection */}
               <div>
-                <label className="text-xs font-bold text-gray-700 block mb-1">
+                <label className="field-label">
                   {isDuplicateMode
                     ? 'Carried-over Stock Art (Click to set Cover)'
                     : 'Current Photos (Click to set Cover)'}
@@ -554,12 +582,12 @@ export default function AdminManagePage() {
                       key={i}
                       onClick={() => setEditingItem({ ...editingItem, cover_image_url: url })}
                       className={`relative cursor-pointer p-1 rounded-xl border-2 transition ${
-                        editingItem.cover_image_url === url ? 'border-pink-500 ring-2 ring-pink-200' : 'border-gray-200'
+                        editingItem.cover_image_url === url ? 'border-primary ring-2 ring-primary-soft' : 'border-line'
                       }`}
                     >
-                      <img src={url} alt="" className="w-16 h-16 object-contain bg-pink-50/30 rounded-lg" />
+                      <img src={url} alt="" className="pattern-dots h-16 w-16 rounded-lg object-contain" />
                       {editingItem.cover_image_url === url && (
-                        <span className="absolute bottom-1 right-1 bg-pink-500 text-white text-[9px] font-bold px-1 rounded">
+                        <span className="absolute bottom-1 right-1 rounded bg-primary px-1 text-[9px] font-bold text-on-primary">
                           Cover
                         </span>
                       )}
@@ -569,7 +597,8 @@ export default function AdminManagePage() {
                           e.stopPropagation()
                           removeExistingImage(url)
                         }}
-                        className="absolute -top-1.5 -right-1.5 bg-red-500 text-white rounded-full w-4 h-4 text-[10px] flex items-center justify-center font-bold"
+                        aria-label="Remove photo"
+                        className="absolute -right-2 -top-2 flex h-6 w-6 items-center justify-center rounded-full border-2 border-surface bg-danger text-xs font-bold text-white"
                       >
                         ×
                       </button>
@@ -577,7 +606,7 @@ export default function AdminManagePage() {
                   ))}
                 </div>
 
-                <label className="text-xs font-semibold text-gray-600 block mb-1">Add More Photos</label>
+                <span className="field-label">Add More Photos</span>
                 <label
                   onDragEnter={(e) => {
                     e.preventDefault()
@@ -600,20 +629,20 @@ export default function AdminManagePage() {
                   }}
                   className={`flex min-h-32 cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed px-5 py-6 text-center transition ${
                     isDraggingPhoto
-                      ? 'border-pink-500 bg-pink-100 ring-4 ring-pink-100'
-                      : 'border-pink-200 bg-pink-50/40 hover:border-pink-400 hover:bg-pink-50'
+                      ? 'border-primary bg-primary-soft ring-4 ring-primary-soft'
+                      : 'pattern-dots border-line-strong hover:border-primary'
                   }`}
                 >
                   <span
                     aria-hidden="true"
-                    className="mb-2 flex h-10 w-10 items-center justify-center rounded-full bg-white text-xl text-pink-500 shadow-xs"
+                    className="mb-2 flex h-10 w-10 items-center justify-center rounded-full border-2 border-line-strong bg-surface text-xl text-primary-ink"
                   >
                     ↑
                   </span>
-                  <span className="text-sm font-bold text-gray-700">
+                  <span className="text-sm font-bold text-ink">
                     Drag &amp; drop image here or click to browse
                   </span>
-                  <span className="mt-1 text-[11px] text-gray-400">
+                  <span className="mt-1 text-[11px] text-ink-faint">
                     You can also paste an image with Cmd+V
                   </span>
                   <input
@@ -630,28 +659,28 @@ export default function AdminManagePage() {
 
                 {pendingPhotos.length > 0 && (
                   <div className="mt-3">
-                    <p className="mb-2 text-[11px] font-bold uppercase tracking-wider text-pink-600">
+                    <p className="mb-2 font-pixel text-xs text-primary-ink">
                       Pending uploads ({pendingPhotos.length})
                     </p>
                     <div className="flex flex-wrap gap-2">
                       {pendingPhotos.map((photo) => (
                         <div
                           key={photo.id}
-                          className="relative rounded-xl border-2 border-dashed border-pink-300 bg-pink-50 p-1"
+                          className="relative rounded-xl border-2 border-dashed border-line-strong bg-primary-soft p-1"
                         >
                           <img
                             src={photo.previewUrl}
                             alt={`Pending upload: ${photo.file.name || 'pasted image'}`}
-                            className="h-20 w-20 rounded-lg bg-white object-contain"
+                            className="h-20 w-20 rounded-lg bg-surface object-contain"
                           />
-                          <span className="absolute bottom-1 left-1 rounded bg-pink-500 px-1 text-[9px] font-bold text-white">
+                          <span className="absolute bottom-1 left-1 rounded bg-primary px-1 text-[9px] font-bold text-on-primary">
                             Pending
                           </span>
                           <button
                             type="button"
                             aria-label={`Remove ${photo.file.name || 'pasted image'}`}
                             onClick={() => removePendingPhoto(photo.id)}
-                            className="absolute -right-1.5 -top-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-[11px] font-bold text-white shadow-xs"
+                            className="absolute -right-2 -top-2 flex h-6 w-6 items-center justify-center rounded-full border-2 border-surface bg-danger text-xs font-bold text-white"
                           >
                             ×
                           </button>
@@ -666,7 +695,7 @@ export default function AdminManagePage() {
                 <button
                   type="submit"
                   disabled={saving}
-                  className="flex w-full items-center justify-center gap-2 rounded-xl bg-pink-500 py-3 text-xs font-bold text-white shadow-xs transition hover:bg-pink-600 disabled:bg-gray-300"
+                  className="btn-candy min-h-11 flex-1"
                 >
                   {saving && (
                     <span className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-white/40 border-t-white" />
@@ -684,19 +713,18 @@ export default function AdminManagePage() {
                 <button
                   type="button"
                   onClick={closeEditModal}
-                  className="w-1/3 py-3 bg-gray-100 hover:bg-gray-200 text-gray-600 font-bold rounded-xl text-xs transition"
+                  className="btn-ghost min-h-11 w-1/3"
                 >
                   Cancel
                 </button>
               </div>
 
               {statusMessage && (
-                <p className="text-center text-xs font-bold text-pink-600 mt-2">{statusMessage}</p>
+                <p className="mt-2 text-center text-xs font-bold text-primary-ink">{statusMessage}</p>
               )}
             </form>
-          </div>
-        </div>
+        </Modal>
       )}
-    </div>
+    </main>
   )
 }

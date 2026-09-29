@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import type { User } from '@supabase/supabase-js'
 import { supabase } from '../../utils/supabase'
+import Window from '../../components/ui/Window'
+import { rarityClass } from '../../utils/shopkins'
 
 interface Profile {
   id: string
@@ -214,30 +216,27 @@ export default function ProfilePage() {
 
   if (loading) {
     return (
-      <div className="py-24 text-center text-lg font-bold text-pink-400">
-        Loading your profile...
+      <div className="py-24 text-center font-pixel text-lg text-primary-ink">
+        <span className="sparkle" aria-hidden="true">✦</span> Loading your profile...
       </div>
     )
   }
 
   if (!user) {
     return (
-      <main className="mx-auto max-w-md px-6 py-24 text-center">
-        <div className="rounded-3xl border border-pink-100 bg-white p-8 shadow-xs">
-          <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-pink-100 text-3xl">
+      <main className="mx-auto max-w-md px-4 py-16 sm:py-24">
+        <Window title="profile.exe" bodyClassName="p-6 text-center sm:p-8">
+          <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl border-2 border-line-strong bg-primary-soft text-3xl">
             🍓
           </div>
-          <h1 className="text-2xl font-black text-gray-800">Sign in to view your profile</h1>
-          <p className="mt-2 text-sm text-gray-500">
+          <h1 className="title-pop text-2xl">Sign in to view your profile</h1>
+          <p className="mt-2 text-sm text-ink-soft">
             Sign in from the navigation bar to manage your collector profile and collection.
           </p>
-          <Link
-            href="/"
-            className="mt-6 inline-block rounded-full bg-pink-500 px-5 py-2.5 text-sm font-bold text-white transition hover:bg-pink-600"
-          >
+          <Link href="/" className="btn-candy mt-6">
             Back to catalog
           </Link>
-        </div>
+        </Window>
       </main>
     )
   }
@@ -249,11 +248,11 @@ export default function ProfilePage() {
   const displayInitial = (username || user.email || '?').charAt(0).toUpperCase()
 
   return (
-    <main className="mx-auto max-w-6xl p-6 md:p-12">
+    <main className="mx-auto max-w-6xl px-3 py-6 sm:px-6 md:py-10">
       <div className="mb-8 grid gap-6 lg:grid-cols-[1.35fr_1fr]">
-        <section className="rounded-3xl border border-pink-100 bg-white p-6 shadow-xs md:p-8">
-          <h1 className="text-2xl font-black text-gray-800">Your Profile</h1>
-          <p className="mt-1 text-xs text-gray-400">Update your collector details and avatar.</p>
+        <Window title="profile.exe" bodyClassName="p-5 md:p-8">
+          <h1 className="title-pop text-2xl sm:text-3xl">Your Profile</h1>
+          <p className="mt-1 text-xs text-ink-soft">Update your collector details and avatar.</p>
 
           <div className="mt-6 flex flex-col gap-6 sm:flex-row sm:items-center">
             <div className="flex flex-col items-center gap-2">
@@ -261,14 +260,14 @@ export default function ProfilePage() {
                 <img
                   src={avatarUrl}
                   alt={`${username || 'Collector'} avatar`}
-                  className="h-24 w-24 rounded-3xl border-4 border-pink-100 object-cover shadow-sm"
+                  className="h-24 w-24 rounded-3xl border-4 border-line-strong object-cover shadow-[3px_3px_0_var(--shadow-pop)]"
                 />
               ) : (
-                <div className="flex h-24 w-24 items-center justify-center rounded-3xl border-4 border-pink-100 bg-pink-50 text-3xl font-black text-pink-500">
+                <div className="flex h-24 w-24 items-center justify-center rounded-3xl border-4 border-line-strong bg-primary-soft font-display text-4xl font-bold text-primary-ink shadow-[3px_3px_0_var(--shadow-pop)]">
                   {displayInitial}
                 </div>
               )}
-              <label className="cursor-pointer rounded-full bg-pink-100 px-3 py-1.5 text-xs font-bold text-pink-600 transition hover:bg-pink-200">
+              <label className="btn-ghost btn-sm cursor-pointer">
                 {uploadingAvatar ? 'Uploading...' : 'Change avatar'}
                 <input
                   type="file"
@@ -286,28 +285,28 @@ export default function ProfilePage() {
 
             <div className="flex-1 space-y-4">
               <label className="block">
-                <span className="text-xs font-bold text-gray-600">Username</span>
+                <span className="field-label">Username</span>
                 <input
                   type="text"
                   value={username}
                   onChange={(event) => setUsername(event.target.value)}
-                  className="mt-1 w-full rounded-xl border border-pink-200 px-3.5 py-2.5 text-sm outline-none transition focus:border-pink-400 focus:ring-2 focus:ring-pink-100"
+                  className="field"
                 />
               </label>
               <label className="block">
-                <span className="text-xs font-bold text-gray-600">Email</span>
+                <span className="field-label">Email</span>
                 <input
                   type="email"
                   value={user.email ?? ''}
                   readOnly
-                  className="mt-1 w-full rounded-xl border border-gray-200 bg-gray-50 px-3.5 py-2.5 text-sm text-gray-500"
+                  className="field"
                 />
               </label>
               <button
                 type="button"
                 onClick={() => void saveProfile()}
                 disabled={saving}
-                className="rounded-xl bg-pink-500 px-5 py-2.5 text-sm font-bold text-white transition hover:bg-pink-600 disabled:bg-pink-300"
+                className="btn-candy w-full sm:w-auto"
               >
                 {saving ? 'Saving...' : 'Save Profile'}
               </button>
@@ -315,97 +314,106 @@ export default function ProfilePage() {
           </div>
 
           {statusMessage && (
-            <p className="mt-4 rounded-xl bg-pink-50 px-3 py-2 text-xs font-semibold text-pink-600">
+            <p className="mt-4 rounded-xl border-2 border-dashed border-line-strong bg-primary-soft px-3 py-2 text-xs font-bold text-primary-ink">
               {statusMessage}
             </p>
           )}
-        </section>
+        </Window>
 
-        <section className="rounded-3xl border border-pink-100 bg-white p-6 shadow-xs md:p-8">
-          <h2 className="text-lg font-black text-gray-800">Collection Summary</h2>
+        <Window title="stats.exe" bodyClassName="p-5 md:p-8">
+          <h2 className="font-display text-xl font-semibold text-ink">Collection Summary</h2>
           <div className="mt-5 grid grid-cols-2 gap-3">
-            <div className="rounded-2xl border border-pink-100 bg-pink-50 p-4 text-center">
-              <span className="block text-3xl font-black text-pink-600">{totalOwned}</span>
-              <span className="text-[10px] font-bold uppercase tracking-wider text-pink-400">
+            <div className="-rotate-1 rounded-2xl border-2 border-surface bg-primary-soft p-4 text-center text-primary-ink shadow-[3px_3px_0_var(--shadow-pop)]">
+              <span className="block font-pixel text-3xl leading-tight">{totalOwned}</span>
+              <span className="text-[10px] font-extrabold uppercase tracking-wider">
                 Total owned
               </span>
             </div>
-            <div className="rounded-2xl border border-purple-100 bg-purple-50 p-4 text-center">
-              <span className="block text-3xl font-black text-purple-600">
+            <div className="rotate-1 rounded-2xl border-2 border-surface bg-lavender-soft p-4 text-center text-lavender-ink shadow-[3px_3px_0_var(--shadow-pop)]">
+              <span className="block font-pixel text-3xl leading-tight">
                 {seasonOnePercent}%
               </span>
-              <span className="text-[10px] font-bold uppercase tracking-wider text-purple-400">
+              <span className="text-[10px] font-extrabold uppercase tracking-wider">
                 Season 1 complete
               </span>
             </div>
           </div>
-          <div className="mt-4 h-2 overflow-hidden rounded-full bg-pink-100">
+          <div
+            className="mt-5 h-4 overflow-hidden rounded-full border-2 border-line-strong bg-surface-2 p-0.5"
+            role="progressbar"
+            aria-valuenow={seasonOnePercent}
+            aria-valuemin={0}
+            aria-valuemax={100}
+            aria-label="Season 1 completion"
+          >
             <div
-              className="h-full rounded-full bg-linear-to-r from-pink-400 to-purple-400 transition-all"
+              className="h-full rounded-full bg-[repeating-linear-gradient(135deg,var(--primary)_0_6px,var(--lavender)_6px_12px)] transition-all"
               style={{ width: `${seasonOnePercent}%` }}
             />
           </div>
-          <p className="mt-2 text-center text-xs text-gray-400">
+          <p className="mt-2 text-center text-xs text-ink-soft">
             {seasonOneOwned} of {seasonOneTotal} Season 1 Shopkins collected
           </p>
-        </section>
+        </Window>
       </div>
 
       <section>
-        <div className="mb-5 flex items-end justify-between">
+        <div className="mb-5 flex items-end justify-between gap-3">
           <div>
-            <h2 className="text-2xl font-black text-gray-800">Owned Shopkins</h2>
-            <p className="mt-1 text-xs text-gray-400">{ownedItems.length} unique figures</p>
+            <h2 className="title-pop text-2xl">Owned Shopkins</h2>
+            <p className="mt-1 font-pixel text-xs text-ink-soft">{ownedItems.length} unique figures</p>
           </div>
-          <Link href="/" className="text-xs font-bold text-pink-600 hover:underline">
+          <Link href="/" className="btn-ghost btn-sm">
             Browse catalog
           </Link>
         </div>
 
         {ownedItems.length === 0 ? (
-          <div className="rounded-3xl border border-pink-100 bg-white py-16 text-center">
-            <p className="text-sm font-semibold text-gray-400">
+          <div className="window px-6 py-12 text-center">
+            <p className="mb-1 text-3xl" aria-hidden="true">🧺</p>
+            <p className="font-display text-lg font-semibold text-ink">
               You have not marked any Shopkins as owned yet.
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 md:grid-cols-4 lg:grid-cols-5">
             {ownedItems.map(({ id, quantity, item }) => (
               <div
                 key={id}
-                className="relative flex flex-col items-center rounded-2xl border border-pink-100 bg-white p-4 text-center shadow-xs transition hover:-translate-y-1 hover:shadow-md"
+                className="card-frame relative flex flex-col items-center p-3 text-center sm:p-4"
               >
                 {quantity > 1 && (
-                  <span className="absolute right-2.5 top-2.5 rounded-full bg-green-500 px-2 py-0.5 text-[10px] font-bold text-white shadow-xs">
+                  <span className="sticker absolute -right-1.5 -top-2 z-10 rotate-6 bg-owned text-white">
                     ×{quantity}
                   </span>
                 )}
-                {item.cover_image_url?.trim() ? (
-                  <img
-                    src={item.cover_image_url}
-                    alt={item.characters?.name || item.variant_name}
-                    className="mb-3 h-28 w-28 rounded-lg bg-pink-50/40 object-contain"
-                  />
-                ) : (
-                  <div className="mb-3 flex h-28 w-28 items-center justify-center rounded-lg bg-pink-50 text-2xl font-black text-pink-400">
-                    {item.characters?.name?.charAt(0).toUpperCase() || '?'}
-                  </div>
-                )}
-                <h3 className="text-sm font-bold leading-tight text-gray-800">
+                <div className="pattern-dots mb-3 aspect-square w-full max-w-28 overflow-hidden rounded-xl border-2 border-line">
+                  {item.cover_image_url?.trim() ? (
+                    <img
+                      src={item.cover_image_url}
+                      alt={item.characters?.name || item.variant_name}
+                      loading="lazy"
+                      className="h-full w-full object-contain p-1"
+                    />
+                  ) : (
+                    <div className="flex h-full w-full items-center justify-center font-display text-3xl font-bold text-primary">
+                      {item.characters?.name?.charAt(0).toUpperCase() || '?'}
+                    </div>
+                  )}
+                </div>
+                <h3 className="font-display text-sm font-semibold leading-tight text-ink">
                   {item.characters?.name}
                 </h3>
-                <span className="mt-0.5 text-xs font-medium text-pink-500">
+                <span className="mt-0.5 text-xs font-bold text-primary-ink">
                   {item.variant_name}
                 </span>
                 <div className="mt-2.5 flex flex-wrap justify-center gap-1.5">
                   {item.season && (
-                    <span className="rounded-full bg-pink-100 px-2 py-0.5 text-[10px] font-bold text-pink-600">
+                    <span className="chip border-line-strong bg-primary-soft font-pixel font-normal text-primary-ink">
                       S{item.season}
                     </span>
                   )}
-                  <span className="rounded-full bg-purple-100 px-2 py-0.5 text-[10px] font-medium text-purple-600">
-                    {item.rarity}
-                  </span>
+                  <span className={`chip ${rarityClass(item.rarity)}`}>{item.rarity}</span>
                 </div>
               </div>
             ))}
