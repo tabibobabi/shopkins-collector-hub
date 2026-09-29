@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from 'react'
 import { supabase } from '../../../utils/supabase'
+import Window from '../../../components/ui/Window'
+import { swatchColor } from '../../../utils/shopkins'
 
 const RARITIES = ['Common', 'Rare', 'Ultra Rare', 'Special Edition', 'Limited Edition', 'Exclusive']
 const FINISHES = [
@@ -192,15 +194,16 @@ export default function AdminAddItem() {
   }
 
   return (
-    <div className="max-w-3xl mx-auto p-6 bg-white my-8 rounded-3xl shadow-sm border border-pink-100">
-      <h1 className="text-2xl font-black text-pink-600 mb-6">Add New Shopkin Figure</h1>
+    <main className="mx-auto max-w-3xl px-3 py-6 sm:px-6 md:py-10">
+    <Window title="add_figure.exe" bodyClassName="p-4 sm:p-6">
+      <h1 className="title-pop mb-6 text-2xl sm:text-3xl">Add New Shopkin Figure</h1>
 
       {/* 1. Base Mold / Character */}
-      <div className="bg-pink-50/50 p-4 rounded-2xl border border-pink-100 mb-6">
-        <h2 className="text-xs font-bold uppercase tracking-wider text-pink-500 mb-2">1. Base Character Sculpt</h2>
+      <div className="mb-6 rounded-2xl border-2 border-dashed border-line bg-surface-2 p-4">
+        <h2 className="mb-2 font-pixel text-xs text-primary-ink">1. Base Character Sculpt</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label className="text-xs text-gray-500 font-medium">Existing Character</label>
+            <label className="field-label">Existing Character</label>
             <select
               value={selectedCharacterId}
               onChange={(e) => {
@@ -208,7 +211,7 @@ export default function AdminAddItem() {
                 const char = characters.find((c) => c.id === e.target.value)
                 if (char) setTeam(char.base_category)
               }}
-              className="w-full mt-1 p-2 border rounded-xl text-sm bg-white"
+              className="field"
             >
               <option value="">-- Choose Character --</option>
               {characters.map((c) => (
@@ -220,26 +223,26 @@ export default function AdminAddItem() {
           </div>
 
           <div>
-            <span className="text-xs text-gray-500 font-medium">Or Add New Character</span>
-            <div className="flex gap-2 mt-1">
+            <span className="field-label">Or Add New Character</span>
+            <div className="flex flex-col gap-2 sm:flex-row">
               <input
                 type="text"
                 placeholder="Name (e.g. Apple Blossom)"
                 value={newCharName}
                 onChange={(e) => setNewCharName(e.target.value)}
-                className="w-1/2 p-2 border rounded-xl text-xs"
+                className="field min-w-0 flex-1"
               />
               <input
                 type="text"
                 placeholder="Category (e.g. Fruit & Veg)"
                 value={newCharCategory}
                 onChange={(e) => setNewCharCategory(e.target.value)}
-                className="w-1/2 p-2 border rounded-xl text-xs"
+                className="field min-w-0 flex-1"
               />
               <button
                 type="button"
                 onClick={handleCreateCharacter}
-                className="bg-pink-500 hover:bg-pink-600 text-white px-3 py-2 rounded-xl text-xs font-bold"
+                className="btn-candy h-11 shrink-0"
               >
                 Add
               </button>
@@ -251,54 +254,54 @@ export default function AdminAddItem() {
       {/* 2. Variant Information */}
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label className="text-xs font-bold text-gray-700">Variant Name / Colorway Edition</label>
+          <label className="field-label">Variant Name / Colorway Edition</label>
           <input
             type="text"
             required
             placeholder="e.g. Classic Green, Yellow Alternate, Metallic Pink"
             value={variantName}
             onChange={(e) => setVariantName(e.target.value)}
-            className="w-full mt-1 p-2.5 border rounded-xl text-sm"
+            className="field"
           />
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           <div>
-            <label className="text-xs font-semibold text-gray-700">Season #</label>
+            <label className="field-label">Season #</label>
             <input
               type="number"
               placeholder="e.g. 1"
               value={season}
               onChange={(e) => setSeason(e.target.value === '' ? '' : Number(e.target.value))}
-              className="w-full mt-1 p-2 border rounded-xl text-sm"
+              className="field"
             />
           </div>
           <div>
-            <label className="text-xs font-semibold text-gray-700">Release Year</label>
+            <label className="field-label">Release Year</label>
             <input
               type="number"
               value={releaseYear}
               onChange={(e) => setReleaseYear(e.target.value === '' ? '' : Number(e.target.value))}
-              className="w-full mt-1 p-2 border rounded-xl text-sm"
+              className="field"
             />
           </div>
           <div>
-            <label className="text-xs font-semibold text-gray-700">Team / Category</label>
+            <label className="field-label">Team / Category</label>
             <input
               type="text"
               required
               placeholder="e.g. Bakery"
               value={team}
               onChange={(e) => setTeam(e.target.value)}
-              className="w-full mt-1 p-2 border rounded-xl text-sm"
+              className="field"
             />
           </div>
           <div>
-            <label className="text-xs font-semibold text-gray-700">Release Type</label>
+            <label className="field-label">Release Type</label>
             <select
               value={releaseType}
               onChange={(e) => setReleaseType(e.target.value)}
-              className="w-full mt-1 p-2 border rounded-xl text-sm bg-white"
+              className="field"
             >
               {RELEASE_TYPES.map((t) => (
                 <option key={t} value={t}>{t}</option>
@@ -308,23 +311,23 @@ export default function AdminAddItem() {
         </div>
 
         <div>
-          <label className="text-xs font-semibold text-gray-700">Pack / Release Name</label>
+          <label className="field-label">Pack / Release Name</label>
           <input
             type="text"
             placeholder="e.g. 12-Pack, Supermarket Playset, Fashion Spree Tin"
             value={releaseName}
             onChange={(e) => setReleaseName(e.target.value)}
-            className="w-full mt-1 p-2.5 border rounded-xl text-sm"
+            className="field"
           />
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           <div>
-            <label className="text-xs font-semibold text-gray-700">Rarity Tier</label>
+            <label className="field-label">Rarity Tier</label>
             <select
               value={rarity}
               onChange={(e) => setRarity(e.target.value)}
-              className="w-full mt-1 p-2 border rounded-xl text-sm bg-white"
+              className="field"
             >
               {RARITIES.map((r) => (
                 <option key={r} value={r}>{r}</option>
@@ -332,11 +335,11 @@ export default function AdminAddItem() {
             </select>
           </div>
           <div>
-            <label className="text-xs font-semibold text-gray-700">Finish / Texture</label>
+            <label className="field-label">Finish / Texture</label>
             <select
               value={finish}
               onChange={(e) => setFinish(e.target.value)}
-              className="w-full mt-1 p-2 border rounded-xl text-sm bg-white"
+              className="field"
             >
               {FINISHES.map((f) => (
                 <option key={f} value={f}>{f}</option>
@@ -347,7 +350,7 @@ export default function AdminAddItem() {
 
         {/* Color Tags Selector */}
         <div>
-          <label className="text-xs font-bold text-gray-700 mb-1.5 block">Color Tags</label>
+          <span className="field-label">Color Tags</span>
           <div className="flex flex-wrap gap-1.5">
             {AVAILABLE_COLORS.map((color) => {
               const active = selectedColors.includes(color)
@@ -355,16 +358,17 @@ export default function AdminAddItem() {
                 <button
                   type="button"
                   key={color}
+                  aria-pressed={active}
                   onClick={() => toggleColor(color)}
-                  className={`text-xs px-3 py-1 rounded-full border transition flex items-center gap-1.5 ${
+                  className={`flex min-h-8 items-center gap-1.5 rounded-full border-2 px-3 py-1 text-xs font-bold transition ${
                     active
-                      ? 'bg-pink-500 border-pink-500 text-white font-medium'
-                      : 'bg-gray-50 border-gray-200 text-gray-600 hover:bg-gray-100'
+                      ? 'border-primary bg-primary-soft text-primary-ink'
+                      : 'border-line bg-surface text-ink-soft hover:border-line-strong'
                   }`}
                 >
                   <span
-                    className="w-2.5 h-2.5 rounded-full border border-black/10"
-                    style={{ backgroundColor: color.toLowerCase() === 'clear' ? 'rgba(200,200,200,0.5)' : color.toLowerCase() }}
+                    className="h-2.5 w-2.5 rounded-full border border-black/10"
+                    style={{ backgroundColor: swatchColor(color) }}
                   />
                   {color}
                 </button>
@@ -374,15 +378,15 @@ export default function AdminAddItem() {
         </div>
 
         {/* Multi-Photo Manager & Cover Selector */}
-        <div className="border border-pink-100 bg-pink-50/20 p-4 rounded-2xl">
-          <div className="flex justify-between items-center mb-2">
+        <div className="rounded-2xl border-2 border-dashed border-line bg-surface-2 p-4">
+          <div className="mb-2 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <label className="text-xs font-bold text-gray-800 block">Figure Photos</label>
-              <p className="text-[11px] text-gray-500">
+              <span className="font-pixel text-xs text-primary-ink">Figure Photos</span>
+              <p className="text-[11px] text-ink-soft">
                 Upload catalog art, in-hand photos, or box shots. Click any photo to set it as the cover!
               </p>
             </div>
-            <label className="cursor-pointer bg-pink-100 hover:bg-pink-200 text-pink-700 font-bold px-3 py-1.5 rounded-xl text-xs transition">
+            <label className="btn-ghost btn-sm shrink-0 cursor-pointer">
               + Choose Photos
               <input
                 type="file"
@@ -395,7 +399,7 @@ export default function AdminAddItem() {
           </div>
 
           {photos.length === 0 ? (
-            <div className="text-center py-8 border-2 border-dashed border-pink-200 rounded-xl text-xs text-pink-300">
+            <div className="pattern-dots rounded-xl border-2 border-dashed border-line-strong py-8 text-center text-xs font-bold text-ink-soft">
               No photos added yet. Upload stock art, packaging, or real photos!
             </div>
           ) : (
@@ -404,11 +408,11 @@ export default function AdminAddItem() {
                 <div
                   key={idx}
                   onClick={() => setCoverIndex(idx)}
-                  className={`relative p-2 rounded-xl border-2 transition cursor-pointer bg-white ${
-                    coverIndex === idx ? 'border-pink-500 ring-2 ring-pink-200' : 'border-gray-200 hover:border-pink-200'
+                  className={`relative cursor-pointer rounded-xl border-2 bg-surface p-2 transition ${
+                    coverIndex === idx ? 'border-primary ring-2 ring-primary-soft' : 'border-line hover:border-line-strong'
                   }`}
                 >
-                  <div className="w-full h-24 bg-gray-50 rounded-lg flex items-center justify-center overflow-hidden mb-2">
+                  <div className="pattern-dots mb-2 flex h-24 w-full items-center justify-center overflow-hidden rounded-lg">
                     <img
                       src={item.previewUrl}
                       alt="preview"
@@ -421,7 +425,7 @@ export default function AdminAddItem() {
                       value={item.type}
                       onClick={(e) => e.stopPropagation()}
                       onChange={(e) => updatePhotoType(idx, e.target.value as any)}
-                      className="text-[10px] bg-gray-50 border border-gray-200 rounded p-1 w-full"
+                      className="w-full rounded-lg border-2 border-line bg-surface-2 p-1 text-[11px] text-ink"
                     >
                       <option value="Stock / Catalog">Stock Art</option>
                       <option value="In-Hand IRL">In-Hand IRL</option>
@@ -434,14 +438,15 @@ export default function AdminAddItem() {
                         e.stopPropagation()
                         removePhoto(idx)
                       }}
-                      className="text-gray-400 hover:text-red-500 text-sm px-1"
+                      aria-label="Remove photo"
+                      className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-base font-black text-ink-faint hover:text-danger"
                     >
                       ×
                     </button>
                   </div>
 
                   {coverIndex === idx && (
-                    <span className="absolute top-1 left-1 bg-pink-500 text-white text-[9px] font-bold px-1.5 py-0.5 rounded shadow">
+                    <span className="sticker absolute -left-1.5 -top-2 -rotate-6 bg-primary text-on-primary">
                       Cover
                     </span>
                   )}
@@ -454,17 +459,18 @@ export default function AdminAddItem() {
         <button
           type="submit"
           disabled={uploading}
-          className="w-full py-3.5 bg-pink-500 hover:bg-pink-600 text-white font-bold rounded-2xl transition shadow-md disabled:bg-gray-300 text-sm"
+          className="btn-candy min-h-12 w-full text-sm"
         >
           {uploading ? 'Uploading Figure...' : 'Save Figure to Catalog'}
         </button>
 
         {statusMessage && (
-          <p className="text-center text-xs font-bold text-pink-600 mt-2">
+          <p className="mt-2 text-center text-xs font-bold text-primary-ink">
             {statusMessage}
           </p>
         )}
       </form>
-    </div>
+    </Window>
+    </main>
   )
 }
