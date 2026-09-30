@@ -5,7 +5,13 @@ import { supabase } from '../utils/supabase'
 import type { User } from '@supabase/supabase-js'
 import Modal from '../components/ui/Modal'
 import { WindowTitlebar } from '../components/ui/Window'
-import { COLOR_MAP, rarityClass, swatchColor } from '../utils/shopkins'
+import {
+  COLOR_MAP,
+  compareChecklistOrder,
+  rarityClass,
+  swatchColor,
+  variantLabel,
+} from '../utils/shopkins'
 
 interface Character {
   id: string
@@ -165,7 +171,7 @@ function CatalogCard({
       <h2 className="font-display text-sm font-semibold leading-tight text-ink md:text-base">
         {item.characters?.name}
       </h2>
-      <span className="mt-0.5 text-xs font-bold text-primary-ink">{item.variant_name}</span>
+      <span className="mt-0.5 text-xs font-bold text-primary-ink">{variantLabel(item.variant_name)}</span>
 
       <div className="mt-2.5 flex flex-wrap items-center justify-center gap-1.5">
         {item.season && (
@@ -198,6 +204,8 @@ export default function Home() {
   const [search, setSearch] = useState('')
   const [selectedSeason, setSelectedSeason] = useState('all')
   const [selectedRarity, setSelectedRarity] = useState('all')
+  const [selectedTeam, setSelectedTeam] = useState('all')
+  const [sortOrder, setSortOrder] = useState<'checklist' | 'newest'>('checklist')
   const [selectedColors, setSelectedColors] = useState<string[]>([])
   const [filtersOpen, setFiltersOpen] = useState(false)
   const [selectedItem, setSelectedItem] = useState<ShopkinItem | null>(null)
@@ -267,11 +275,17 @@ export default function Home() {
 
     const { data } = await supabase
       .from('items')
-      .select('*')
+      .select('*, characters(id, name, base_category)')
       .eq('character_id', item.character_id)
       .neq('id', item.id)
 
-    if (data) setVariants(data as ShopkinItem[])
+    if (data) {
+      setVariants(
+        (data as ShopkinItem[]).sort((a, b) =>
+          compareChecklistOrder(a.variant_name, b.variant_name)
+        )
+      )
+    }
   }
 
   // Toggle Owned Status
@@ -356,32 +370,44 @@ export default function Home() {
     new Set(items.map((item) => item.rarity).filter(Boolean))
   ).sort((a, b) => a.localeCompare(b))
 
+  const teams = Array.from(
+    new Set(items.map((item) => item.team).filter(Boolean))
+  ).sort((a, b) => a.localeCompare(b))
+
   const availableColors = Object.keys(COLOR_MAP)
-  const normalizedSearch = search.trim().toLowerCase()
+  const normalizedSearch = search.trim().toLowerCase().replace(/^#/, '')
   const filteredItems = items.filter((item) => {
     const matchesName =
       normalizedSearch === '' ||
-      item.characters?.name.toLowerCase().includes(normalizedSearch)
+      item.characters?.name.toLowerCase().includes(normalizedSearch) ||
+      item.variant_name.toLowerCase().includes(normalizedSearch)
     const matchesSeason =
       selectedSeason === 'all' || item.season === Number(selectedSeason)
     const matchesRarity =
       selectedRarity === 'all' || item.rarity === selectedRarity
+    const matchesTeam = selectedTeam === 'all' || item.team === selectedTeam
     const itemColors = new Set(
       (item.color_tags ?? []).map((color) => color.toLowerCase())
     )
     const matchesColors = selectedColors.every((color) => itemColors.has(color))
 
-    return matchesName && matchesSeason && matchesRarity && matchesColors
+    return matchesName && matchesSeason && matchesRarity && matchesTeam && matchesColors
   })
+  const visibleItems =
+    sortOrder === 'checklist'
+      ? [...filteredItems].sort((a, b) => compareChecklistOrder(a.variant_name, b.variant_name))
+      : filteredItems
 
   const hasActiveFilters =
     search !== '' ||
     selectedSeason !== 'all' ||
     selectedRarity !== 'all' ||
+    selectedTeam !== 'all' ||
     selectedColors.length > 0
   const panelFilterCount =
     (selectedSeason !== 'all' ? 1 : 0) +
     (selectedRarity !== 'all' ? 1 : 0) +
+    (selectedTeam !== 'all' ? 1 : 0) +
     selectedColors.length
 
   function toggleColorFilter(color: string) {
@@ -396,6 +422,7 @@ export default function Home() {
     setSearch('')
     setSelectedSeason('all')
     setSelectedRarity('all')
+    setSelectedTeam('all')
     setSelectedColors([])
   }
 
@@ -425,7 +452,7 @@ export default function Home() {
             actions={
               <span className="flex items-center gap-2 font-sans text-[11px] font-bold">
                 <span className="text-ink-soft">
-                  {filteredItems.length} {filteredItems.length === 1 ? 'item' : 'items'}
+                  {visibleItems.length} {visibleItems.length === 1 ? 'item' : 'items'}
                 </span>
                 {hasActiveFilters && (
                   <button
@@ -441,14 +468,14 @@ export default function Home() {
           />
 
           <div className="p-3 sm:p-4">
-            <div className="flex flex-col gap-3 sm:flex-row sm:items-end">
+            <div className="flex flex-col gap-3 lg:flex-row lg:items-end">
               <div className="flex min-w-0 flex-1 items-end gap-2">
                 <label className="min-w-0 flex-1">
-                  <span className="field-label hidden sm:block">Shopkin name</span>
+                  <span className="field-label hidden sm:block">Shopkin name or #</span>
                   <input
                     type="search"
-                    placeholder="Search Shopkins..."
-                    aria-label="Search Shopkins by name"
+                    placeholder="Search Shopkins or #1-001..."
+                    aria-label="Search Shopkins by name or checklist number"
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
                     className="field"
@@ -468,7 +495,7 @@ export default function Home() {
 
               <div
                 id="catalog-filters"
-                className={`${filtersOpen ? 'grid' : 'hidden'} grid-cols-2 gap-3 sm:grid sm:grid-cols-[10rem_10rem]`}
+                className={`${filtersOpen ? 'grid' : 'hidden'} grid-cols-2 gap-3 sm:grid sm:grid-cols-4 lg:grid-cols-[9rem_9rem_10rem_9rem]`}
               >
                 <label>
                   <span className="field-label">Season</span>
@@ -499,6 +526,34 @@ export default function Home() {
                         {rarity}
                       </option>
                     ))}
+                  </select>
+                </label>
+
+                <label>
+                  <span className="field-label">Team</span>
+                  <select
+                    value={selectedTeam}
+                    onChange={(e) => setSelectedTeam(e.target.value)}
+                    className="field"
+                  >
+                    <option value="all">All teams</option>
+                    {teams.map((team) => (
+                      <option key={team} value={team}>
+                        {team}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+
+                <label>
+                  <span className="field-label">Sort</span>
+                  <select
+                    value={sortOrder}
+                    onChange={(e) => setSortOrder(e.target.value as 'checklist' | 'newest')}
+                    className="field"
+                  >
+                    <option value="checklist">Checklist #</option>
+                    <option value="newest">Newest</option>
                   </select>
                 </label>
               </div>
@@ -555,7 +610,7 @@ export default function Home() {
           <div className="py-20 text-center font-pixel text-lg text-primary-ink">
             <span className="sparkle" aria-hidden="true">✦</span> Loading collection catalog...
           </div>
-        ) : filteredItems.length === 0 ? (
+        ) : visibleItems.length === 0 ? (
           <div className="window mx-auto max-w-md px-6 py-12 text-center">
             <p className="mb-1 text-3xl" aria-hidden="true">🔍</p>
             <p className="font-display text-lg font-semibold text-ink">No Shopkins match these filters.</p>
@@ -565,7 +620,7 @@ export default function Home() {
           </div>
         ) : (
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 md:grid-cols-4 lg:grid-cols-5">
-            {filteredItems.map((item) => (
+            {visibleItems.map((item) => (
               <CatalogCard
                 key={item.id}
                 item={item}
@@ -610,7 +665,7 @@ export default function Home() {
               )}
 
               <h3 className="title-pop text-2xl sm:text-3xl">{selectedItem.characters?.name}</h3>
-              <p className="mb-4 text-sm font-bold text-primary-ink">{selectedItem.variant_name}</p>
+              <p className="mb-4 text-sm font-bold text-primary-ink">{variantLabel(selectedItem.variant_name)}</p>
 
               {/* Collection Tracking Interactive Bar */}
               <div className="mb-4 flex w-full flex-wrap items-center justify-between gap-2 rounded-2xl border-2 border-line bg-surface-2 p-3">
@@ -714,7 +769,7 @@ export default function Home() {
                           alt={v.variant_name}
                           className="mx-auto mb-1 h-16 w-16 object-contain"
                         />
-                        <p className="truncate text-[10px] font-bold text-ink">{v.variant_name}</p>
+                        <p className="truncate text-[10px] font-bold text-ink">{variantLabel(v.variant_name)}</p>
                       </button>
                     ))}
                   </div>

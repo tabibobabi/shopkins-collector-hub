@@ -5,7 +5,7 @@ import Link from 'next/link'
 import type { User } from '@supabase/supabase-js'
 import { supabase } from '../../utils/supabase'
 import Window from '../../components/ui/Window'
-import { rarityClass } from '../../utils/shopkins'
+import { rarityClass, variantLabel } from '../../utils/shopkins'
 
 interface Profile {
   id: string
@@ -405,7 +405,7 @@ export default function ProfilePage() {
                   {item.characters?.name}
                 </h3>
                 <span className="mt-0.5 text-xs font-bold text-primary-ink">
-                  {item.variant_name}
+                  {variantLabel(item.variant_name)}
                 </span>
                 <div className="mt-2.5 flex flex-wrap justify-center gap-1.5">
                   {item.season && (

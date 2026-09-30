@@ -28,3 +28,22 @@ const RARITY_STYLES: Record<string, string> = {
 export function rarityClass(rarity: string) {
   return RARITY_STYLES[rarity] ?? 'bg-lavender-soft text-lavender-ink border-lavender'
 }
+
+// Seeded checklist items store their printed checklist ID (e.g. "1-001") as the variant name.
+const CHECKLIST_ID = /^(\d+)-(\d{3})$/
+
+export function checklistNumber(variantName: string) {
+  const match = CHECKLIST_ID.exec(variantName.trim())
+  return match ? { season: Number(match[1]), number: Number(match[2]) } : null
+}
+
+export function variantLabel(variantName: string) {
+  return checklistNumber(variantName) ? `#${variantName.trim()}` : variantName
+}
+
+export function compareChecklistOrder(a: string, b: string) {
+  const first = checklistNumber(a)
+  const second = checklistNumber(b)
+  if (!first || !second) return Number(Boolean(second)) - Number(Boolean(first))
+  return first.season - second.season || first.number - second.number
+}
