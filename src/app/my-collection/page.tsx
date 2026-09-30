@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { supabase } from '../../utils/supabase'
 import type { User } from '@supabase/supabase-js'
 import Window from '../../components/ui/Window'
-import { rarityClass } from '../../utils/shopkins'
+import { rarityClass, variantLabel } from '../../utils/shopkins'
 
 interface UserItemRecord {
   id: string
@@ -205,7 +205,7 @@ export default function MyCollectionPage() {
               <h3 className="font-display text-sm font-semibold leading-tight text-ink">
                 {item.characters?.name}
               </h3>
-              <span className="mt-0.5 text-xs font-bold text-primary-ink">{item.variant_name}</span>
+              <span className="mt-0.5 text-xs font-bold text-primary-ink">{variantLabel(item.variant_name)}</span>
 
               <div className="mt-2.5 flex flex-wrap justify-center gap-1.5">
                 {item.season && (
