@@ -1,6 +1,7 @@
 import { config } from 'dotenv'
 import sharp from 'sharp'
 import { createClient } from '@supabase/supabase-js'
+import { classifyPixel } from './color-analysis'
 
 config({ path: '.env.local' })
 config()
@@ -42,52 +43,6 @@ const MANUAL_COLORS: Record<string, [ColorTag, ColorTag]> = {
 function getCharacterName(item: ItemRow) {
   if (Array.isArray(item.characters)) return item.characters[0]?.name
   return item.characters?.name
-}
-
-function rgbToHsv(red: number, green: number, blue: number) {
-  const r = red / 255
-  const g = green / 255
-  const b = blue / 255
-  const max = Math.max(r, g, b)
-  const min = Math.min(r, g, b)
-  const delta = max - min
-  let hue = 0
-
-  if (delta !== 0) {
-    if (max === r) hue = 60 * (((g - b) / delta) % 6)
-    else if (max === g) hue = 60 * ((b - r) / delta + 2)
-    else hue = 60 * ((r - g) / delta + 4)
-  }
-
-  if (hue < 0) hue += 360
-
-  return {
-    hue,
-    saturation: max === 0 ? 0 : delta / max,
-    value: max,
-  }
-}
-
-function classifyPixel(red: number, green: number, blue: number): ColorTag | null {
-  const { hue, saturation, value } = rgbToHsv(red, green, blue)
-
-  // Ignore dark outlines, eyes, and shadows.
-  if (value < 0.18) return null
-
-  if (saturation < 0.12) {
-    if (value > 0.82) return 'White'
-    if (value > 0.35) return 'Silver'
-    return null
-  }
-
-  if ((hue < 15 || hue >= 345) && value > 0.72 && saturation < 0.8) return 'Pink'
-  if (hue < 15 || hue >= 345) return 'Red'
-  if (hue < 45) return value < 0.58 ? 'Brown' : 'Orange'
-  if (hue < 70) return 'Yellow'
-  if (hue < 170) return 'Green'
-  if (hue < 255) return 'Blue'
-  if (hue < 300) return 'Purple'
-  return 'Pink'
 }
 
 async function dominantColors(imageBuffer: Buffer, item: ItemRow) {

@@ -1,42 +1,22 @@
+import { existsSync, readFileSync } from 'node:fs'
 import { config } from 'dotenv'
-import { createClient } from '@supabase/supabase-js'
+import { createClient, type SupabaseClient } from '@supabase/supabase-js'
+import {
+  CHECKLIST_SIZE,
+  CHECKLIST_TEAMS,
+  IMAGE_MANIFEST_PATH,
+  LEGACY_VARIANT_NAME,
+  SEASON_ONE_EXCLUSIVES,
+  SEASON_ONE_SHOPKINS,
+  STORAGE_BUCKET,
+  formatShopkinId,
+  imageKey,
+  type ImageManifest,
+  type Rarity,
+} from './season-1-checklist'
 
 config({ path: '.env.local' })
 config()
-
-type Rarity = 'Common' | 'Rare' | 'Ultra Rare' | 'Special Edition' | 'Limited Edition'
-
-type ColorTag =
-  | 'Pink'
-  | 'Blue'
-  | 'Yellow'
-  | 'Green'
-  | 'Purple'
-  | 'Orange'
-  | 'White'
-  | 'Brown'
-  | 'Red'
-  | 'Clear'
-  | 'Gold'
-  | 'Silver'
-
-type ChecklistEntry = [shopkinId: string, name: string, rarity: Rarity, colors: [ColorTag, ColorTag]]
-
-type ChecklistTeam = {
-  team: string
-  first: number
-  last: number
-  entries: ChecklistEntry[]
-}
-
-type SeasonOneShopkin = {
-  shopkinId: string | null
-  name: string
-  team: string
-  rarity: string
-  finish: string
-  colors: ColorTag[] | null
-}
 
 type CharacterRow = {
   id: string
@@ -49,266 +29,22 @@ type ItemRow = {
   character_id: string
   variant_name: string
   season: number | null
+  images: string[] | null
+  cover_image_url: string | null
 }
 
-// Transcribed from data/checklists/season_01_checklist.jpg (Moose 2013 collector's guide, 1-001 to 1-142).
-// Character names keep the spellings already stored in `characters` so existing rows are reused;
-// the checklist prints "Little Sipper" for Sippa and "Frozen" for the Frozen Food team.
-const CHECKLIST_TEAMS: ChecklistTeam[] = [
-  {
-    team: 'Fruit & Veg',
-    first: 1,
-    last: 14,
-    entries: [
-      ['1-001', 'Apple Blossom', 'Common', ['Red', 'Green']],
-      ['1-002', "Rockin' Broc", 'Common', ['Green', 'Pink']],
-      ['1-003', 'Strawberry Kiss', 'Rare', ['Pink', 'Green']],
-      ['1-004', 'Pineapple Crush', 'Common', ['Yellow', 'Orange']],
-      ['1-005', 'Melonie Pips', 'Ultra Rare', ['Pink', 'Green']],
-      ['1-006', 'Miss Mushy-moo', 'Common', ['Red', 'White']],
-      ['1-007', 'Posh Pear', 'Common', ['Green', 'Yellow']],
-      ['1-008', 'Apple Blossom', 'Common', ['Green', 'Yellow']],
-      ['1-009', "Rockin' Broc", 'Common', ['Blue', 'Yellow']],
-      ['1-010', 'Strawberry Kiss', 'Rare', ['Green', 'Yellow']],
-      ['1-011', 'Pineapple Crush', 'Common', ['Orange', 'Yellow']],
-      ['1-012', 'Melonie Pips', 'Ultra Rare', ['Yellow', 'Green']],
-      ['1-013', 'Miss Mushy-moo', 'Common', ['Green', 'White']],
-      ['1-014', 'Posh Pear', 'Common', ['Blue', 'Orange']],
-    ],
-  },
-  {
-    team: 'Pantry',
-    first: 15,
-    last: 32,
-    entries: [
-      ['1-015', 'Tommy Ketchup', 'Common', ['Red', 'Pink']],
-      ['1-016', 'Nutty Butter', 'Rare', ['Orange', 'Brown']],
-      ['1-017', 'Peppe Pepper', 'Common', ['Purple', 'White']],
-      ['1-018', 'Sally Shakes', 'Rare', ['Blue', 'White']],
-      ['1-019', 'Sugar Lump', 'Ultra Rare', ['Pink', 'White']],
-      ['1-020', 'Breaky Crunch', 'Ultra Rare', ['Pink', 'White']],
-      ['1-021', 'Alpha Soup', 'Rare', ['Red', 'Orange']],
-      ['1-022', 'Gran Jam', 'Common', ['Purple', 'Yellow']],
-      ['1-023', 'Coolio', 'Common', ['Green', 'White']],
-      ['1-024', 'Tommy Ketchup', 'Common', ['Green', 'Yellow']],
-      ['1-025', 'Nutty Butter', 'Rare', ['Orange', 'Pink']],
-      ['1-026', 'Peppe Pepper', 'Common', ['Blue', 'White']],
-      ['1-027', 'Sally Shakes', 'Rare', ['Green', 'Yellow']],
-      ['1-028', 'Sugar Lump', 'Ultra Rare', ['Blue', 'White']],
-      ['1-029', 'Breaky Crunch', 'Ultra Rare', ['Purple', 'White']],
-      ['1-030', 'Alpha Soup', 'Rare', ['Orange', 'Yellow']],
-      ['1-031', 'Gran Jam', 'Common', ['Pink', 'Green']],
-      ['1-032', 'Coolio', 'Common', ['Blue', 'White']],
-    ],
-  },
-  {
-    team: 'Bakery',
-    first: 33,
-    last: 46,
-    entries: [
-      ['1-033', 'Bread Head', 'Common', ['Pink', 'White']],
-      ['1-034', 'Creamy Bun-bun', 'Rare', ['Yellow', 'Pink']],
-      ['1-035', "D'lish Donut", 'Ultra Rare', ['Pink', 'Brown']],
-      ['1-036', 'Cheese Kate', 'Common', ['White', 'Orange']],
-      ['1-037', 'Mini Muffin', 'Common', ['Purple', 'Yellow']],
-      ['1-038', 'Flutter Cake', 'Common', ['Yellow', 'Pink']],
-      ['1-039', 'Kooky Cookie', 'Ultra Rare', ['Pink', 'White']],
-      ['1-040', 'Bread Head', 'Common', ['Yellow', 'Blue']],
-      ['1-041', 'Creamy Bun-bun', 'Rare', ['Brown', 'Pink']],
-      ['1-042', "D'lish Donut", 'Ultra Rare', ['Brown', 'Orange']],
-      ['1-043', 'Cheese Kate', 'Common', ['Yellow', 'Pink']],
-      ['1-044', 'Mini Muffin', 'Common', ['Pink', 'Brown']],
-      ['1-045', 'Flutter Cake', 'Common', ['Blue', 'White']],
-      ['1-046', 'Kooky Cookie', 'Ultra Rare', ['Yellow', 'Brown']],
-    ],
-  },
-  {
-    team: 'Sweet Treats',
-    first: 47,
-    last: 64,
-    entries: [
-      ['1-047', 'Bubbles', 'Rare', ['Pink', 'Blue']],
-      ['1-048', 'Candy Kisses', 'Rare', ['Blue', 'White']],
-      ['1-049', "Le'Quorice", 'Rare', ['Pink', 'White']],
-      ['1-050', 'Cheeky Chocolate', 'Rare', ['Orange', 'Brown']],
-      ['1-051', 'Candi Cotton', 'Ultra Rare', ['Pink', 'White']],
-      ['1-052', 'Lolli Poppins', 'Rare', ['Pink', 'Purple']],
-      ['1-053', 'Mandy Candy', 'Ultra Rare', ['Pink', 'Red']],
-      ['1-054', 'Jelly B', 'Rare', ['Blue', 'Pink']],
-      ['1-055', 'Miss Twist', 'Common', ['Red', 'Pink']],
-      ['1-056', 'Bubbles', 'Rare', ['Green', 'Pink']],
-      ['1-057', 'Candy Kisses', 'Rare', ['Green', 'Purple']],
-      ['1-058', "Le'Quorice", 'Rare', ['Green', 'Pink']],
-      ['1-059', 'Cheeky Chocolate', 'Rare', ['Pink', 'Yellow']],
-      ['1-060', 'Candi Cotton', 'Ultra Rare', ['Yellow', 'Orange']],
-      ['1-061', 'Lolli Poppins', 'Rare', ['Green', 'Pink']],
-      ['1-062', 'Mandy Candy', 'Ultra Rare', ['Yellow', 'Orange']],
-      ['1-063', 'Jelly B', 'Rare', ['Yellow', 'Pink']],
-      ['1-064', 'Miss Twist', 'Common', ['Green', 'Yellow']],
-    ],
-  },
-  {
-    team: 'Dairy',
-    first: 65,
-    last: 80,
-    entries: [
-      ['1-065', 'Chee Zee', 'Common', ['Yellow', 'Orange']],
-      ['1-066', 'Swiss Miss', 'Common', ['Yellow', 'Orange']],
-      ['1-067', 'Spilt Milk', 'Rare', ['Blue', 'White']],
-      ['1-068', 'Ghurty', 'Rare', ['Blue', 'Yellow']],
-      ['1-069', 'Millie Shake', 'Ultra Rare', ['Pink', 'Brown']],
-      ['1-070', 'Flava Ava', 'Common', ['Pink', 'White']],
-      ['1-071', 'Dollops', 'Common', ['Purple', 'White']],
-      ['1-072', 'Googy', 'Common', ['White', 'Yellow']],
-      ['1-073', 'Chee Zee', 'Common', ['Blue', 'White']],
-      ['1-074', 'Swiss Miss', 'Common', ['Pink', 'Red']],
-      ['1-075', 'Spilt Milk', 'Rare', ['Green', 'White']],
-      ['1-076', 'Ghurty', 'Rare', ['Green', 'Red']],
-      ['1-077', 'Millie Shake', 'Ultra Rare', ['Brown', 'White']],
-      ['1-078', 'Flava Ava', 'Common', ['Orange', 'Brown']],
-      ['1-079', 'Dollops', 'Common', ['Blue', 'White']],
-      ['1-080', 'Googy', 'Common', ['Yellow', 'Orange']],
-    ],
-  },
-  {
-    team: 'Party Food',
-    first: 81,
-    last: 100,
-    entries: [
-      ['1-081', 'Crispy Chip', 'Rare', ['Blue', 'Yellow']],
-      ['1-082', 'Pretz-elle', 'Rare', ['Orange', 'Brown']],
-      ['1-083', 'Wobbles', 'Common', ['Green', 'Yellow']],
-      ['1-084', 'Rainbow Bite', 'Common', ['Orange', 'Pink']],
-      ['1-085', 'Wishes', 'Ultra Rare', ['Pink', 'White']],
-      ['1-086', 'Frank Furter', 'Common', ['Yellow', 'Orange']],
-      ['1-087', 'Sippa', 'Common', ['Red', 'Yellow']],
-      ['1-088', 'Fairy Crumbs', 'Common', ['White', 'Green']],
-      ['1-089', 'Cheezey B', 'Rare', ['Orange', 'Yellow']],
-      ['1-090', 'Soda Pops', 'Ultra Rare', ['Green', 'Pink']],
-      ['1-091', 'Crispy Chip', 'Rare', ['Green', 'Blue']],
-      ['1-092', 'Pretz-elle', 'Rare', ['Orange', 'Yellow']],
-      ['1-093', 'Wobbles', 'Common', ['Blue', 'White']],
-      ['1-094', 'Rainbow Bite', 'Common', ['Pink', 'Orange']],
-      ['1-095', 'Wishes', 'Ultra Rare', ['Yellow', 'White']],
-      ['1-096', 'Frank Furter', 'Common', ['Orange', 'Yellow']],
-      ['1-097', 'Sippa', 'Common', ['Green', 'Yellow']],
-      ['1-098', 'Fairy Crumbs', 'Common', ['Yellow', 'Pink']],
-      ['1-099', 'Cheezey B', 'Rare', ['Orange', 'Brown']],
-      ['1-100', 'Soda Pops', 'Ultra Rare', ['Blue', 'Red']],
-    ],
-  },
-  {
-    team: 'Health & Beauty',
-    first: 101,
-    last: 120,
-    entries: [
-      ['1-101', 'Scrubs', 'Common', ['Green', 'White']],
-      ['1-102', 'Lippy Lips', 'Rare', ['Pink', 'White']],
-      ['1-103', 'Curly', 'Common', ['Purple', 'Pink']],
-      ['1-104', 'Shampy', 'Common', ['White', 'Silver']],
-      ['1-105', 'Silky', 'Common', ['Blue', 'Yellow']],
-      ['1-106', 'Bubble Tubs', 'Ultra Rare', ['Pink', 'White']],
-      ['1-107', 'Chap-elli', 'Rare', ['Blue', 'White']],
-      ['1-108', 'Polly Polish', 'Ultra Rare', ['Red', 'Pink']],
-      ['1-109', 'Suds', 'Common', ['Purple', 'Yellow']],
-      ['1-110', 'Toofs', 'Common', ['Green', 'White']],
-      ['1-111', 'Scrubs', 'Common', ['Blue', 'White']],
-      ['1-112', 'Lippy Lips', 'Rare', ['Green', 'Red']],
-      ['1-113', 'Curly', 'Common', ['Blue', 'Pink']],
-      ['1-114', 'Shampy', 'Common', ['Yellow', 'Pink']],
-      ['1-115', 'Silky', 'Common', ['Pink', 'Purple']],
-      ['1-116', 'Bubble Tubs', 'Ultra Rare', ['Blue', 'White']],
-      ['1-117', 'Chap-elli', 'Rare', ['Green', 'Pink']],
-      ['1-118', 'Polly Polish', 'Ultra Rare', ['Yellow', 'Orange']],
-      ['1-119', 'Suds', 'Common', ['Blue', 'White']],
-      ['1-120', 'Toofs', 'Common', ['Blue', 'White']],
-    ],
-  },
-  {
-    team: 'Frozen Food',
-    first: 121,
-    last: 136,
-    entries: [
-      ['1-121', 'Ice Cream Dream', 'Special Edition', ['Orange', 'Clear']],
-      ['1-122', 'Popsi Cool', 'Special Edition', ['Orange', 'Clear']],
-      ['1-123', 'Yo-chi', 'Special Edition', ['Orange', 'Clear']],
-      ['1-124', 'Cool Cube', 'Special Edition', ['Green', 'Clear']],
-      ['1-125', "Pa' Pizza", 'Special Edition', ['Green', 'Clear']],
-      ['1-126', 'Snow Crush', 'Special Edition', ['Green', 'Clear']],
-      ['1-127', 'Fishtix', 'Special Edition', ['Orange', 'Clear']],
-      ['1-128', 'Freezy Peazy', 'Special Edition', ['Green', 'Clear']],
-      ['1-129', 'Ice Cream Dream', 'Special Edition', ['Pink', 'Clear']],
-      ['1-130', 'Popsi Cool', 'Special Edition', ['Pink', 'Clear']],
-      ['1-131', 'Yo-chi', 'Special Edition', ['Pink', 'Clear']],
-      ['1-132', 'Cool Cube', 'Special Edition', ['Blue', 'Clear']],
-      ['1-133', "Pa' Pizza", 'Special Edition', ['Yellow', 'Clear']],
-      ['1-134', 'Snow Crush', 'Special Edition', ['Blue', 'Clear']],
-      ['1-135', 'Fishtix', 'Special Edition', ['Pink', 'Clear']],
-      ['1-136', 'Freezy Peazy', 'Special Edition', ['Blue', 'Clear']],
-    ],
-  },
-  {
-    team: 'Limited Edition',
-    first: 137,
-    last: 142,
-    entries: [
-      ['1-137', 'Cupcake Queen', 'Limited Edition', ['Silver', 'Gold']],
-      ['1-138', 'Buttercup', 'Limited Edition', ['Gold', 'Silver']],
-      ['1-139', "Tin'a'tuna", 'Limited Edition', ['Silver', 'Gold']],
-      ['1-140', 'Twinky Winks', 'Limited Edition', ['Gold', 'Silver']],
-      ['1-141', 'Papa Tomato', 'Limited Edition', ['Red', 'Gold']],
-      ['1-142', 'Sunny-screen', 'Limited Edition', ['Gold', 'Silver']],
-    ],
-  },
-]
-
-const CHECKLIST_SIZE = 142
-
-// Season 1 store/playset exclusives are not on the blind-bag checklist, so they keep the legacy variant name.
-// Baby is intentionally absent: it debuted as Season 2's special-edition team.
-const SEASON_ONE_EXCLUSIVES = [
-  'Pumpkinella',
-  'Coco Nutty',
-  'Rolly Roll',
-  'Hot Apple Pie',
-  'Margarina',
-  "La'lotion",
-  'Curly Fries',
-  'Sponge Cake',
-]
-
-const FINISH_BY_RARITY: Partial<Record<Rarity, string>> = {
-  'Ultra Rare': 'Glitter / Sparkle',
-  'Special Edition': 'Translucent / Jelly',
-  'Limited Edition': 'Metallic / Pearl',
+type UserItemRow = {
+  id: string
+  user_id: string
+  item_id: string
+  status: 'owned' | 'wishlist'
+  quantity: number | null
 }
 
-const LEGACY_VARIANT_NAME = 'Season 1 Classic'
+const ITEM_COLUMNS = 'id, character_id, variant_name, season, images, cover_image_url'
 
-const SEASON_ONE_SHOPKINS: SeasonOneShopkin[] = [
-  ...CHECKLIST_TEAMS.flatMap(({ team, entries }) =>
-    entries.map(([shopkinId, name, rarity, colors]) => ({
-      shopkinId,
-      name,
-      team,
-      rarity,
-      finish: FINISH_BY_RARITY[rarity] ?? 'Classic / Opaque',
-      colors,
-    }))
-  ),
-  ...SEASON_ONE_EXCLUSIVES.map((name) => ({
-    shopkinId: null,
-    name,
-    team: 'Exclusive',
-    rarity: 'Exclusive',
-    finish: 'Classic / Opaque',
-    colors: null,
-  })),
-]
-
-function formatShopkinId(number: number) {
-  return `1-${String(number).padStart(3, '0')}`
-}
+// Hand-entered through the admin page for a character's second colorway before checklist IDs existed.
+const HAND_ENTERED_VARIANT_NAME = 'Season 1 Variant'
 
 function validateChecklist() {
   const problems: string[] = []
@@ -381,9 +117,159 @@ function throwIfError(error: { message: string } | null, operation: string) {
   }
 }
 
+function isPlaceholder(url: string | null | undefined) {
+  return !url?.trim() || url.includes('placehold.co/')
+}
+
+function realImages(item: Pick<ItemRow, 'images'>) {
+  return (item.images ?? []).filter((url) => !isPlaceholder(url))
+}
+
+function loadImageManifest(): ImageManifest {
+  if (!existsSync(IMAGE_MANIFEST_PATH)) {
+    console.warn(
+      `${IMAGE_MANIFEST_PATH} not found; run \`npm run scrape:season-1-images\` first. Seeding without images.`
+    )
+    return {}
+  }
+  return JSON.parse(readFileSync(IMAGE_MANIFEST_PATH, 'utf8')) as ImageManifest
+}
+
+function printImageCoverage(manifest: ImageManifest) {
+  const missing = SEASON_ONE_SHOPKINS.flatMap((shopkin) => {
+    const images = manifest[imageKey(shopkin)] ?? {}
+    const gaps = [
+      images.illustration ? null : 'illustration',
+      images.photo ? null : 'real-life photo',
+    ].filter(Boolean)
+    return gaps.length > 0 ? [{ Record: imageKey(shopkin), Name: shopkin.name, Missing: gaps.join(' + ') }] : []
+  })
+
+  const withBoth = SEASON_ONE_SHOPKINS.length - missing.length
+  console.log(`Image manifest: ${withBoth}/${SEASON_ONE_SHOPKINS.length} records have both images.`)
+  if (missing.length > 0) console.table(missing)
+}
+
+async function assertImageColumns(supabase: SupabaseClient) {
+  const { error } = await supabase.from('items').select('illustration_url, real_life_image_url').limit(1)
+  if (error) {
+    throw new Error(
+      `items is missing the image columns (${error.message}). Apply ` +
+        'supabase/migrations/20260930000000_add_item_image_urls.sql in the Supabase SQL editor, then re-run.'
+    )
+  }
+}
+
+// Folds each hand-entered second-colorway row into its checklist item, carrying over photos and
+// collection/wishlist links, then deletes it so every variant has exactly one listing.
+async function mergeHandEnteredVariants(
+  supabase: SupabaseClient,
+  items: ItemRow[],
+  characterNameById: Map<string, string>
+) {
+  const merged: string[] = []
+
+  for (const duplicate of items.filter((item) => item.variant_name === HAND_ENTERED_VARIANT_NAME)) {
+    const name = characterNameById.get(duplicate.character_id) ?? duplicate.character_id
+    const colorways = SEASON_ONE_SHOPKINS.filter(
+      (shopkin) => shopkin.shopkinId && nameKey(shopkin.name) === nameKey(name)
+    )
+    const targetId = colorways[1]?.shopkinId
+    if (!targetId) {
+      console.warn(`Left "${HAND_ENTERED_VARIANT_NAME}" row for ${name}: it has no second colorway.`)
+      continue
+    }
+
+    const target = items.find(
+      (item) => item.character_id === duplicate.character_id && item.variant_name === targetId
+    )
+    if (!target) {
+      const { error } = await supabase
+        .from('items')
+        .update({ variant_name: targetId })
+        .eq('id', duplicate.id)
+      throwIfError(error, `Could not rename ${name} variant to ${targetId}`)
+      duplicate.variant_name = targetId
+      merged.push(`${name} -> ${targetId} (renamed)`)
+      continue
+    }
+
+    const images = [...new Set([...realImages(target), ...realImages(duplicate)])]
+    const cover = !isPlaceholder(target.cover_image_url)
+      ? target.cover_image_url
+      : !isPlaceholder(duplicate.cover_image_url)
+        ? duplicate.cover_image_url
+        : images[0]
+    if (images.length > 0) {
+      const { error } = await supabase
+        .from('items')
+        .update({ images, cover_image_url: cover })
+        .eq('id', target.id)
+      throwIfError(error, `Could not move ${name} photos to ${targetId}`)
+      target.images = images
+      target.cover_image_url = cover ?? null
+    }
+
+    const { data: links, error: linkError } = await supabase
+      .from('user_items')
+      .select('id, user_id, item_id, status, quantity')
+      .in('item_id', [duplicate.id, target.id])
+    throwIfError(linkError, `Could not read collection links for ${name}`)
+
+    for (const link of ((links as UserItemRow[] | null) ?? []).filter((row) => row.item_id === duplicate.id)) {
+      const existing = (links as UserItemRow[]).find(
+        (row) => row.item_id === target.id && row.user_id === link.user_id
+      )
+      if (existing) {
+        const { error } = await supabase
+          .from('user_items')
+          .update({
+            status: existing.status === 'owned' || link.status === 'owned' ? 'owned' : 'wishlist',
+            quantity: Math.max(existing.quantity ?? 1, link.quantity ?? 1),
+          })
+          .eq('id', existing.id)
+        throwIfError(error, `Could not merge a collection link into ${targetId}`)
+        const { error: deleteError } = await supabase.from('user_items').delete().eq('id', link.id)
+        throwIfError(deleteError, `Could not remove a duplicate collection link for ${name}`)
+      } else {
+        const { error } = await supabase
+          .from('user_items')
+          .update({ item_id: target.id })
+          .eq('id', link.id)
+        throwIfError(error, `Could not move a collection link to ${targetId}`)
+      }
+    }
+
+    const { error: deleteError } = await supabase.from('items').delete().eq('id', duplicate.id)
+    throwIfError(deleteError, `Could not delete the merged ${name} row`)
+    items.splice(items.indexOf(duplicate), 1)
+    merged.push(`${name} -> ${targetId}`)
+  }
+
+  if (merged.length > 0) console.log(`Merged hand-entered variants: ${merged.join(', ')}`)
+}
+
+async function findBrokenUrls(urls: string[]) {
+  const broken: string[] = []
+  let next = 0
+  await Promise.all(
+    Array.from({ length: 8 }, async () => {
+      while (next < urls.length) {
+        const url = urls[next++]
+        const response = await fetch(url, { method: 'HEAD' }).catch(() => null)
+        if (!response?.ok) broken.push(`${url} (${response?.status ?? 'unreachable'})`)
+      }
+    })
+  )
+  return broken
+}
+
 async function main() {
   validateChecklist()
   printSummary()
+
+  const manifest = loadImageManifest()
+  printImageCoverage(manifest)
 
   if (process.argv.includes('--dry-run')) {
     console.log(`Dry run: ${SEASON_ONE_SHOPKINS.length} listings validated, database not touched.`)
@@ -412,6 +298,10 @@ async function main() {
   const supabase = createClient(supabaseUrl, supabaseKey, {
     auth: { persistSession: false, autoRefreshToken: false },
   })
+  await assertImageColumns(supabase)
+
+  const publicUrl = (path: string | undefined) =>
+    path ? supabase.storage.from(STORAGE_BUCKET).getPublicUrl(path).data.publicUrl : null
 
   // Read existing rows before making changes so no database uniqueness constraint is required.
   const { data: existingCharacters, error: characterLookupError } = await supabase
@@ -422,7 +312,8 @@ async function main() {
 
   const { data: existingItems, error: itemLookupError } = await supabase
     .from('items')
-    .select('id, character_id, variant_name, season')
+    .select(ITEM_COLUMNS)
+    .eq('season', 1)
 
   throwIfError(itemLookupError, 'Could not read items')
 
@@ -433,10 +324,15 @@ async function main() {
     ])
   )
 
-  const itemByKey = new Map<string, ItemRow>()
-  for (const item of (existingItems as ItemRow[] | null) ?? []) {
-    if (item.season !== 1) continue
+  const seasonOneItems = (existingItems as ItemRow[] | null) ?? []
+  await mergeHandEnteredVariants(
+    supabase,
+    seasonOneItems,
+    new Map((existingCharacters as CharacterRow[] | null)?.map(({ id, name }) => [id, name]))
+  )
 
+  const itemByKey = new Map<string, ItemRow>()
+  for (const item of seasonOneItems) {
     const key = itemKey(item.character_id, item.variant_name)
     if (!itemByKey.has(key)) itemByKey.set(key, item)
   }
@@ -445,6 +341,7 @@ async function main() {
   let charactersUpdated = 0
   let itemsInserted = 0
   let itemsUpdated = 0
+  let galleriesFilled = 0
 
   for (const shopkin of SEASON_ONE_SHOPKINS) {
     const key = nameKey(shopkin.name)
@@ -477,6 +374,10 @@ async function main() {
 
     const label = shopkin.shopkinId ? `${shopkin.shopkinId} ${shopkin.name}` : shopkin.name
     const variantName = shopkin.shopkinId ?? LEGACY_VARIANT_NAME
+    const images = manifest[imageKey(shopkin)] ?? {}
+    const illustrationUrl = publicUrl(images.illustration?.path)
+    const realLifeImageUrl = publicUrl(images.photo?.path)
+    const referenceImages = [illustrationUrl, realLifeImageUrl].filter((url): url is string => Boolean(url))
     const itemFields = {
       variant_name: variantName,
       release_name: 'Season 1',
@@ -487,6 +388,8 @@ async function main() {
       rarity: shopkin.rarity,
       finish: shopkin.finish,
       ...(shopkin.colors ? { color_tags: shopkin.colors } : {}),
+      illustration_url: illustrationUrl,
+      real_life_image_url: realLifeImageUrl,
     }
 
     // The first colorway of each character adopts its legacy one-per-character row,
@@ -499,26 +402,32 @@ async function main() {
     }
 
     if (existingItem) {
+      // Photos uploaded through the admin pages are never replaced; only placeholder galleries are filled.
+      const fillGallery = realImages(existingItem).length === 0 && referenceImages.length > 0
       const { error } = await supabase
         .from('items')
-        .update(itemFields)
+        .update({
+          ...itemFields,
+          ...(fillGallery ? { images: referenceImages, cover_image_url: referenceImages[0] } : {}),
+        })
         .eq('id', existingItem.id)
 
       throwIfError(error, `Could not update item ${label}`)
       itemByKey.set(itemKey(character.id, variantName), { ...existingItem, variant_name: variantName })
       itemsUpdated += 1
+      if (fillGallery) galleriesFilled += 1
     } else {
-      const placeholderUrl = placeholderImage(shopkin.name)
+      const gallery = referenceImages.length > 0 ? referenceImages : [placeholderImage(shopkin.name)]
       const { data, error } = await supabase
         .from('items')
         .insert({
           character_id: character.id,
           season: 1,
-          images: [placeholderUrl],
-          cover_image_url: placeholderUrl,
+          images: gallery,
+          cover_image_url: gallery[0],
           ...itemFields,
         })
-        .select('id, character_id, variant_name, season')
+        .select(ITEM_COLUMNS)
         .single()
 
       throwIfError(error, `Could not insert item ${label}`)
@@ -531,8 +440,77 @@ async function main() {
     `Seeded ${SEASON_ONE_SHOPKINS.length} Season 1 listings ` +
       `(${CHECKLIST_SIZE} checklist + ${SEASON_ONE_EXCLUSIVES.length} exclusives). ` +
       `Characters: ${charactersInserted} inserted, ${charactersUpdated} updated. ` +
-      `Items: ${itemsInserted} inserted, ${itemsUpdated} updated without changing photos.`
+      `Items: ${itemsInserted} inserted, ${itemsUpdated} updated ` +
+      `(${galleriesFilled} placeholder galleries replaced; uploaded photos left as-is).`
   )
+
+  await verifySeededImages(supabase, manifest, publicUrl)
+}
+
+// Re-reads the database so the report reflects what was actually stored, not what was sent.
+async function verifySeededImages(
+  supabase: SupabaseClient,
+  manifest: ImageManifest,
+  publicUrl: (path: string | undefined) => string | null
+) {
+  const { data, error } = await supabase
+    .from('items')
+    .select('variant_name, illustration_url, real_life_image_url, characters!inner(name)')
+    .eq('season', 1)
+  throwIfError(error, 'Could not re-read Season 1 items')
+
+  type StoredItem = {
+    variant_name: string
+    illustration_url: string | null
+    real_life_image_url: string | null
+    characters: { name: string } | Array<{ name: string }>
+  }
+  const rows = (data as unknown as StoredItem[]) ?? []
+  const storedName = (row: StoredItem) =>
+    nameKey(Array.isArray(row.characters) ? row.characters[0]?.name ?? '' : row.characters.name)
+
+  const report: Array<Record<string, string>> = []
+  const urls: string[] = []
+  for (const shopkin of SEASON_ONE_SHOPKINS) {
+    const variantName = shopkin.shopkinId ?? LEGACY_VARIANT_NAME
+    const matches = rows.filter(
+      (row) => row.variant_name === variantName && storedName(row) === nameKey(shopkin.name)
+    )
+    const record = imageKey(shopkin)
+    if (matches.length !== 1) {
+      report.push({ Record: record, Name: shopkin.name, Problem: `${matches.length} database rows` })
+      continue
+    }
+
+    const [row] = matches
+    const expected = manifest[record] ?? {}
+    const problems: string[] = []
+    if (!row.illustration_url) problems.push('no illustration')
+    else if (row.illustration_url !== publicUrl(expected.illustration?.path)) problems.push('illustration differs from manifest')
+    if (!row.real_life_image_url) problems.push('no real-life photo')
+    else if (row.real_life_image_url !== publicUrl(expected.photo?.path)) problems.push('photo differs from manifest')
+    if (problems.length > 0) report.push({ Record: record, Name: shopkin.name, Problem: problems.join(', ') })
+
+    urls.push(...[row.illustration_url, row.real_life_image_url].filter((url): url is string => Boolean(url)))
+  }
+
+  const extraRows = rows.length - SEASON_ONE_SHOPKINS.length
+  const broken = await findBrokenUrls(urls)
+
+  console.log(
+    `\nVerification: ${rows.length} Season 1 rows in the database` +
+      `${extraRows > 0 ? ` (${extraRows} not in the seed)` : ''}; ` +
+      `${urls.length} image URLs checked, ${broken.length} broken.`
+  )
+  if (report.length > 0) {
+    console.log('Records without a complete image match:')
+    console.table(report)
+  }
+  if (broken.length > 0) {
+    console.log('Broken image URLs:')
+    broken.forEach((url) => console.log(`- ${url}`))
+    process.exitCode = 1
+  }
 }
 
 main().catch((error: unknown) => {
