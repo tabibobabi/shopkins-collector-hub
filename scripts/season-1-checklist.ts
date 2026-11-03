@@ -1,41 +1,9 @@
-export type Rarity = 'Common' | 'Rare' | 'Ultra Rare' | 'Special Edition' | 'Limited Edition'
-
-export type ColorTag =
-  | 'Pink'
-  | 'Blue'
-  | 'Yellow'
-  | 'Green'
-  | 'Purple'
-  | 'Orange'
-  | 'White'
-  | 'Brown'
-  | 'Red'
-  | 'Clear'
-  | 'Gold'
-  | 'Silver'
-
-export type ChecklistEntry = [shopkinId: string, name: string, rarity: Rarity, colors: [ColorTag, ColorTag]]
-
-export type ChecklistTeam = {
-  team: string
-  first: number
-  last: number
-  entries: ChecklistEntry[]
-}
-
-export type SeasonOneShopkin = {
-  shopkinId: string | null
-  name: string
-  team: string
-  rarity: string
-  finish: string
-  colors: ColorTag[] | null
-}
+import type { ChecklistTeam, SeasonCatalog } from './catalog'
 
 // Transcribed from data/checklists/season_01_checklist.jpg (Moose 2013 collector's guide, 1-001 to 1-142).
 // Character names keep the spellings already stored in `characters` so existing rows are reused;
 // the checklist prints "Little Sipper" for Sippa and "Frozen" for the Frozen Food team.
-export const CHECKLIST_TEAMS: ChecklistTeam[] = [
+const TEAMS: ChecklistTeam[] = [
   {
     team: 'Fruit & Veg',
     first: 1,
@@ -243,77 +211,56 @@ export const CHECKLIST_TEAMS: ChecklistTeam[] = [
   },
 ]
 
-export const CHECKLIST_SIZE = 142
-
 // Season 1 store/playset exclusives are not on the blind-bag checklist, so they keep the legacy variant name.
 // Baby is intentionally absent: it debuted as Season 2's special-edition team.
-export const SEASON_ONE_EXCLUSIVES = [
-  'Pumpkinella',
-  'Coco Nutty',
-  'Rolly Roll',
-  'Hot Apple Pie',
-  'Margarina',
-  "La'lotion",
-  'Curly Fries',
-  'Sponge Cake',
-]
-
-export const FINISH_BY_RARITY: Partial<Record<Rarity, string>> = {
-  'Ultra Rare': 'Glitter / Sparkle',
-  'Special Edition': 'Translucent / Jelly',
-  'Limited Edition': 'Metallic / Pearl',
-}
-
-export const LEGACY_VARIANT_NAME = 'Season 1 Classic'
-
-export const SEASON_ONE_SHOPKINS: SeasonOneShopkin[] = [
-  ...CHECKLIST_TEAMS.flatMap(({ team, entries }) =>
-    entries.map(([shopkinId, name, rarity, colors]) => ({
-      shopkinId,
-      name,
-      team,
-      rarity,
-      finish: FINISH_BY_RARITY[rarity] ?? 'Classic / Opaque',
-      colors,
-    }))
-  ),
-  ...SEASON_ONE_EXCLUSIVES.map((name) => ({
-    shopkinId: null,
-    name,
-    team: 'Exclusive',
-    rarity: 'Exclusive',
-    finish: 'Classic / Opaque',
-    colors: null,
-  })),
-]
-
-export function formatShopkinId(number: number) {
-  return `1-${String(number).padStart(3, '0')}`
-}
-
-export const STORAGE_BUCKET = 'shopkins-images'
-export const IMAGE_MANIFEST_PATH = 'data/season-1-images.json'
-
-export type ImageKind = 'illustration' | 'photo'
-
-export type ManifestImage = {
-  // Object path inside STORAGE_BUCKET, e.g. "season-1/illustrations/1-001-apple-blossom.png".
-  path: string
-  // Fandom file the image was downloaded from, kept so a wrong match can be traced and overridden.
-  source: string
-}
-
-export type ImageManifest = Record<string, Partial<Record<ImageKind, ManifestImage>>>
-
-export function slugify(value: string) {
-  return value
-    .toLowerCase()
-    .replace(/'/g, '')
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-|-$/g, '')
-}
-
-// Checklist entries are keyed by printed ID; exclusives have none, so they use the character slug.
-export function imageKey(shopkin: Pick<SeasonOneShopkin, 'shopkinId' | 'name'>) {
-  return shopkin.shopkinId ?? slugify(shopkin.name)
+export const SEASON_1: SeasonCatalog = {
+  season: 1,
+  releaseYear: 2014,
+  checklistSource: 'data/checklists/season_01_checklist.jpg',
+  teams: TEAMS,
+  checklistSize: 142,
+  exclusives: [
+    'Pumpkinella',
+    'Coco Nutty',
+    'Rolly Roll',
+    'Hot Apple Pie',
+    'Margarina',
+    "La'lotion",
+    'Curly Fries',
+    'Sponge Cake',
+  ],
+  finishByRarity: {
+    'Ultra Rare': 'Glitter / Sparkle',
+    'Special Edition': 'Translucent / Jelly',
+    'Limited Edition': 'Metallic / Pearl',
+  },
+  wikiTitles: {
+    'Creamy Bun-bun': 'Creamy Bun-Bun',
+    'Miss Mushy-moo': 'Miss Mushy-Moo',
+    "La'lotion": "La'Lotion",
+    'Sunny-screen': 'Sunny Screen',
+    "Tin'a'tuna": "Tin'a'Tuna",
+    "Pa' Pizza": "Pa'Pizza",
+    'Yo-chi': 'Yo-Chi',
+    'Chap-elli': 'Chap-Elli',
+    Sippa: 'Little Sipper',
+  },
+  // Illustrations are Collector's Tool art the galleries don't list; photos are toys too small or
+  // cluttered in frame for color matching.
+  imageOverrides: {
+    '1-021': { illustration: 'File:Alpha soup collectors tool.png' },
+    '1-022': { photo: 'File:Gran jam toy.jpg' },
+    '1-023': { illustration: 'File:Coolio art.png' },
+    '1-031': { photo: 'File:Gran jam.jpg' },
+    '1-051': { photo: 'File:$ 3.jpg' },
+    '1-060': { photo: 'File:Candi Cotton.jpg' },
+    '1-070': { illustration: 'File:Flavaava.png' },
+    '1-071': { illustration: 'File:Dollops.png' },
+    '1-086': { illustration: 'File:Frank furter collectors tool.png' },
+    '1-087': { illustration: 'File:Little sipper collectors tool art.png' },
+    '1-107': { illustration: 'File:Chap-elli.png' },
+    '1-109': { illustration: 'File:Suds.png' },
+    '1-125': { illustration: 'File:Pa pizza.png' },
+    '1-139': { illustration: 'File:Tinatuna.png' },
+  },
 }

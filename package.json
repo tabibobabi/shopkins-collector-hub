@@ -7,8 +7,10 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "seed": "npx tsx scripts/seed-season-1.ts",
-    "scrape:season-1-images": "npx tsx scripts/scrape-season-1-images.ts",
+    "seed": "npx tsx scripts/seed-season.ts --season=1",
+    "seed:season-2": "npx tsx scripts/seed-season.ts --season=2",
+    "scrape:season-1-images": "npx tsx scripts/scrape-season-images.ts --season=1",
+    "scrape:season-2-images": "npx tsx scripts/scrape-season-images.ts --season=2",
     "tag:colors": "npx tsx scripts/tag-shopkin-colors.ts"
   },
   "dependencies": {

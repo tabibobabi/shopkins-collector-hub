@@ -330,6 +330,10 @@
     }
   },
   "1-034": {
+    "illustration": {
+      "path": "season-1/illustrations/1-034-creamy-bun-bun.webp",
+      "source": "File:creamybunbun.png"
+    },
     "photo": {
       "path": "season-1/photos/1-034-creamy-bun-bun.webp",
       "source": "File:Creamy bun-bun.jpg"
@@ -346,6 +350,10 @@
     }
   },
   "1-036": {
+    "illustration": {
+      "path": "season-1/illustrations/1-036-cheese-kate.webp",
+      "source": "File:cheesekate.png"
+    },
     "photo": {
       "path": "season-1/photos/1-036-cheese-kate.webp",
       "source": "File:Cheese kate.jpg"
@@ -532,6 +540,10 @@
     }
   },
   "1-055": {
+    "illustration": {
+      "path": "season-1/illustrations/1-055-miss-twist.webp",
+      "source": "File:misstwist.png"
+    },
     "photo": {
       "path": "season-1/photos/1-055-miss-twist.webp",
       "source": "File:Redtwist.png"
@@ -1314,7 +1326,7 @@
     },
     "photo": {
       "path": "season-1/photos/1-133-pa-pizza.webp",
-      "source": "File:Pa'Pizza.jpg"
+      "source": "File:1-133 Pa Pizza — Special Edition.jpg"
     }
   },
   "1-134": {
@@ -1410,7 +1422,7 @@
   "pumpkinella": {
     "illustration": {
       "path": "season-1/illustrations/pumpkinella.webp",
-      "source": "File:pumpkinella.png"
+      "source": "File:Pumpkinella.png"
     },
     "photo": {
       "path": "season-1/photos/pumpkinella.webp",

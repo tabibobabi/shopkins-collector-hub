@@ -1,0 +1,1422 @@
+{
+  "2-001": {
+    "illustration": {
+      "path": "season-2/illustrations/2-001-chloe-flower.webp",
+      "source": "File:Chloeflowerart.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-001-chloe-flower.webp",
+      "source": "File:Chloeflower.png"
+    }
+  },
+  "2-002": {
+    "illustration": {
+      "path": "season-2/illustrations/2-002-sour-lemon.webp",
+      "source": "File:SPK_002.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-002-sour-lemon.webp",
+      "source": "File:$ 57 (1).JPG"
+    }
+  },
+  "2-003": {
+    "illustration": {
+      "path": "season-2/illustrations/2-003-juicy-orange.webp",
+      "source": "File:Juicyorange.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-003-juicy-orange.webp",
+      "source": "File:Juicyorangetoy.JPG"
+    }
+  },
+  "2-004": {
+    "illustration": {
+      "path": "season-2/illustrations/2-004-corny-cob.webp",
+      "source": "File:Cornycob1.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-004-corny-cob.webp",
+      "source": "File:Corny Cob.jpeg"
+    }
+  },
+  "2-005": {
+    "illustration": {
+      "path": "season-2/illustrations/2-005-garlic-rose.webp",
+      "source": "File:garlicrose.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-005-garlic-rose.webp",
+      "source": "File:Gr.jpg"
+    }
+  },
+  "2-006": {
+    "illustration": {
+      "path": "season-2/illustrations/2-006-boo-hoo-onion.webp",
+      "source": "File:Boo hoo onion.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-006-boo-hoo-onion.webp",
+      "source": "File:Boo hoo onion toy.png"
+    }
+  },
+  "2-007": {
+    "illustration": {
+      "path": "season-2/illustrations/2-007-dippy-avocado.webp",
+      "source": "File:SPK 007.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-007-dippy-avocado.webp",
+      "source": "File:$ 57 (10).JPG"
+    }
+  },
+  "2-008": {
+    "illustration": {
+      "path": "season-2/illustrations/2-008-silly-chilli.webp",
+      "source": "File:SPK 008.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-008-silly-chilli.webp",
+      "source": "File:silly chilly.JPG"
+    }
+  },
+  "2-009": {
+    "illustration": {
+      "path": "season-2/illustrations/2-009-chloe-flower.webp",
+      "source": "File:Gold.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-009-chloe-flower.webp",
+      "source": "File:Chloe.jpeg"
+    }
+  },
+  "2-010": {
+    "illustration": {
+      "path": "season-2/illustrations/2-010-sour-lemon.webp",
+      "source": "File:SPK 010.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-010-sour-lemon.webp",
+      "source": "File:$ 57 (5).JPG"
+    }
+  },
+  "2-011": {
+    "illustration": {
+      "path": "season-2/illustrations/2-011-juicy-orange.webp",
+      "source": "File:Juicyorangevariant.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-011-juicy-orange.webp",
+      "source": "File:jo.jpg"
+    }
+  },
+  "2-012": {
+    "illustration": {
+      "path": "season-2/illustrations/2-012-corny-cob.webp",
+      "source": "File:Cornycob2.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-012-corny-cob.webp",
+      "source": "File:Cobby Corn.jpeg"
+    }
+  },
+  "2-013": {
+    "illustration": {
+      "path": "season-2/illustrations/2-013-garlic-rose.webp",
+      "source": "File:Garlicrosevariant.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-013-garlic-rose.webp",
+      "source": "File:Garlicrosetoy.JPG"
+    }
+  },
+  "2-014": {
+    "illustration": {
+      "path": "season-2/illustrations/2-014-boo-hoo-onion.webp",
+      "source": "File:Boo hoo onion variant.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-014-boo-hoo-onion.webp",
+      "source": "File:Boo hoo onion toy variant.JPG"
+    }
+  },
+  "2-015": {
+    "illustration": {
+      "path": "season-2/illustrations/2-015-dippy-avocado.webp",
+      "source": "File:SPK 015.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-015-dippy-avocado.webp",
+      "source": "File:$ 57 (11).JPG"
+    }
+  },
+  "2-016": {
+    "illustration": {
+      "path": "season-2/illustrations/2-016-silly-chilli.webp",
+      "source": "File:SPK 016.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-016-silly-chilli.webp",
+      "source": "File:Sillychillivarianttoy.jpg"
+    }
+  },
+  "2-017": {
+    "illustration": {
+      "path": "season-2/illustrations/2-017-toasty-pop.webp",
+      "source": "File:Toastypopart.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-017-toasty-pop.webp",
+      "source": "File:Toasty pop toy.jpg"
+    }
+  },
+  "2-018": {
+    "illustration": {
+      "path": "season-2/illustrations/2-018-brenda-blender.webp",
+      "source": "File:SPK 018.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-018-brenda-blender.webp",
+      "source": "File:Brenda toy.jpg"
+    }
+  },
+  "2-019": {
+    "illustration": {
+      "path": "season-2/illustrations/2-019-coffee-drip.webp",
+      "source": "File:Coffee drip.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-019-coffee-drip.webp",
+      "source": "File:CDT.jpg"
+    }
+  },
+  "2-020": {
+    "illustration": {
+      "path": "season-2/illustrations/2-020-saucy-pan.webp",
+      "source": "File:SPK 020.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-020-saucy-pan.webp",
+      "source": "File:$ 57 (3).JPG"
+    }
+  },
+  "2-021": {
+    "illustration": {
+      "path": "season-2/illustrations/2-021-ma-kettle.webp",
+      "source": "File:Ma kettle.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-021-ma-kettle.webp",
+      "source": "File:Ma kettle toy.JPG"
+    }
+  },
+  "2-022": {
+    "illustration": {
+      "path": "season-2/illustrations/2-022-zappy-microwave.webp",
+      "source": "File:Zappy.jpg"
+    },
+    "photo": {
+      "path": "season-2/photos/2-022-zappy-microwave.webp",
+      "source": "File:ZAP ZAP.jpg"
+    }
+  },
+  "2-023": {
+    "illustration": {
+      "path": "season-2/illustrations/2-023-lisa-litter.webp",
+      "source": "File:SPK 023.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-023-lisa-litter.webp",
+      "source": "File:Litter.JPG"
+    }
+  },
+  "2-024": {
+    "illustration": {
+      "path": "season-2/illustrations/2-024-lana-lamp.webp",
+      "source": "File:SPK 024.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-024-lana-lamp.webp",
+      "source": "File:$ 57 (2).JPG"
+    }
+  },
+  "2-025": {
+    "illustration": {
+      "path": "season-2/illustrations/2-025-sizzles.webp",
+      "source": "File:SPK 025.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-025-sizzles.webp",
+      "source": "File:$ 57sizzles1.JPG"
+    }
+  },
+  "2-026": {
+    "illustration": {
+      "path": "season-2/illustrations/2-026-toasty-pop.webp",
+      "source": "File:Toasty pop variant.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-026-toasty-pop.webp",
+      "source": "File:Toasty pop variant toy.jpg"
+    }
+  },
+  "2-027": {
+    "illustration": {
+      "path": "season-2/illustrations/2-027-brenda-blender.webp",
+      "source": "File:SPK 027.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-027-brenda-blender.webp",
+      "source": "File:Brenda variant toy.JPG"
+    }
+  },
+  "2-028": {
+    "illustration": {
+      "path": "season-2/illustrations/2-028-coffee-drip.webp",
+      "source": "File:Coffee drip 019.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-028-coffee-drip.webp",
+      "source": "File:Original coffee drip color variant .jpg"
+    }
+  },
+  "2-029": {
+    "illustration": {
+      "path": "season-2/illustrations/2-029-saucy-pan.webp",
+      "source": "File:SPK 029.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-029-saucy-pan.webp",
+      "source": "File:Saucy.jpg"
+    }
+  },
+  "2-030": {
+    "illustration": {
+      "path": "season-2/illustrations/2-030-ma-kettle.webp",
+      "source": "File:Ma kettle variant.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-030-ma-kettle.webp",
+      "source": "File:Ma kettle variant toy.png"
+    }
+  },
+  "2-031": {
+    "illustration": {
+      "path": "season-2/illustrations/2-031-zappy-microwave.webp",
+      "source": "File:Dat 12:00 tho.jpg"
+    },
+    "photo": {
+      "path": "season-2/photos/2-031-zappy-microwave.webp",
+      "source": "File:Zappy variant.jpg"
+    }
+  },
+  "2-032": {
+    "illustration": {
+      "path": "season-2/illustrations/2-032-lisa-litter.webp",
+      "source": "File:Lisa litter variant art.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-032-lisa-litter.webp",
+      "source": "File:Lisa Litter Variant.png"
+    }
+  },
+  "2-033": {
+    "illustration": {
+      "path": "season-2/illustrations/2-033-lana-lamp.webp",
+      "source": "File:SPK 033.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-033-lana-lamp.webp",
+      "source": "File:x354-q80.jpg"
+    }
+  },
+  "2-034": {
+    "illustration": {
+      "path": "season-2/illustrations/2-034-sizzles.webp",
+      "source": "File:SPK 034.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-034-sizzles.webp",
+      "source": "File:$ 57sizzles2.JPG"
+    }
+  },
+  "2-035": {
+    "illustration": {
+      "path": "season-2/illustrations/2-035-slick-breadstick.webp",
+      "source": "File:Slickbreadstick.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-035-slick-breadstick.webp",
+      "source": "File:Unknown.jpg.jpeg"
+    }
+  },
+  "2-036": {
+    "illustration": {
+      "path": "season-2/illustrations/2-036-mary-muffin.webp",
+      "source": "File:Mary muffin ct.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-036-mary-muffin.webp",
+      "source": "File:Marymuffin2.jpg"
+    }
+  },
+  "2-037": {
+    "illustration": {
+      "path": "season-2/illustrations/2-037-carrie-carrot-cake.webp",
+      "source": "File:Carrie_Carrot_Cake_2-037.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-037-carrie-carrot-cake.webp",
+      "source": "File:Carrie Carrot Cake toy.jpg"
+    }
+  },
+  "2-038": {
+    "illustration": {
+      "path": "season-2/illustrations/2-038-mary-meringue.webp",
+      "source": "File:MaryMeringue 1.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-038-mary-meringue.webp",
+      "source": "File:Regular.jpg"
+    }
+  },
+  "2-039": {
+    "illustration": {
+      "path": "season-2/illustrations/2-039-pecanna-pie.webp",
+      "source": "File:Pecanapieart.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-039-pecanna-pie.webp",
+      "source": "File:Pecanna pie toys.jpg"
+    }
+  },
+  "2-040": {
+    "illustration": {
+      "path": "season-2/illustrations/2-040-choco-lava.webp",
+      "source": "File:SPK 040.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-040-choco-lava.webp",
+      "source": "File:Chocolavatoy.JPG"
+    }
+  },
+  "2-041": {
+    "illustration": {
+      "path": "season-2/illustrations/2-041-fifi-fruit-tart.webp",
+      "source": "File:SPK 041.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-041-fifi-fruit-tart.webp",
+      "source": "File:Fifi fruit tart toy.JPG"
+    }
+  },
+  "2-042": {
+    "illustration": {
+      "path": "season-2/illustrations/2-042-danni-danish.webp",
+      "source": "File:SPK 042.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-042-danni-danish.webp",
+      "source": "File:Danni danish toy.jpg"
+    }
+  },
+  "2-043": {
+    "illustration": {
+      "path": "season-2/illustrations/2-043-cupcake-chic.webp",
+      "source": "File:Cupcakechic.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-043-cupcake-chic.webp",
+      "source": "File:Cupcake chic toy.jpg"
+    }
+  },
+  "2-044": {
+    "illustration": {
+      "path": "season-2/illustrations/2-044-slick-breadstick.webp",
+      "source": "File:Slickbreadstickvariant.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-044-slick-breadstick.webp",
+      "source": "File:Unknown-1.jpeg"
+    }
+  },
+  "2-045": {
+    "illustration": {
+      "path": "season-2/illustrations/2-045-mary-muffin.webp",
+      "source": "File:SPK 045.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-045-mary-muffin.webp",
+      "source": "File:Marymuffin.jpeg"
+    }
+  },
+  "2-046": {
+    "illustration": {
+      "path": "season-2/illustrations/2-046-carrie-carrot-cake.webp",
+      "source": "File:21aJiYM2GML.jpg"
+    },
+    "photo": {
+      "path": "season-2/photos/2-046-carrie-carrot-cake.webp",
+      "source": "File:CCCVT.jpg"
+    }
+  },
+  "2-047": {
+    "illustration": {
+      "path": "season-2/illustrations/2-047-mary-meringue.webp",
+      "source": "File:MaryMeringue 2.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-047-mary-meringue.webp",
+      "source": "File:Toy mary.jpg"
+    }
+  },
+  "2-048": {
+    "illustration": {
+      "path": "season-2/illustrations/2-048-pecanna-pie.webp",
+      "source": "File:Pecanna pie ct variant art.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-048-pecanna-pie.webp",
+      "source": "File:Pecanna pie toys.jpg"
+    }
+  },
+  "2-049": {
+    "illustration": {
+      "path": "season-2/illustrations/2-049-choco-lava.webp",
+      "source": "File:SPK 049.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-049-choco-lava.webp",
+      "source": "File:$ 57chocolava.JPG"
+    }
+  },
+  "2-050": {
+    "illustration": {
+      "path": "season-2/illustrations/2-050-fifi-fruit-tart.webp",
+      "source": "File:SPK 050.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-050-fifi-fruit-tart.webp",
+      "source": "File:Fifi fruit tart variant toy.jpg"
+    }
+  },
+  "2-051": {
+    "illustration": {
+      "path": "season-2/illustrations/2-051-danni-danish.webp",
+      "source": "File:SPK 051.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-051-danni-danish.webp",
+      "source": "File:Danni danish variant toy.jpg"
+    }
+  },
+  "2-052": {
+    "illustration": {
+      "path": "season-2/illustrations/2-052-cupcake-chic.webp",
+      "source": "File:Imagecuppy .png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-052-cupcake-chic.webp",
+      "source": "File:Season 2 shopkin.jpg"
+    }
+  },
+  "2-053": {
+    "illustration": {
+      "path": "season-2/illustrations/2-053-poppy-corn.webp",
+      "source": "File:SPK 053.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-053-poppy-corn.webp",
+      "source": "File:Poppycorntoy.jpg"
+    }
+  },
+  "2-054": {
+    "illustration": {
+      "path": "season-2/illustrations/2-054-minnie-mintie.webp",
+      "source": "File:Minnie Mintie 2-054.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-054-minnie-mintie.webp",
+      "source": "File:Tacorainbow.jpg"
+    }
+  },
+  "2-055": {
+    "illustration": {
+      "path": "season-2/illustrations/2-055-banana-splitty.webp",
+      "source": "File:Bananasplittyart.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-055-banana-splitty.webp",
+      "source": "File:Banana splitty toy.JPG"
+    }
+  },
+  "2-056": {
+    "illustration": {
+      "path": "season-2/illustrations/2-056-yummy-gum.webp",
+      "source": "File:Yummygum.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-056-yummy-gum.webp",
+      "source": "File:Yummy gum toy.jpg"
+    }
+  },
+  "2-057": {
+    "illustration": {
+      "path": "season-2/illustrations/2-057-waffle-sue.webp",
+      "source": "File:WaffleSue 1.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-057-waffle-sue.webp",
+      "source": "File:Waffles waffles waffles.jpg"
+    }
+  },
+  "2-058": {
+    "illustration": {
+      "path": "season-2/illustrations/2-058-ice-cream-dream.webp",
+      "source": "File:SPK 058.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-058-ice-cream-dream.webp",
+      "source": "File:$ 57 133.JPG"
+    }
+  },
+  "2-059": {
+    "illustration": {
+      "path": "season-2/illustrations/2-059-cheery-churro.webp",
+      "source": "File:SPK 059.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-059-cheery-churro.webp",
+      "source": "File:$ cheerychurro.JPG"
+    }
+  },
+  "2-060": {
+    "illustration": {
+      "path": "season-2/illustrations/2-060-pamela-pancake.webp",
+      "source": "File:Pamela pancake.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-060-pamela-pancake.webp",
+      "source": "File:$ 1.jpg"
+    }
+  },
+  "2-061": {
+    "illustration": {
+      "path": "season-2/illustrations/2-061-poppy-corn.webp",
+      "source": "File:SPK 061.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-061-poppy-corn.webp",
+      "source": "File:Blue Poppy Corn toy.JPG"
+    }
+  },
+  "2-062": {
+    "illustration": {
+      "path": "season-2/illustrations/2-062-minnie-mintie.webp",
+      "source": "File:Minnie Mintie 2-062.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-062-minnie-mintie.webp",
+      "source": "File:Taco.jpg"
+    }
+  },
+  "2-063": {
+    "illustration": {
+      "path": "season-2/illustrations/2-063-banana-splitty.webp",
+      "source": "File:Bs ct va.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-063-banana-splitty.webp",
+      "source": "File:Banana splitty variant.JPG"
+    }
+  },
+  "2-064": {
+    "illustration": {
+      "path": "season-2/illustrations/2-064-yummy-gum.webp",
+      "source": "File:Yummygumvariant.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-064-yummy-gum.webp",
+      "source": "File:Yummy gum variant.png"
+    }
+  },
+  "2-065": {
+    "illustration": {
+      "path": "season-2/illustrations/2-065-waffle-sue.webp",
+      "source": "File:WaffleSue 2.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-065-waffle-sue.webp",
+      "source": "File:Suev.jpg"
+    }
+  },
+  "2-066": {
+    "illustration": {
+      "path": "season-2/illustrations/2-066-ice-cream-dream.webp",
+      "source": "File:SPK 066.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-066-ice-cream-dream.webp",
+      "source": "File:$ 57 122.JPG"
+    }
+  },
+  "2-067": {
+    "illustration": {
+      "path": "season-2/illustrations/2-067-cheery-churro.webp",
+      "source": "File:SPK 067.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-067-cheery-churro.webp",
+      "source": "File:$ churrovariant.JPG"
+    }
+  },
+  "2-068": {
+    "illustration": {
+      "path": "season-2/illustrations/2-068-pamela-pancake.webp",
+      "source": "File:Pamela pancake variant.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-068-pamela-pancake.webp",
+      "source": "File:71gFQRbYPnL. SX355 .jpg"
+    }
+  },
+  "2-069": {
+    "illustration": {
+      "path": "season-2/illustrations/2-069-fi-fi-flour.webp",
+      "source": "File:Fifi flour art.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-069-fi-fi-flour.webp",
+      "source": "File:Fifi flour toy.JPG"
+    }
+  },
+  "2-070": {
+    "illustration": {
+      "path": "season-2/illustrations/2-070-bart-beans.webp",
+      "source": "File:Bart.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-070-bart-beans.webp",
+      "source": "File:i.jpg"
+    }
+  },
+  "2-071": {
+    "illustration": {
+      "path": "season-2/illustrations/2-071-fasta-pasta.webp",
+      "source": "File:Fastapasta1.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-071-fasta-pasta.webp",
+      "source": "File:Fasta Pasta.jpeg"
+    }
+  },
+  "2-072": {
+    "illustration": {
+      "path": "season-2/illustrations/2-072-olivia-oil.webp",
+      "source": "File:Oliviaoil.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-072-olivia-oil.webp",
+      "source": "File:Olivia oil toy idk which.JPG"
+    }
+  },
+  "2-073": {
+    "illustration": {
+      "path": "season-2/illustrations/2-073-honeeey.webp",
+      "source": "File:Honeeey yellow.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-073-honeeey.webp",
+      "source": "File:Honeeey toy.jpg"
+    }
+  },
+  "2-074": {
+    "illustration": {
+      "path": "season-2/illustrations/2-074-al-foil.webp",
+      "source": "File:Call_me_al.jpg"
+    },
+    "photo": {
+      "path": "season-2/photos/2-074-al-foil.webp",
+      "source": "File:$ 57 (4).JPG"
+    }
+  },
+  "2-075": {
+    "illustration": {
+      "path": "season-2/illustrations/2-075-toffy-coffee.webp",
+      "source": "File:Toffycoffee.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-075-toffy-coffee.webp",
+      "source": "File:Toffy toy.JPG"
+    }
+  },
+  "2-076": {
+    "illustration": {
+      "path": "season-2/illustrations/2-076-cornell-mustard.webp",
+      "source": "File:Cornell mustard ct art.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-076-cornell-mustard.webp",
+      "source": "File:Cornell mustard toy.jpg"
+    }
+  },
+  "2-077": {
+    "illustration": {
+      "path": "season-2/illustrations/2-077-chris-p-crackers.webp",
+      "source": "File:Chris P Crackers art.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-077-chris-p-crackers.webp",
+      "source": "File:Chris p crackers toy.JPG"
+    }
+  },
+  "2-078": {
+    "illustration": {
+      "path": "season-2/illustrations/2-078-fi-fi-flour.webp",
+      "source": "File:Fifi flour variant art.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-078-fi-fi-flour.webp",
+      "source": "File:Fifi flour variant toy.jpg"
+    }
+  },
+  "2-079": {
+    "illustration": {
+      "path": "season-2/illustrations/2-079-bart-beans.webp",
+      "source": "File:Widdle.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-079-bart-beans.webp",
+      "source": "File:Bv.jpg"
+    }
+  },
+  "2-080": {
+    "illustration": {
+      "path": "season-2/illustrations/2-080-fasta-pasta.webp",
+      "source": "File:Fastapasta2.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-080-fasta-pasta.webp",
+      "source": "File:FPVT.jpg"
+    }
+  },
+  "2-081": {
+    "illustration": {
+      "path": "season-2/illustrations/2-081-olivia-oil.webp",
+      "source": "File:Olivia oil variant.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-081-olivia-oil.webp",
+      "source": "File:The pink one.jpg"
+    }
+  },
+  "2-082": {
+    "illustration": {
+      "path": "season-2/illustrations/2-082-honeeey.webp",
+      "source": "File:Honeeey green.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-082-honeeey.webp",
+      "source": "File:Honeeey variant toy.jpg"
+    }
+  },
+  "2-083": {
+    "illustration": {
+      "path": "season-2/illustrations/2-083-al-foil.webp",
+      "source": "File:SPK 083.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-083-al-foil.webp",
+      "source": "File:AlFoil.png"
+    }
+  },
+  "2-084": {
+    "illustration": {
+      "path": "season-2/illustrations/2-084-toffy-coffee.webp",
+      "source": "File:Toffycoffeevariant.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-084-toffy-coffee.webp",
+      "source": "File:Toffy toy variant.JPG"
+    }
+  },
+  "2-085": {
+    "illustration": {
+      "path": "season-2/illustrations/2-085-cornell-mustard.webp",
+      "source": "File:Cornell mustard ct variant art.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-085-cornell-mustard.webp",
+      "source": "File:Cornell mustard variant toy.jpg"
+    }
+  },
+  "2-086": {
+    "illustration": {
+      "path": "season-2/illustrations/2-086-chris-p-crackers.webp",
+      "source": "File:Chris_P_Crackers_.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-086-chris-p-crackers.webp",
+      "source": "File:Chris p crackers red.JPG"
+    }
+  },
+  "2-087": {
+    "illustration": {
+      "path": "season-2/illustrations/2-087-dishy-liquid.webp",
+      "source": "File:Dishy liquid.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-087-dishy-liquid.webp",
+      "source": "File:Dishy liquid toy.jpg"
+    }
+  },
+  "2-088": {
+    "illustration": {
+      "path": "season-2/illustrations/2-088-squeaky-clean.webp",
+      "source": "File:SPK 088.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-088-squeaky-clean.webp",
+      "source": "File:$ 57squeakyclean1.JPG"
+    }
+  },
+  "2-089": {
+    "illustration": {
+      "path": "season-2/illustrations/2-089-wendy-washer.webp",
+      "source": "File:Wendy washer.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-089-wendy-washer.webp",
+      "source": "File:Wendy washer toy.jpg"
+    }
+  },
+  "2-090": {
+    "illustration": {
+      "path": "season-2/illustrations/2-090-bree-freshner.webp",
+      "source": "File:Bree freshner.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-090-bree-freshner.webp",
+      "source": "File:Bree-Freshner-2-090-S2-Cleaning-&-Laundry-Common-PNC00808.jpg"
+    }
+  },
+  "2-091": {
+    "illustration": {
+      "path": "season-2/illustrations/2-091-molly-mops.webp",
+      "source": "File:SPK 091.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-091-molly-mops.webp",
+      "source": "File:$ 57mollymops1.JPG"
+    }
+  },
+  "2-092": {
+    "illustration": {
+      "path": "season-2/illustrations/2-092-sweeps.webp",
+      "source": "File:Sweeps_2-092.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-092-sweeps.webp",
+      "source": "File:SWEEPS2.jpg"
+    }
+  },
+  "2-093": {
+    "illustration": {
+      "path": "season-2/illustrations/2-093-sarah-softner.webp",
+      "source": "File:Sarah softner.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-093-sarah-softner.webp",
+      "source": "File:Stoy.jpg"
+    }
+  },
+  "2-094": {
+    "illustration": {
+      "path": "season-2/illustrations/2-094-peta-plunger.webp",
+      "source": "File:Peta Plunger artwork.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-094-peta-plunger.webp",
+      "source": "File:$ 57 (2)PPV.JPG"
+    }
+  },
+  "2-095": {
+    "illustration": {
+      "path": "season-2/illustrations/2-095-leafy.webp",
+      "source": "File:SPK 095.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-095-leafy.webp",
+      "source": "File:Leafies.JPG"
+    }
+  },
+  "2-096": {
+    "illustration": {
+      "path": "season-2/illustrations/2-096-dishy-liquid.webp",
+      "source": "File:Dishy liquid variant art.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-096-dishy-liquid.webp",
+      "source": "File:Shopkins-Season-2-Dishy-Liquid-2-096.png"
+    }
+  },
+  "2-097": {
+    "illustration": {
+      "path": "season-2/illustrations/2-097-squeaky-clean.webp",
+      "source": "File:SPK 097.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-097-squeaky-clean.webp",
+      "source": "File:$ 57squeakyclean2.JPG"
+    }
+  },
+  "2-098": {
+    "illustration": {
+      "path": "season-2/illustrations/2-098-wendy-washer.webp",
+      "source": "File:Wendy washer variant.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-098-wendy-washer.webp",
+      "source": "File:S-l300 (1)w.jpg"
+    }
+  },
+  "2-099": {
+    "illustration": {
+      "path": "season-2/illustrations/2-099-bree-freshner.webp",
+      "source": "File:Bree Freshner 2-099.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-099-bree-freshner.webp",
+      "source": "File:Bree freshner variant.png"
+    }
+  },
+  "2-100": {
+    "illustration": {
+      "path": "season-2/illustrations/2-100-molly-mops.webp",
+      "source": "File:SPK 100.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-100-molly-mops.webp",
+      "source": "File:$ 57mollymops2.JPG"
+    }
+  },
+  "2-101": {
+    "illustration": {
+      "path": "season-2/illustrations/2-101-sweeps.webp",
+      "source": "File:Sweepsthebroom.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-101-sweeps.webp",
+      "source": "File:SWEEPS3.jpg"
+    }
+  },
+  "2-102": {
+    "illustration": {
+      "path": "season-2/illustrations/2-102-sarah-softner.webp",
+      "source": "File:Sarah softner variant art.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-102-sarah-softner.webp",
+      "source": "File:Sarah toy.jpg"
+    }
+  },
+  "2-103": {
+    "illustration": {
+      "path": "season-2/illustrations/2-103-peta-plunger.webp",
+      "source": "File:SPK 103.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-103-peta-plunger.webp",
+      "source": "File:$Petaplunger.JPG"
+    }
+  },
+  "2-104": {
+    "illustration": {
+      "path": "season-2/illustrations/2-104-leafy.webp",
+      "source": "File:SPK 104.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-104-leafy.webp",
+      "source": "File:Leafies.JPG"
+    }
+  },
+  "2-105": {
+    "illustration": {
+      "path": "season-2/illustrations/2-105-prommy.webp",
+      "source": "File:SPK 105.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-105-prommy.webp",
+      "source": "File:Variant prommy.jpg"
+    }
+  },
+  "2-106": {
+    "illustration": {
+      "path": "season-2/illustrations/2-106-sneaky-sue.webp",
+      "source": "File:Sneakysue.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-106-sneaky-sue.webp",
+      "source": "File:Sneaky Sue toy.jpg"
+    }
+  },
+  "2-107": {
+    "illustration": {
+      "path": "season-2/illustrations/2-107-heels.webp",
+      "source": "File:SPK 107.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-107-heels.webp",
+      "source": "File:Heels toy green.JPG"
+    }
+  },
+  "2-108": {
+    "illustration": {
+      "path": "season-2/illustrations/2-108-sneaky-wedge.webp",
+      "source": "File:Sneaky wedge collectors tool art.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-108-sneaky-wedge.webp",
+      "source": "File:Sneaky toy.jpg"
+    }
+  },
+  "2-109": {
+    "illustration": {
+      "path": "season-2/illustrations/2-109-betty-boot.webp",
+      "source": "File:Betty boot.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-109-betty-boot.webp",
+      "source": "File:Betty boot toy.JPG"
+    }
+  },
+  "2-110": {
+    "illustration": {
+      "path": "season-2/illustrations/2-110-wedgy-wendy.webp",
+      "source": "File:Wedgy wendy.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-110-wedgy-wendy.webp",
+      "source": "File:Wedgy wendy toy.JPG"
+    }
+  },
+  "2-111": {
+    "illustration": {
+      "path": "season-2/illustrations/2-111-bun-bun-slipper.webp",
+      "source": "File:Bunbunslipper art.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-111-bun-bun-slipper.webp",
+      "source": "File:Bunbuntoy.jpg"
+    }
+  },
+  "2-112": {
+    "illustration": {
+      "path": "season-2/illustrations/2-112-cute-boot.webp",
+      "source": "File:SPK 112.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-112-cute-boot.webp",
+      "source": "File:Cute boot toy.jpg"
+    }
+  },
+  "2-113": {
+    "illustration": {
+      "path": "season-2/illustrations/2-113-prommy.webp",
+      "source": "File:Prommyart.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-113-prommy.webp",
+      "source": "File:Prommy toy.jpg"
+    }
+  },
+  "2-114": {
+    "illustration": {
+      "path": "season-2/illustrations/2-114-sneaky-sue.webp",
+      "source": "File:Sneaky sue variant art.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-114-sneaky-sue.webp",
+      "source": "File:Sneaky Sue variant toy.jpg"
+    }
+  },
+  "2-115": {
+    "illustration": {
+      "path": "season-2/illustrations/2-115-heels.webp",
+      "source": "File:SPK 115.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-115-heels.webp",
+      "source": "File:Heels toy.jpg"
+    }
+  },
+  "2-116": {
+    "illustration": {
+      "path": "season-2/illustrations/2-116-sneaky-wedge.webp",
+      "source": "File:Sneaky wedge collectors tool variant art.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-116-sneaky-wedge.webp",
+      "source": "File:Variant sneaky.jpg"
+    }
+  },
+  "2-117": {
+    "illustration": {
+      "path": "season-2/illustrations/2-117-betty-boot.webp",
+      "source": "File:Betty boot variant.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-117-betty-boot.webp",
+      "source": "File:$Bettyboot.JPG"
+    }
+  },
+  "2-118": {
+    "illustration": {
+      "path": "season-2/illustrations/2-118-wedgy-wendy.webp",
+      "source": "File:Wedgy wendy variant.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-118-wedgy-wendy.webp",
+      "source": "File:Wedgy wendy toy variant.JPG"
+    }
+  },
+  "2-119": {
+    "illustration": {
+      "path": "season-2/illustrations/2-119-bun-bun-slipper.webp",
+      "source": "File:Bunbunslipper variant art.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-119-bun-bun-slipper.webp",
+      "source": "File:Variant bb.jpg"
+    }
+  },
+  "2-120": {
+    "illustration": {
+      "path": "season-2/illustrations/2-120-cute-boot.webp",
+      "source": "File:SPK 120.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-120-cute-boot.webp",
+      "source": "File:Cute boot variant toy.jpg"
+    }
+  },
+  "2-121": {
+    "illustration": {
+      "path": "season-2/illustrations/2-121-dribbles.webp",
+      "source": "File:Dribbles.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-121-dribbles.webp",
+      "source": "File:Dribblestoy.JPG"
+    }
+  },
+  "2-122": {
+    "illustration": {
+      "path": "season-2/illustrations/2-122-ga-ga-gourmet.webp",
+      "source": "File:178.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-122-ga-ga-gourmet.webp",
+      "source": "File:Gagagourmet1.JPG"
+    }
+  },
+  "2-123": {
+    "illustration": {
+      "path": "season-2/illustrations/2-123-dum-mee-mee.webp",
+      "source": "File:Dum mee mee white.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-123-dum-mee-mee.webp",
+      "source": "File:Dummeemee1.jpg"
+    }
+  },
+  "2-124": {
+    "illustration": {
+      "path": "season-2/illustrations/2-124-baby-swipes.webp",
+      "source": "File:Download (20).jpg"
+    },
+    "photo": {
+      "path": "season-2/photos/2-124-baby-swipes.webp",
+      "source": "File:Baby swipes yellow toy.JPG"
+    }
+  },
+  "2-125": {
+    "illustration": {
+      "path": "season-2/illustrations/2-125-sippy-sips.webp",
+      "source": "File:Sippy4.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-125-sippy-sips.webp",
+      "source": "File:Sippy2.jpg"
+    }
+  },
+  "2-126": {
+    "illustration": {
+      "path": "season-2/illustrations/2-126-baby-puff.webp",
+      "source": "File:Babypuffartwork1.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-126-baby-puff.webp",
+      "source": "File:Babypuff1.jpeg"
+    }
+  },
+  "2-127": {
+    "illustration": {
+      "path": "season-2/illustrations/2-127-nappy-dee.webp",
+      "source": "File:Nappy dee.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-127-nappy-dee.webp",
+      "source": "File:Nappy dee toy.jpg"
+    }
+  },
+  "2-128": {
+    "illustration": {
+      "path": "season-2/illustrations/2-128-shampoo-sue.webp",
+      "source": "File:178 (1).png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-128-shampoo-sue.webp",
+      "source": "File:SST.jpg"
+    }
+  },
+  "2-129": {
+    "illustration": {
+      "path": "season-2/illustrations/2-129-dribbles.webp",
+      "source": "File:Dribblesvariant.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-129-dribbles.webp",
+      "source": "File:White dribbles.JPG"
+    }
+  },
+  "2-130": {
+    "illustration": {
+      "path": "season-2/illustrations/2-130-ga-ga-gourmet.webp",
+      "source": "File:Gaga gourmet.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-130-ga-ga-gourmet.webp",
+      "source": "File:Download (19).jpg"
+    }
+  },
+  "2-131": {
+    "illustration": {
+      "path": "season-2/illustrations/2-131-dum-mee-mee.webp",
+      "source": "File:Dum mee mee yellow.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-131-dum-mee-mee.webp",
+      "source": "File:Dummeemee2.JPG"
+    }
+  },
+  "2-132": {
+    "illustration": {
+      "path": "season-2/illustrations/2-132-baby-swipes.webp",
+      "source": "File:SPK 132.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-132-baby-swipes.webp",
+      "source": "File:Baby swipes blue toy.JPG"
+    }
+  },
+  "2-133": {
+    "illustration": {
+      "path": "season-2/illustrations/2-133-sippy-sips.webp",
+      "source": "File:Sippy3.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-133-sippy-sips.webp",
+      "source": "File:Sippy1.jpg"
+    }
+  },
+  "2-134": {
+    "illustration": {
+      "path": "season-2/illustrations/2-134-baby-puff.webp",
+      "source": "File:Babypuffartwork2.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-134-baby-puff.webp",
+      "source": "File:Babypuff2.jpg"
+    }
+  },
+  "2-135": {
+    "illustration": {
+      "path": "season-2/illustrations/2-135-nappy-dee.webp",
+      "source": "File:Nappy dee variant.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-135-nappy-dee.webp",
+      "source": "File:nappydee.JPG"
+    }
+  },
+  "2-136": {
+    "illustration": {
+      "path": "season-2/illustrations/2-136-shampoo-sue.webp",
+      "source": "File:SPK 136.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-136-shampoo-sue.webp",
+      "source": "File:Shampoo Sue variant.jpg"
+    }
+  },
+  "2-137": {
+    "illustration": {
+      "path": "season-2/illustrations/2-137-marsha-mellow.webp",
+      "source": "File:SPK 137.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-137-marsha-mellow.webp",
+      "source": "File:Marshamellow.jpg"
+    }
+  },
+  "2-138": {
+    "illustration": {
+      "path": "season-2/illustrations/2-138-rub-a-glove.webp",
+      "source": "File:SPK 138.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-138-rub-a-glove.webp",
+      "source": "File:$_1v.JPG"
+    }
+  },
+  "2-139": {
+    "illustration": {
+      "path": "season-2/illustrations/2-139-lenny-lime.webp",
+      "source": "File:SPK 139.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-139-lenny-lime.webp",
+      "source": "File:Lennylimetoy.jpg"
+    }
+  },
+  "2-140": {
+    "illustration": {
+      "path": "season-2/illustrations/2-140-lee-tea.webp",
+      "source": "File:SPK 140.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-140-lee-tea.webp",
+      "source": "File:$ 57 (12).JPG"
+    }
+  },
+  "2-141": {
+    "illustration": {
+      "path": "season-2/illustrations/2-141-donna-donut.webp",
+      "source": "File:SPK 141.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-141-donna-donut.webp",
+      "source": "File:$ 57.JPG"
+    }
+  },
+  "2-142": {
+    "illustration": {
+      "path": "season-2/illustrations/2-142-angie-ankle-boot.webp",
+      "source": "File:SPK 142.png"
+    },
+    "photo": {
+      "path": "season-2/photos/2-142-angie-ankle-boot.webp",
+      "source": "File:$ 57 (8).JPG"
+    }
+  }
+}

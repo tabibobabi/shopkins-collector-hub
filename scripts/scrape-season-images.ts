@@ -6,65 +6,50 @@ import { config } from 'dotenv'
 import { createClient } from '@supabase/supabase-js'
 import { colorHistogram } from './color-analysis'
 import {
-  IMAGE_MANIFEST_PATH,
-  SEASON_ONE_SHOPKINS,
   STORAGE_BUCKET,
+  catalogShopkins,
+  formatShopkinId,
   imageKey,
+  imageManifestPath,
   slugify,
+  type CatalogShopkin,
   type ColorTag,
   type ImageKind,
   type ImageManifest,
-  type SeasonOneShopkin,
-} from './season-1-checklist'
+} from './catalog'
+import { seasonFromArgs } from './seasons'
 
 config({ path: '.env.local' })
 config()
 
+const CATALOG = seasonFromArgs()
+const SEASON = CATALOG.season
+const SHOPKINS = catalogShopkins(CATALOG)
+const IMAGE_MANIFEST_PATH = imageManifestPath(SEASON)
+
 const FANDOM_API_URL = 'https://shopkins.fandom.com/api.php'
-const FANDOM_WIKI_URL = 'https://shopkins.fandom.com/wiki/Season_One'
+const FANDOM_WIKI_URL = 'https://shopkins.fandom.com/'
 const USER_AGENT = 'ShopkinsCollectorImageImporter/2.0'
-const CACHE_DIR = '.cache/season-1-images'
+const CACHE_DIR = `.cache/season-${SEASON}-images`
 const PREVIEW_DIR = 'data/checklists/_preview'
 const MAX_IMAGE_SIZE = 1000
 // Minimum score advantage before color evidence overrides the wiki caption's "variant" label.
 const COLOR_MARGIN = 0.05
 
-// Wiki page titles that differ from the names stored in `characters`.
-const WIKI_TITLES: Record<string, string> = {
-  'Creamy Bun-bun': 'Creamy Bun-Bun',
-  'Miss Mushy-moo': 'Miss Mushy-Moo',
-  "La'lotion": "La'Lotion",
-  'Sunny-screen': 'Sunny Screen',
-  "Tin'a'tuna": "Tin'a'Tuna",
-  "Pa' Pizza": "Pa'Pizza",
-  'Yo-chi': 'Yo-Chi',
-  'Chap-elli': 'Chap-Elli',
-  Sippa: 'Little Sipper',
-}
-
-// Hand-checked against data/checklists/season_01_checklist.jpg. Illustrations are Collector's Tool art
-// the galleries don't list; photos are toys too small or cluttered in frame for color matching.
-const OVERRIDES: Record<string, Partial<Record<ImageKind, string>>> = {
-  '1-021': { illustration: 'File:Alpha soup collectors tool.png' },
-  '1-022': { photo: 'File:Gran jam toy.jpg' },
-  '1-023': { illustration: 'File:Coolio art.png' },
-  '1-031': { photo: 'File:Gran jam.jpg' },
-  '1-051': { photo: 'File:$ 3.jpg' },
-  '1-060': { photo: 'File:Candi Cotton.jpg' },
-  '1-070': { illustration: 'File:Flavaava.png' },
-  '1-071': { illustration: 'File:Dollops.png' },
-  '1-086': { illustration: 'File:Frank furter collectors tool.png' },
-  '1-087': { illustration: 'File:Little sipper collectors tool art.png' },
-  '1-107': { illustration: 'File:Chap-elli.png' },
-  '1-109': { illustration: 'File:Suds.png' },
-  '1-125': { illustration: 'File:Pa pizza.png' },
-  '1-139': { illustration: 'File:Tinatuna.png' },
-}
+const SEASON_WORDS = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten']
 
 // Captions naming any other release, product, or rendition of the character.
-const OTHER_RELEASE =
-  /charm|edition|wild style|food fair|halloween|pumpkin|easter|metallic|translucent|fridge|glitz|vending|storage tin|sweet ?heart|swapkins|jewel|petite|taco|unicorn|super shopper|oh so real|fizz|squeez|plush|cuddle|cartoon|sprite|promo|mcdonald|fashion spree|glamour|precious|lunch|radz|alternate|sketch|concept|render|static|world vacation|sprinkle|shoppin|build-a-bear|board game|magazine|word art|all star|cafe|frosted|chef club|screen idols|animation|blind bag|exclusive|limited|mystery|tribe|keychain|dispenser|costume|funko|\bfrom\b|season (?!1\b|one\b)/i
-const OTHER_RELEASE_FILE = /SPKS(?:[2-9]|10)|rarity|\b(?:[2-9]|10)-\d{3}\b/i
+const OTHER_RELEASE = new RegExp(
+  "charm|edition|wild style|food fair|halloween|pumpkin|easter|metallic|translucent|fridge|glitz|vending|storage tin|sweet ?heart|swapkins|jewel|petite|taco|unicorn|super shopper|oh so real|fizz|squeez|plush|cuddle|cartoon|sprite|promo|mcdonald|fashion spree|glamour|precious|lunch|radz|alternate|sketch|concept|render|static|world vacation|sprinkle|shoppin|build-a-bear|board game|magazine|word art|all star|cafe|frosted|chef club|screen idols|animation|blind bag|exclusive|limited|mystery|tribe|keychain|dispenser|costume|funko|\\bfrom\\b|" +
+    `season (?!${SEASON}\\b|${SEASON_WORDS[SEASON]}\\b)`,
+  'i'
+)
+// Other seasons' Collector's Edition tiles, rarity charts, and art named by another season's checklist ID.
+const OTHER_RELEASE_FILE = new RegExp(
+  `SPKS(?!${SEASON}(?!\\d))\\d+|rarity|\\b(?!${SEASON}-)(?:[1-9]|10)-\\d{3}\\b`,
+  'i'
+)
+const CHECKLIST_ID_IN_FILE = new RegExp(`\\b${SEASON}-\\d{3}\\b`)
 
 type ImageCandidate = {
   file: string
@@ -154,6 +139,8 @@ async function fetchPages(titles: string[], params: Record<string, string>) {
 function parseGalleries(wikitext: string, names: string[]) {
   const candidates: ImageCandidate[] = []
   const seen = new Set<string>()
+  const fileKey = (fileName: string) => fileName.replace(/_/g, ' ').toLowerCase()
+  const galleryFiles = new Set<string>()
   const galleries = wikitext.matchAll(
     /(?:==+\s*([^=\n]+?)\s*==+\s*)?<gallery[^>]*>([\s\S]*?)<\/gallery>/gi
   )
@@ -164,6 +151,7 @@ function parseGalleries(wikitext: string, names: string[]) {
     for (const line of body.split('\n')) {
       const parts = line.split('|').map((part) => part.trim())
       const fileName = parts[0].replace(/^(?:File|Image):/i, '').trim()
+      galleryFiles.add(fileKey(fileName))
       if (!/\.(png|jpe?g|webp)$/i.test(fileName) || OTHER_RELEASE_FILE.test(fileName)) continue
 
       const caption =
@@ -189,13 +177,29 @@ function parseGalleries(wikitext: string, names: string[]) {
     !isToy(candidate) &&
     /\b(?:art|artwork|atrt|ct)\b|collector'?s? (?:poster|tool|guide)/i.test(candidate.caption)
 
+  const illustration = candidates.filter(isArt)
+  // Galleries often list only the variant's art; the infobox shows the first colorway's.
+  const infobox = infoboxImage(wikitext)
+  if (infobox && !galleryFiles.has(fileKey(infobox)) && !/\.jpe?g$/i.test(infobox) && !OTHER_RELEASE_FILE.test(infobox)) {
+    illustration.push({ file: `File:${infobox}`, caption: 'infobox art', variant: false })
+  }
+
   return {
-    illustration: candidates.filter(isArt).map((candidate) => ({
+    illustration: illustration.map((candidate) => ({
       ...candidate,
       order: posterOrder(candidate.file),
     })),
     photo: candidates.filter(isToy),
   }
+}
+
+function infoboxImage(wikitext: string) {
+  const value = /\|\s*image\s*=\s*([^|\n]*(?:\[\[[^\]]*\]\][^|\n]*)?)/i.exec(wikitext)?.[1] ?? ''
+  const name = (/\[\[(?:File|Image):([^|\]]+)/i.exec(value)?.[1] ?? value)
+    .replace(/<[^>]*>.*$/, '')
+    .replace(/_/g, ' ')
+    .trim()
+  return /\.(png|jpe?g|webp)$/i.test(name) ? name : undefined
 }
 
 function posterOrder(file: string) {
@@ -276,10 +280,15 @@ function hueSimilarity(a: Map<ColorTag, number>, b: Map<ColorTag, number>) {
   return 1 - distance / 2
 }
 
+function checklistIdInFile(file: string) {
+  const numbered = CATALOG.numberedArtFile?.exec(file)?.[1]
+  return numbered ? formatShopkinId(SEASON, Number(numbered)) : CHECKLIST_ID_IN_FILE.exec(file)?.[0]
+}
+
 // File names that carry a checklist ID or poster number decide their colorway outright.
-function withKnownOrder(candidates: ImageCandidate[], entries: SeasonOneShopkin[]) {
+function withKnownOrder(candidates: ImageCandidate[], entries: CatalogShopkin[]) {
   return candidates.map((candidate) => {
-    const id = /\b1-\d{3}\b/.exec(candidate.file)?.[0]
+    const id = checklistIdInFile(candidate.file)
     const index = entries.findIndex(({ shopkinId }) => shopkinId === id)
     return index >= 0 ? { ...candidate, order: index } : candidate
   })
@@ -346,10 +355,10 @@ function assignByCaption(
   return picks
 }
 
-function storagePath(shopkin: SeasonOneShopkin, kind: ImageKind) {
+function storagePath(shopkin: CatalogShopkin, kind: ImageKind) {
   const folder = kind === 'illustration' ? 'illustrations' : 'photos'
   const base = shopkin.shopkinId ? `${shopkin.shopkinId}-${slugify(shopkin.name)}` : slugify(shopkin.name)
-  return `season-1/${folder}/${base}.webp`
+  return `season-${SEASON}/${folder}/${base}.webp`
 }
 
 function escapeXml(value: string) {
@@ -408,7 +417,7 @@ async function writeContactSheets(
       }
     }
 
-    const file = join(PREVIEW_DIR, `season-1-images-${sheetIndex + 1}.png`)
+    const file = join(PREVIEW_DIR, `season-${SEASON}-images-${sheetIndex + 1}.png`)
     await sharp({
       create: {
         width: cellWidth * columns + 16,
@@ -429,12 +438,12 @@ async function main() {
   const preview = process.argv.includes('--preview')
   mkdirSync(CACHE_DIR, { recursive: true })
 
-  const characters = new Map<string, SeasonOneShopkin[]>()
-  for (const shopkin of SEASON_ONE_SHOPKINS) {
+  const characters = new Map<string, CatalogShopkin[]>()
+  for (const shopkin of SHOPKINS) {
     characters.set(shopkin.name, [...(characters.get(shopkin.name) ?? []), shopkin])
   }
 
-  const wikiTitle = (name: string) => WIKI_TITLES[name] ?? name
+  const wikiTitle = (name: string) => CATALOG.wikiTitles[name] ?? name
   const pages = await fetchPages([...characters.keys()].map(wikiTitle), {
     prop: 'revisions',
     rvprop: 'content',
@@ -454,7 +463,7 @@ async function main() {
   }
 
   const candidateFiles = new Set<string>(
-    Object.values(OVERRIDES).flatMap((override) => Object.values(override))
+    Object.values(CATALOG.imageOverrides).flatMap((override) => Object.values(override))
   )
   for (const gallery of galleries.values()) {
     gallery.illustration.push(...posterSiblings(gallery.illustration))
@@ -487,7 +496,7 @@ async function main() {
     const entryPicks: Array<Partial<Record<ImageKind, Pick>>> = entries.map(() => ({}))
     const applyOverrides = (kind: ImageKind) =>
       entries.forEach((shopkin, index) => {
-        const file = OVERRIDES[imageKey(shopkin)]?.[kind]
+        const file = CATALOG.imageOverrides[imageKey(shopkin)]?.[kind]
         if (file && images.has(file)) entryPicks[index][kind] = { file, reason: 'manual override' }
       })
     const firstOf = (candidates: ImageCandidate[]) =>
@@ -551,7 +560,7 @@ async function main() {
   const colorMoves: string[] = []
   let uploaded = 0
 
-  for (const shopkin of SEASON_ONE_SHOPKINS) {
+  for (const shopkin of SHOPKINS) {
     const key = imageKey(shopkin)
     const pick = picks.get(key) ?? {}
     const label = `${shopkin.shopkinId ?? 'Exclusive'} ${shopkin.name}`
@@ -592,15 +601,20 @@ async function main() {
 
   if (preview) await writeContactSheets(previewRows)
 
-  if (!dryRun) {
-    writeFileSync(IMAGE_MANIFEST_PATH, `${JSON.stringify(manifest, null, 2)}\n`)
+  const manifestJson = `${JSON.stringify(manifest, null, 2)}\n`
+  if (dryRun) {
+    const proposed = join(CACHE_DIR, 'proposed-manifest.json')
+    writeFileSync(proposed, manifestJson)
+    console.log(`Wrote the proposed manifest to ${proposed}.`)
+  } else {
+    writeFileSync(IMAGE_MANIFEST_PATH, manifestJson)
     console.log(`Uploaded ${uploaded} image(s) to ${STORAGE_BUCKET} and wrote ${IMAGE_MANIFEST_PATH}.`)
   }
 
   const count = (kind: ImageKind) => previewRows.filter((row) => row.images[kind]).length
   console.log(
-    `${dryRun ? 'Dry run: ' : ''}${count('illustration')}/${SEASON_ONE_SHOPKINS.length} illustrations, ` +
-      `${count('photo')}/${SEASON_ONE_SHOPKINS.length} real-life photos matched.`
+    `${dryRun ? 'Dry run: ' : ''}${count('illustration')}/${SHOPKINS.length} illustrations, ` +
+      `${count('photo')}/${SHOPKINS.length} real-life photos matched.`
   )
 
   if (colorMoves.length > 0) {

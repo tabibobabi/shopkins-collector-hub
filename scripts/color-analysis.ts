@@ -1,5 +1,5 @@
 import sharp from 'sharp'
-import type { ColorTag } from './season-1-checklist'
+import type { ColorTag } from './catalog'
 
 function rgbToHsv(red: number, green: number, blue: number) {
   const r = red / 255

@@ -2,21 +2,28 @@ import { existsSync, readFileSync } from 'node:fs'
 import { config } from 'dotenv'
 import { createClient, type SupabaseClient } from '@supabase/supabase-js'
 import {
-  CHECKLIST_SIZE,
-  CHECKLIST_TEAMS,
-  IMAGE_MANIFEST_PATH,
-  LEGACY_VARIANT_NAME,
-  SEASON_ONE_EXCLUSIVES,
-  SEASON_ONE_SHOPKINS,
   STORAGE_BUCKET,
+  catalogShopkins,
   formatShopkinId,
   imageKey,
+  imageManifestPath,
+  legacyVariantName,
+  releaseName,
+  type CatalogShopkin,
   type ImageManifest,
   type Rarity,
-} from './season-1-checklist'
+} from './catalog'
+import { seasonFromArgs } from './seasons'
 
 config({ path: '.env.local' })
 config()
+
+const CATALOG = seasonFromArgs()
+const SEASON = CATALOG.season
+const RELEASE_NAME = releaseName(SEASON)
+const LEGACY_VARIANT_NAME = legacyVariantName(SEASON)
+const IMAGE_MANIFEST_PATH = imageManifestPath(SEASON)
+const SHOPKINS: CatalogShopkin[] = catalogShopkins(CATALOG)
 
 type CharacterRow = {
   id: string
@@ -44,20 +51,20 @@ type UserItemRow = {
 const ITEM_COLUMNS = 'id, character_id, variant_name, season, images, cover_image_url'
 
 // Hand-entered through the admin page for a character's second colorway before checklist IDs existed.
-const HAND_ENTERED_VARIANT_NAME = 'Season 1 Variant'
+const HAND_ENTERED_VARIANT_NAME = `Season ${SEASON} Variant`
 
 function validateChecklist() {
   const problems: string[] = []
   const seen = new Set<string>()
 
-  for (const { team, first, last, entries } of CHECKLIST_TEAMS) {
+  for (const { team, first, last, entries } of CATALOG.teams) {
     const expected = last - first + 1
     if (entries.length !== expected) {
       problems.push(`${team}: expected ${expected} entries, found ${entries.length}`)
     }
 
     entries.forEach(([shopkinId, name, , colors], index) => {
-      const expectedId = formatShopkinId(first + index)
+      const expectedId = formatShopkinId(SEASON, first + index)
       if (shopkinId !== expectedId) {
         problems.push(`${team}: ${name} is ${shopkinId}, expected ${expectedId}`)
       }
@@ -67,22 +74,24 @@ function validateChecklist() {
     })
   }
 
-  for (let number = 1; number <= CHECKLIST_SIZE; number += 1) {
-    const shopkinId = formatShopkinId(number)
+  for (let number = 1; number <= CATALOG.checklistSize; number += 1) {
+    const shopkinId = formatShopkinId(SEASON, number)
     if (!seen.has(shopkinId)) problems.push(`Missing checklist ID ${shopkinId}`)
   }
 
   if (problems.length > 0) {
-    throw new Error(`Season 1 checklist is invalid:\n- ${problems.join('\n- ')}`)
+    throw new Error(
+      `${RELEASE_NAME} checklist (${CATALOG.checklistSource}) is invalid:\n- ${problems.join('\n- ')}`
+    )
   }
 }
 
 function printSummary() {
   const rarities: Rarity[] = ['Common', 'Rare', 'Ultra Rare', 'Special Edition', 'Limited Edition']
-  const rows = CHECKLIST_TEAMS.map(({ team, first, last, entries }) => {
+  const rows = CATALOG.teams.map(({ team, first, last, entries }) => {
     const row: Record<string, string | number> = {
       Team: team,
-      IDs: `${formatShopkinId(first)} to ${formatShopkinId(last)}`,
+      IDs: `${formatShopkinId(SEASON, first)} to ${formatShopkinId(SEASON, last)}`,
     }
     for (const rarity of rarities) {
       row[rarity] = entries.filter(([, , entryRarity]) => entryRarity === rarity).length
@@ -128,7 +137,7 @@ function realImages(item: Pick<ItemRow, 'images'>) {
 function loadImageManifest(): ImageManifest {
   if (!existsSync(IMAGE_MANIFEST_PATH)) {
     console.warn(
-      `${IMAGE_MANIFEST_PATH} not found; run \`npm run scrape:season-1-images\` first. Seeding without images.`
+      `${IMAGE_MANIFEST_PATH} not found; run \`npm run scrape:season-${SEASON}-images\` first. Seeding without images.`
     )
     return {}
   }
@@ -136,7 +145,7 @@ function loadImageManifest(): ImageManifest {
 }
 
 function printImageCoverage(manifest: ImageManifest) {
-  const missing = SEASON_ONE_SHOPKINS.flatMap((shopkin) => {
+  const missing = SHOPKINS.flatMap((shopkin) => {
     const images = manifest[imageKey(shopkin)] ?? {}
     const gaps = [
       images.illustration ? null : 'illustration',
@@ -145,8 +154,8 @@ function printImageCoverage(manifest: ImageManifest) {
     return gaps.length > 0 ? [{ Record: imageKey(shopkin), Name: shopkin.name, Missing: gaps.join(' + ') }] : []
   })
 
-  const withBoth = SEASON_ONE_SHOPKINS.length - missing.length
-  console.log(`Image manifest: ${withBoth}/${SEASON_ONE_SHOPKINS.length} records have both images.`)
+  const withBoth = SHOPKINS.length - missing.length
+  console.log(`Image manifest: ${withBoth}/${SHOPKINS.length} records have both images.`)
   if (missing.length > 0) console.table(missing)
 }
 
@@ -171,7 +180,7 @@ async function mergeHandEnteredVariants(
 
   for (const duplicate of items.filter((item) => item.variant_name === HAND_ENTERED_VARIANT_NAME)) {
     const name = characterNameById.get(duplicate.character_id) ?? duplicate.character_id
-    const colorways = SEASON_ONE_SHOPKINS.filter(
+    const colorways = SHOPKINS.filter(
       (shopkin) => shopkin.shopkinId && nameKey(shopkin.name) === nameKey(name)
     )
     const targetId = colorways[1]?.shopkinId
@@ -272,7 +281,7 @@ async function main() {
   printImageCoverage(manifest)
 
   if (process.argv.includes('--dry-run')) {
-    console.log(`Dry run: ${SEASON_ONE_SHOPKINS.length} listings validated, database not touched.`)
+    console.log(`Dry run: ${SHOPKINS.length} listings validated, database not touched.`)
     return
   }
 
@@ -313,7 +322,7 @@ async function main() {
   const { data: existingItems, error: itemLookupError } = await supabase
     .from('items')
     .select(ITEM_COLUMNS)
-    .eq('season', 1)
+    .eq('season', SEASON)
 
   throwIfError(itemLookupError, 'Could not read items')
 
@@ -324,15 +333,15 @@ async function main() {
     ])
   )
 
-  const seasonOneItems = (existingItems as ItemRow[] | null) ?? []
+  const seasonItems = (existingItems as ItemRow[] | null) ?? []
   await mergeHandEnteredVariants(
     supabase,
-    seasonOneItems,
+    seasonItems,
     new Map((existingCharacters as CharacterRow[] | null)?.map(({ id, name }) => [id, name]))
   )
 
   const itemByKey = new Map<string, ItemRow>()
-  for (const item of seasonOneItems) {
+  for (const item of seasonItems) {
     const key = itemKey(item.character_id, item.variant_name)
     if (!itemByKey.has(key)) itemByKey.set(key, item)
   }
@@ -343,7 +352,7 @@ async function main() {
   let itemsUpdated = 0
   let galleriesFilled = 0
 
-  for (const shopkin of SEASON_ONE_SHOPKINS) {
+  for (const shopkin of SHOPKINS) {
     const key = nameKey(shopkin.name)
     let character = characterByName.get(key)
 
@@ -380,8 +389,8 @@ async function main() {
     const referenceImages = [illustrationUrl, realLifeImageUrl].filter((url): url is string => Boolean(url))
     const itemFields = {
       variant_name: variantName,
-      release_name: 'Season 1',
-      release_year: 2014,
+      release_name: RELEASE_NAME,
+      release_year: CATALOG.releaseYear,
       release_type:
         shopkin.team === 'Exclusive' ? 'Playset Exclusive' : 'Main Season',
       team: shopkin.team,
@@ -422,7 +431,7 @@ async function main() {
         .from('items')
         .insert({
           character_id: character.id,
-          season: 1,
+          season: SEASON,
           images: gallery,
           cover_image_url: gallery[0],
           ...itemFields,
@@ -437,8 +446,8 @@ async function main() {
   }
 
   console.log(
-    `Seeded ${SEASON_ONE_SHOPKINS.length} Season 1 listings ` +
-      `(${CHECKLIST_SIZE} checklist + ${SEASON_ONE_EXCLUSIVES.length} exclusives). ` +
+    `Seeded ${SHOPKINS.length} ${RELEASE_NAME} listings ` +
+      `(${CATALOG.checklistSize} checklist + ${CATALOG.exclusives.length} exclusives). ` +
       `Characters: ${charactersInserted} inserted, ${charactersUpdated} updated. ` +
       `Items: ${itemsInserted} inserted, ${itemsUpdated} updated ` +
       `(${galleriesFilled} placeholder galleries replaced; uploaded photos left as-is).`
@@ -456,8 +465,8 @@ async function verifySeededImages(
   const { data, error } = await supabase
     .from('items')
     .select('variant_name, illustration_url, real_life_image_url, characters!inner(name)')
-    .eq('season', 1)
-  throwIfError(error, 'Could not re-read Season 1 items')
+    .eq('season', SEASON)
+  throwIfError(error, `Could not re-read ${RELEASE_NAME} items`)
 
   type StoredItem = {
     variant_name: string
@@ -471,7 +480,7 @@ async function verifySeededImages(
 
   const report: Array<Record<string, string>> = []
   const urls: string[] = []
-  for (const shopkin of SEASON_ONE_SHOPKINS) {
+  for (const shopkin of SHOPKINS) {
     const variantName = shopkin.shopkinId ?? LEGACY_VARIANT_NAME
     const matches = rows.filter(
       (row) => row.variant_name === variantName && storedName(row) === nameKey(shopkin.name)
@@ -494,11 +503,11 @@ async function verifySeededImages(
     urls.push(...[row.illustration_url, row.real_life_image_url].filter((url): url is string => Boolean(url)))
   }
 
-  const extraRows = rows.length - SEASON_ONE_SHOPKINS.length
+  const extraRows = rows.length - SHOPKINS.length
   const broken = await findBrokenUrls(urls)
 
   console.log(
-    `\nVerification: ${rows.length} Season 1 rows in the database` +
+    `\nVerification: ${rows.length} ${RELEASE_NAME} rows in the database` +
       `${extraRows > 0 ? ` (${extraRows} not in the seed)` : ''}; ` +
       `${urls.length} image URLs checked, ${broken.length} broken.`
   )

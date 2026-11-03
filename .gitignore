@@ -20,7 +20,7 @@
 # production
 /build
 
-# downloaded source images for scripts/scrape-season-1-images.ts
+# downloaded source images for scripts/scrape-season-images.ts
 /.cache/
 
 # misc
