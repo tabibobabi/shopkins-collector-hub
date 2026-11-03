@@ -13,6 +13,7 @@ const FINISHES = [
   'Metallic / Pearl',
   'Chrome / Electroplated',
   'Flocked / Fuzzy',
+  'Frosted / Matte',
   'Glow-in-the-Dark',
   'Color Change',
   'Gem / Jeweled'

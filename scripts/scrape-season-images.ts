@@ -40,7 +40,7 @@ const SEASON_WORDS = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'sev
 
 // Captions naming any other release, product, or rendition of the character.
 const OTHER_RELEASE = new RegExp(
-  "charm|edition|wild style|food fair|halloween|pumpkin|easter|metallic|translucent|fridge|glitz|vending|storage tin|sweet ?heart|swapkins|jewel|petite|taco|unicorn|super shopper|oh so real|fizz|squeez|plush|cuddle|cartoon|sprite|promo|mcdonald|fashion spree|glamour|precious|lunch|radz|alternate|sketch|concept|render|static|world vacation|sprinkle|shoppin|build-a-bear|board game|magazine|word art|all star|cafe|frosted|chef club|screen idols|animation|blind bag|exclusive|limited|mystery|tribe|keychain|dispenser|costume|funko|\\bfrom\\b|" +
+  "charm|edition|wild style|food fair|halloween|christmas|bauble|pumpkin|easter|metallic|translucent|fridge|glitz|vending|storage tin|sweet ?heart|swapkins|jewel|petite|taco|unicorn|super shopper|oh so real|fizz|squeez|plush|cuddle|cartoon|sprite|promo|mcdonald|fashion spree|glamour|precious|lunch|radz|alternate|sketch|concept|render|static|world vacation|sprinkle|shoppin|build-a-bear|board game|magazine|word art|all star|cafe|frosted|chef club|screen idols|animation|blind bag|exclusive|limited|mystery|tribe|keychain|dispenser|costume|funko|\\bfrom\\b|" +
     `season (?!${SEASON}\\b|${SEASON_WORDS[SEASON]}\\b)`,
   'i'
 )
@@ -162,6 +162,7 @@ function parseGalleries(wikitext: string, names: string[]) {
 
       let rest = caption.toLowerCase().replace(/\[\[|\]\]/g, '')
       for (const name of names) rest = rest.split(name.toLowerCase()).join(' ')
+      if (CATALOG.finishTerms) rest = rest.replace(CATALOG.finishTerms, ' ')
       if (OTHER_RELEASE.test(rest)) continue
 
       const file = `File:${fileName}`

@@ -42,6 +42,8 @@ export type SeasonCatalog = {
   // Fandom art files whose first capture group is this season's checklist number, e.g. "File:SPK 058.png".
   // Only trusted on the character's own gallery: other seasons reuse the same numbers.
   numberedArtFile?: RegExp
+  // This season's own finish names, removed from captions before they're screened for other releases.
+  finishTerms?: RegExp
 }
 
 export type CatalogShopkin = {

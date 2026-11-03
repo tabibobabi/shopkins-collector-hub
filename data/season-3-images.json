@@ -1,0 +1,1422 @@
+{
+  "3-001": {
+    "illustration": {
+      "path": "season-3/illustrations/3-001-cheese-louise.webp",
+      "source": "File:SPK 001.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-001-cheese-louise.webp",
+      "source": "File:Cheese louise toy.jpg"
+    }
+  },
+  "3-002": {
+    "illustration": {
+      "path": "season-3/illustrations/3-002-queen-of-tarts.webp",
+      "source": "File:SPK 002 (1).png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-002-queen-of-tarts.webp",
+      "source": "File:Queen of Tarts toy.jpg"
+    }
+  },
+  "3-003": {
+    "illustration": {
+      "path": "season-3/illustrations/3-003-patty-cake.webp",
+      "source": "File:Patty cake art.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-003-patty-cake.webp",
+      "source": "File:Patty cake toy.jpg"
+    }
+  },
+  "3-004": {
+    "illustration": {
+      "path": "season-3/illustrations/3-004-lana-banana-bread.webp",
+      "source": "File:Lana banana bread art.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-004-lana-banana-bread.webp",
+      "source": "File:Lana banana bread toy.JPG"
+    }
+  },
+  "3-005": {
+    "illustration": {
+      "path": "season-3/illustrations/3-005-toastie-bread.webp",
+      "source": "File:Toastie bread ct art.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-005-toastie-bread.webp",
+      "source": "File:Toastie bread toy.JPG"
+    }
+  },
+  "3-006": {
+    "illustration": {
+      "path": "season-3/illustrations/3-006-candy-cookie.webp",
+      "source": "File:Candy cookie art.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-006-candy-cookie.webp",
+      "source": "File:Candy cookie toy.jpg"
+    }
+  },
+  "3-007": {
+    "illustration": {
+      "path": "season-3/illustrations/3-007-birthday-betty.webp",
+      "source": "File:Birthday betty art.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-007-birthday-betty.webp",
+      "source": "File:Birthday Betty toy.JPG"
+    }
+  },
+  "3-008": {
+    "illustration": {
+      "path": "season-3/illustrations/3-008-wendy-wedding-cake.webp",
+      "source": "File:Wendy wedding cake art.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-008-wendy-wedding-cake.webp",
+      "source": "File:Wendy Wedding Cake toy.jpg"
+    }
+  },
+  "3-009": {
+    "illustration": {
+      "path": "season-3/illustrations/3-009-nilla-slice.webp",
+      "source": "File:Nilla slice art.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-009-nilla-slice.webp",
+      "source": "File:Nilla slice variant toy.jpg"
+    }
+  },
+  "3-010": {
+    "illustration": {
+      "path": "season-3/illustrations/3-010-cheese-louise.webp",
+      "source": "File:SPK 010 (1).png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-010-cheese-louise.webp",
+      "source": "File:Cheese louise variant toy.jpg"
+    }
+  },
+  "3-011": {
+    "illustration": {
+      "path": "season-3/illustrations/3-011-queen-of-tarts.webp",
+      "source": "File:SPK 011.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-011-queen-of-tarts.webp",
+      "source": "File:Queen of Tarts Variant toy.JPG"
+    }
+  },
+  "3-012": {
+    "illustration": {
+      "path": "season-3/illustrations/3-012-patty-cake.webp",
+      "source": "File:Patty cake variant.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-012-patty-cake.webp",
+      "source": "File:Patty cake variant toy.jpg"
+    }
+  },
+  "3-013": {
+    "illustration": {
+      "path": "season-3/illustrations/3-013-lana-banana-bread.webp",
+      "source": "File:Lana banana bread variant.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-013-lana-banana-bread.webp",
+      "source": "File:Lana banana bread variant toy.jpg"
+    }
+  },
+  "3-014": {
+    "illustration": {
+      "path": "season-3/illustrations/3-014-toastie-bread.webp",
+      "source": "File:Toastie bread ct variant.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-014-toastie-bread.webp",
+      "source": "File:Toastie Bread Variant toy.jpg"
+    }
+  },
+  "3-015": {
+    "illustration": {
+      "path": "season-3/illustrations/3-015-candy-cookie.webp",
+      "source": "File:Candy cookie variant art.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-015-candy-cookie.webp",
+      "source": "File:Candy cookie variant toy.jpg"
+    }
+  },
+  "3-016": {
+    "illustration": {
+      "path": "season-3/illustrations/3-016-birthday-betty.webp",
+      "source": "File:Birthday betty variant.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-016-birthday-betty.webp",
+      "source": "File:Birthday Betty variant toy.jpg"
+    }
+  },
+  "3-017": {
+    "illustration": {
+      "path": "season-3/illustrations/3-017-wendy-wedding-cake.webp",
+      "source": "File:Wendy wedding cake variant.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-017-wendy-wedding-cake.webp",
+      "source": "File:Wendy Wedding Cake Variant toy.jpg"
+    }
+  },
+  "3-018": {
+    "illustration": {
+      "path": "season-3/illustrations/3-018-nilla-slice.webp",
+      "source": "File:Nilla slice variant.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-018-nilla-slice.webp",
+      "source": "File:nilla slice toy.jpg"
+    }
+  },
+  "3-019": {
+    "illustration": {
+      "path": "season-3/illustrations/3-019-casper-cap.webp",
+      "source": "File:Casper cap ct art.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-019-casper-cap.webp",
+      "source": "File:Casper.JPG"
+    }
+  },
+  "3-020": {
+    "illustration": {
+      "path": "season-3/illustrations/3-020-hattie-hat.webp",
+      "source": "File:Hattie Hat 3-020.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-020-hattie-hat.webp",
+      "source": "File:Hattie Hat toy.jpg"
+    }
+  },
+  "3-021": {
+    "illustration": {
+      "path": "season-3/illustrations/3-021-flappy-cap.webp",
+      "source": "File:Flappy cap art.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-021-flappy-cap.webp",
+      "source": "File:Flappy cap toy.jpg"
+    }
+  },
+  "3-022": {
+    "illustration": {
+      "path": "season-3/illustrations/3-022-brimmy.webp",
+      "source": "File:Brimmy art.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-022-brimmy.webp",
+      "source": "File:Bring variant.jpg"
+    }
+  },
+  "3-023": {
+    "illustration": {
+      "path": "season-3/illustrations/3-023-toni-topper.webp",
+      "source": "File:Toni topper art.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-023-toni-topper.webp",
+      "source": "File:Red Toni Topper toy.JPG"
+    }
+  },
+  "3-024": {
+    "illustration": {
+      "path": "season-3/illustrations/3-024-shady.webp",
+      "source": "File:Shady art.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-024-shady.webp",
+      "source": "File:Shady toy.JPG"
+    }
+  },
+  "3-025": {
+    "illustration": {
+      "path": "season-3/illustrations/3-025-bonnie-beret.webp",
+      "source": "File:Bonnie beret art.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-025-bonnie-beret.webp",
+      "source": "File:Bonnie Beret toy.JPG"
+    }
+  },
+  "3-026": {
+    "illustration": {
+      "path": "season-3/illustrations/3-026-taylor-rayne.webp",
+      "source": "File:Taylor rayne ct art.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-026-taylor-rayne.webp",
+      "source": "File:Taylor rayne toy.jpg"
+    }
+  },
+  "3-027": {
+    "illustration": {
+      "path": "season-3/illustrations/3-027-casper-cap.webp",
+      "source": "File:Casper cap ct variant.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-027-casper-cap.webp",
+      "source": "File:casper.JPG"
+    }
+  },
+  "3-028": {
+    "illustration": {
+      "path": "season-3/illustrations/3-028-hattie-hat.webp",
+      "source": "File:Hattie hat variant art.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-028-hattie-hat.webp",
+      "source": "File:Hattie Hat Variant toy.JPG"
+    }
+  },
+  "3-029": {
+    "illustration": {
+      "path": "season-3/illustrations/3-029-flappy-cap.webp",
+      "source": "File:Flappy cap variant art.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-029-flappy-cap.webp",
+      "source": "File:Flappy cap variant toy.jpg"
+    }
+  },
+  "3-030": {
+    "illustration": {
+      "path": "season-3/illustrations/3-030-brimmy.webp",
+      "source": "File:Brimmy variant art.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-030-brimmy.webp",
+      "source": "File:brmmi.jpg"
+    }
+  },
+  "3-031": {
+    "illustration": {
+      "path": "season-3/illustrations/3-031-toni-topper.webp",
+      "source": "File:Toni topper variant art.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-031-toni-topper.webp",
+      "source": "File:Variant Toni Topper.jpg"
+    }
+  },
+  "3-032": {
+    "illustration": {
+      "path": "season-3/illustrations/3-032-shady.webp",
+      "source": "File:Shady variant art.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-032-shady.webp",
+      "source": "File:Shady Variant toy.JPG"
+    }
+  },
+  "3-033": {
+    "illustration": {
+      "path": "season-3/illustrations/3-033-bonnie-beret.webp",
+      "source": "File:Bonnie beret variant art.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-033-bonnie-beret.webp",
+      "source": "File:Bonnie Beret variant toy.JPG"
+    }
+  },
+  "3-034": {
+    "illustration": {
+      "path": "season-3/illustrations/3-034-taylor-rayne.webp",
+      "source": "File:Taylor rayne ct variant.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-034-taylor-rayne.webp",
+      "source": "File:Taylor rayne variant toy.jpg"
+    }
+  },
+  "3-035": {
+    "illustration": {
+      "path": "season-3/illustrations/3-035-beverley-heels.webp",
+      "source": "File:Beverly heels ct art.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-035-beverley-heels.webp",
+      "source": "File:Beverly heels toy.jpg"
+    }
+  },
+  "3-036": {
+    "illustration": {
+      "path": "season-3/illustrations/3-036-shoes-anne.webp",
+      "source": "File:Shoes anne.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-036-shoes-anne.webp",
+      "source": "File:Shoes anne toy.jpg"
+    }
+  },
+  "3-037": {
+    "illustration": {
+      "path": "season-3/illustrations/3-037-jennifer-rayne.webp",
+      "source": "File:Jennifer rayne ct art.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-037-jennifer-rayne.webp",
+      "source": "File:Jennifer rayne toy.jpg"
+    }
+  },
+  "3-038": {
+    "illustration": {
+      "path": "season-3/illustrations/3-038-molly-moccasin.webp",
+      "source": "File:Molly moccasin.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-038-molly-moccasin.webp",
+      "source": "File:Molly moccasin toy.jpg"
+    }
+  },
+  "3-039": {
+    "illustration": {
+      "path": "season-3/illustrations/3-039-lizzy-lace-up.webp",
+      "source": "File:Lizzy lace up.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-039-lizzy-lace-up.webp",
+      "source": "File:Lizzy lace up toy.jpg"
+    }
+  },
+  "3-040": {
+    "illustration": {
+      "path": "season-3/illustrations/3-040-sneaky-sally.webp",
+      "source": "File:Sneaky sally ct art.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-040-sneaky-sally.webp",
+      "source": "File:Sneaky sally toy.jpg"
+    }
+  },
+  "3-041": {
+    "illustration": {
+      "path": "season-3/illustrations/3-041-snug-ugg.webp",
+      "source": "File:Snug ugg.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-041-snug-ugg.webp",
+      "source": "File:Snug ugg toy.jpg"
+    }
+  },
+  "3-042": {
+    "illustration": {
+      "path": "season-3/illustrations/3-042-wilma-wedge.webp",
+      "source": "File:Wilma wedge art.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-042-wilma-wedge.webp",
+      "source": "File:Wilma wedge toy.jpg"
+    }
+  },
+  "3-043": {
+    "illustration": {
+      "path": "season-3/illustrations/3-043-beverley-heels.webp",
+      "source": "File:Beverly heels ct variant.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-043-beverley-heels.webp",
+      "source": "File:Beverly heels variant toy.jpg"
+    }
+  },
+  "3-044": {
+    "illustration": {
+      "path": "season-3/illustrations/3-044-shoes-anne.webp",
+      "source": "File:Shoes anne variant.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-044-shoes-anne.webp",
+      "source": "File:Shoes anne variant toy.jpg"
+    }
+  },
+  "3-045": {
+    "illustration": {
+      "path": "season-3/illustrations/3-045-jennifer-rayne.webp",
+      "source": "File:Jennifer rayne ct variant.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-045-jennifer-rayne.webp",
+      "source": "File:Jennifer rayne variant toy.jpg"
+    }
+  },
+  "3-046": {
+    "illustration": {
+      "path": "season-3/illustrations/3-046-molly-moccasin.webp",
+      "source": "File:Molly moccasin variant.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-046-molly-moccasin.webp",
+      "source": "File:Molly moccasin variant toy.jpg"
+    }
+  },
+  "3-047": {
+    "illustration": {
+      "path": "season-3/illustrations/3-047-lizzy-lace-up.webp",
+      "source": "File:Lizzy lace up variant.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-047-lizzy-lace-up.webp",
+      "source": "File:Lizzy lace up variant toy.jpg"
+    }
+  },
+  "3-048": {
+    "illustration": {
+      "path": "season-3/illustrations/3-048-sneaky-sally.webp",
+      "source": "File:Sneaky sally ct variant.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-048-sneaky-sally.webp",
+      "source": "File:Sneaky sally variant toy.jpg"
+    }
+  },
+  "3-049": {
+    "illustration": {
+      "path": "season-3/illustrations/3-049-snug-ugg.webp",
+      "source": "File:Snug ugg variant.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-049-snug-ugg.webp",
+      "source": "File:Snug ugg variant toy.jpg"
+    }
+  },
+  "3-050": {
+    "illustration": {
+      "path": "season-3/illustrations/3-050-wilma-wedge.webp",
+      "source": "File:Wilma wedge variant art.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-050-wilma-wedge.webp",
+      "source": "File:Wilma wedge variant toy.jpg"
+    }
+  },
+  "3-051": {
+    "illustration": {
+      "path": "season-3/illustrations/3-051-poprock.webp",
+      "source": "File:Poprock art.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-051-poprock.webp",
+      "source": "File:Green PopRocks toy.jpg"
+    }
+  },
+  "3-052": {
+    "illustration": {
+      "path": "season-3/illustrations/3-052-cream-e-cookie.webp",
+      "source": "File:Cream e cookie art.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-052-cream-e-cookie.webp",
+      "source": "File:Cream E Cookie original toy.JPG"
+    }
+  },
+  "3-053": {
+    "illustration": {
+      "path": "season-3/illustrations/3-053-macca-roon.webp",
+      "source": "File:Macca roon ct art.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-053-macca-roon.webp",
+      "source": "File:Macca roon teal.JPG"
+    }
+  },
+  "3-054": {
+    "illustration": {
+      "path": "season-3/illustrations/3-054-chocky-box.webp",
+      "source": "File:Chocky box art.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-054-chocky-box.webp",
+      "source": "File:418HLLtFxRL.jpg"
+    }
+  },
+  "3-055": {
+    "illustration": {
+      "path": "season-3/illustrations/3-055-wanda-wafer.webp",
+      "source": "File:Wanda wafer art.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-055-wanda-wafer.webp",
+      "source": "File:wanda.jpg"
+    }
+  },
+  "3-056": {
+    "illustration": {
+      "path": "season-3/illustrations/3-056-choc-kiss.webp",
+      "source": "File:Choc kiss art.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-056-choc-kiss.webp",
+      "source": "File:Choc Kiss toy.JPG"
+    }
+  },
+  "3-057": {
+    "illustration": {
+      "path": "season-3/illustrations/3-057-suzie-sundae.webp",
+      "source": "File:Suzie sundae ct art.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-057-suzie-sundae.webp",
+      "source": "File:Suzie sundae toy.jpg"
+    }
+  },
+  "3-058": {
+    "illustration": {
+      "path": "season-3/illustrations/3-058-candy-apple.webp",
+      "source": "File:Candy apple ct art.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-058-candy-apple.webp",
+      "source": "File:candy apple.jpg"
+    }
+  },
+  "3-059": {
+    "illustration": {
+      "path": "season-3/illustrations/3-059-ginger-fred.webp",
+      "source": "File:Ginger fred art.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-059-ginger-fred.webp",
+      "source": "File:Ginger Fred Variant toy.jpg"
+    }
+  },
+  "3-060": {
+    "illustration": {
+      "path": "season-3/illustrations/3-060-poprock.webp",
+      "source": "File:Poprock variant art.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-060-poprock.webp",
+      "source": "File:Pink PopRock toy.JPG"
+    }
+  },
+  "3-061": {
+    "illustration": {
+      "path": "season-3/illustrations/3-061-cream-e-cookie.webp",
+      "source": "File:Cream e cookie variant art.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-061-cream-e-cookie.webp",
+      "source": "File:Cream E Cookie toy.jpg"
+    }
+  },
+  "3-062": {
+    "illustration": {
+      "path": "season-3/illustrations/3-062-macca-roon.webp",
+      "source": "File:Macca roon ct variant.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-062-macca-roon.webp",
+      "source": "File:Macca roon yellow.JPG"
+    }
+  },
+  "3-063": {
+    "illustration": {
+      "path": "season-3/illustrations/3-063-chocky-box.webp",
+      "source": "File:Chocky box variant art.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-063-chocky-box.webp",
+      "source": "File:$ 1.JPG"
+    }
+  },
+  "3-064": {
+    "illustration": {
+      "path": "season-3/illustrations/3-064-wanda-wafer.webp",
+      "source": "File:Wanda wafer variant art.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-064-wanda-wafer.webp",
+      "source": "File:Unnamed Kit Kat Shopkin.png"
+    }
+  },
+  "3-065": {
+    "illustration": {
+      "path": "season-3/illustrations/3-065-choc-kiss.webp",
+      "source": "File:Choc kiss variant art.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-065-choc-kiss.webp",
+      "source": "File:Choc Kiss Variant toy.jpg"
+    }
+  },
+  "3-066": {
+    "illustration": {
+      "path": "season-3/illustrations/3-066-suzie-sundae.webp",
+      "source": "File:Suzie sundae ct variant.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-066-suzie-sundae.webp",
+      "source": "File:Suzie sundae variant toy.jpg"
+    }
+  },
+  "3-067": {
+    "illustration": {
+      "path": "season-3/illustrations/3-067-candy-apple.webp",
+      "source": "File:Candy apple ct variant.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-067-candy-apple.webp",
+      "source": "File:candy apples.jpg"
+    }
+  },
+  "3-068": {
+    "illustration": {
+      "path": "season-3/illustrations/3-068-ginger-fred.webp",
+      "source": "File:Ginger fred variant art.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-068-ginger-fred.webp",
+      "source": "File:Ginger Fred real variant toy.jpg"
+    }
+  },
+  "3-069": {
+    "illustration": {
+      "path": "season-3/illustrations/3-069-peachy.webp",
+      "source": "File:Peachy ct art.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-069-peachy.webp",
+      "source": "File:Peachy toy.jpg"
+    }
+  },
+  "3-070": {
+    "illustration": {
+      "path": "season-3/illustrations/3-070-wild-carrot.webp",
+      "source": "File:Wild carrot art.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-070-wild-carrot.webp",
+      "source": "File:Wild carrot toy.jpg"
+    }
+  },
+  "3-071": {
+    "illustration": {
+      "path": "season-3/illustrations/3-071-sweet-pea.webp",
+      "source": "File:Sweet pea ct art.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-071-sweet-pea.webp",
+      "source": "File:Sweet pea toy.jpg"
+    }
+  },
+  "3-072": {
+    "illustration": {
+      "path": "season-3/illustrations/3-072-pee-wee-kiwi.webp",
+      "source": "File:Peewee kiwi ct art.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-072-pee-wee-kiwi.webp",
+      "source": "File:Pee Wee Kiwi toy.jpg"
+    }
+  },
+  "3-073": {
+    "illustration": {
+      "path": "season-3/illustrations/3-073-aspara-gus.webp",
+      "source": "File:Aspara gus art.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-073-aspara-gus.webp",
+      "source": "File:Aspara.jpg"
+    }
+  },
+  "3-074": {
+    "illustration": {
+      "path": "season-3/illustrations/3-074-super-celery.webp",
+      "source": "File:SPK 074.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-074-super-celery.webp",
+      "source": "File:SuperCelerytoy2.jpg"
+    }
+  },
+  "3-075": {
+    "illustration": {
+      "path": "season-3/illustrations/3-075-asbury-raspberry.webp",
+      "source": "File:Asbury raspberry art.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-075-asbury-raspberry.webp",
+      "source": "File:Asburyraspberry.JPG"
+    }
+  },
+  "3-076": {
+    "illustration": {
+      "path": "season-3/illustrations/3-076-cherie-tomatoe.webp",
+      "source": "File:Cherie tomatoe art.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-076-cherie-tomatoe.webp",
+      "source": "File:Cherie tomatoe toy.jpg"
+    }
+  },
+  "3-077": {
+    "illustration": {
+      "path": "season-3/illustrations/3-077-peachy.webp",
+      "source": "File:Peachy ct variant.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-077-peachy.webp",
+      "source": "File:$ peach.JPG"
+    }
+  },
+  "3-078": {
+    "illustration": {
+      "path": "season-3/illustrations/3-078-wild-carrot.webp",
+      "source": "File:Wild carrot variant art.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-078-wild-carrot.webp",
+      "source": "File:Wild carrot variant toy.jpg"
+    }
+  },
+  "3-079": {
+    "illustration": {
+      "path": "season-3/illustrations/3-079-sweet-pea.webp",
+      "source": "File:Sweet pea ct variant.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-079-sweet-pea.webp",
+      "source": "File:Sweet pea variant toy.jpg"
+    }
+  },
+  "3-080": {
+    "illustration": {
+      "path": "season-3/illustrations/3-080-pee-wee-kiwi.webp",
+      "source": "File:Peewee kiwi ct variant.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-080-pee-wee-kiwi.webp",
+      "source": "File:Pee Wee Kiwi Variant toy.jpg"
+    }
+  },
+  "3-081": {
+    "illustration": {
+      "path": "season-3/illustrations/3-081-aspara-gus.webp",
+      "source": "File:Aspara gus variant art.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-081-aspara-gus.webp",
+      "source": "File:20191117 141254.jpg"
+    }
+  },
+  "3-082": {
+    "illustration": {
+      "path": "season-3/illustrations/3-082-super-celery.webp",
+      "source": "File:SPK 082.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-082-super-celery.webp",
+      "source": "File:20191117_141324.jpg"
+    }
+  },
+  "3-083": {
+    "illustration": {
+      "path": "season-3/illustrations/3-083-asbury-raspberry.webp",
+      "source": "File:Asbury raspberry variant art.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-083-asbury-raspberry.webp",
+      "source": "File:Asbury rasberry toy1.jpg"
+    }
+  },
+  "3-084": {
+    "illustration": {
+      "path": "season-3/illustrations/3-084-cherie-tomatoe.webp",
+      "source": "File:Cherie tomatoe variant art.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-084-cherie-tomatoe.webp",
+      "source": "File:Cherie tomatoe variant toy.jpg"
+    }
+  },
+  "3-085": {
+    "illustration": {
+      "path": "season-3/illustrations/3-085-suzie-sushi.webp",
+      "source": "File:Suzie sushi art.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-085-suzie-sushi.webp",
+      "source": "File:Suzie sushi toy.jpg"
+    }
+  },
+  "3-086": {
+    "illustration": {
+      "path": "season-3/illustrations/3-086-humpty-dumpling.webp",
+      "source": "File:Humpty dumpling art.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-086-humpty-dumpling.webp",
+      "source": "File:Humpty dumpling toy.jpg"
+    }
+  },
+  "3-087": {
+    "illustration": {
+      "path": "season-3/illustrations/3-087-lammy-lamington.webp",
+      "source": "File:Lammy lamington art.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-087-lammy-lamington.webp",
+      "source": "File:Unknown copy.jpeg"
+    }
+  },
+  "3-088": {
+    "illustration": {
+      "path": "season-3/illustrations/3-088-netti-spaghetti.webp",
+      "source": "File:Netti spaghetti ct art.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-088-netti-spaghetti.webp",
+      "source": "File:Netti spaghetti toy.jpg"
+    }
+  },
+  "3-089": {
+    "illustration": {
+      "path": "season-3/illustrations/3-089-croissant-dor.webp",
+      "source": "File:Croissant d'or art.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-089-croissant-dor.webp",
+      "source": "File:Croissant dor toy.jpg"
+    }
+  },
+  "3-090": {
+    "illustration": {
+      "path": "season-3/illustrations/3-090-fiona-fries.webp",
+      "source": "File:Fiona fries ct art.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-090-fiona-fries.webp",
+      "source": "File:Fiona fries toy.jpg"
+    }
+  },
+  "3-091": {
+    "illustration": {
+      "path": "season-3/illustrations/3-091-sconnie.webp",
+      "source": "File:Sconnie art.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-091-sconnie.webp",
+      "source": "File:Sconnie yellow.JPG"
+    }
+  },
+  "3-092": {
+    "illustration": {
+      "path": "season-3/illustrations/3-092-taco-terrie.webp",
+      "source": "File:Taco terrie ct art.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-092-taco-terrie.webp",
+      "source": "File:Tacotv.jpg"
+    }
+  },
+  "3-093": {
+    "illustration": {
+      "path": "season-3/illustrations/3-093-sausage-sizzle.webp",
+      "source": "File:Sausage sizzle art.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-093-sausage-sizzle.webp",
+      "source": "File:Sausage sizzle toy.jpg"
+    }
+  },
+  "3-094": {
+    "illustration": {
+      "path": "season-3/illustrations/3-094-suzie-sushi.webp",
+      "source": "File:Suzie sushi variant art.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-094-suzie-sushi.webp",
+      "source": "File:Suzie sushi variant.jpg"
+    }
+  },
+  "3-095": {
+    "illustration": {
+      "path": "season-3/illustrations/3-095-humpty-dumpling.webp",
+      "source": "File:Humpty dumpling variant art.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-095-humpty-dumpling.webp",
+      "source": "File:Humpty dumpling variant toy.jpg"
+    }
+  },
+  "3-096": {
+    "illustration": {
+      "path": "season-3/illustrations/3-096-lammy-lamington.webp",
+      "source": "File:Lammy lamington variant art.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-096-lammy-lamington.webp",
+      "source": "File:Lammy Lamington toy (variant).jpg"
+    }
+  },
+  "3-097": {
+    "illustration": {
+      "path": "season-3/illustrations/3-097-netti-spaghetti.webp",
+      "source": "File:Netti spaghetti ct variant.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-097-netti-spaghetti.webp",
+      "source": "File:Netti spaghetti variant toy.jpg"
+    }
+  },
+  "3-098": {
+    "illustration": {
+      "path": "season-3/illustrations/3-098-croissant-dor.webp",
+      "source": "File:Croissant d'or variant art.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-098-croissant-dor.webp",
+      "source": "File:Croissant dor variant toy.jpg"
+    }
+  },
+  "3-099": {
+    "illustration": {
+      "path": "season-3/illustrations/3-099-fiona-fries.webp",
+      "source": "File:Fiona fries ct variant.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-099-fiona-fries.webp",
+      "source": "File:Fiona fries variant toy.jpg"
+    }
+  },
+  "3-100": {
+    "illustration": {
+      "path": "season-3/illustrations/3-100-sconnie.webp",
+      "source": "File:Sconnie variant art.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-100-sconnie.webp",
+      "source": "File:sconnie orange.JPG"
+    }
+  },
+  "3-101": {
+    "illustration": {
+      "path": "season-3/illustrations/3-101-taco-terrie.webp",
+      "source": "File:Taco terrie ct variant.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-101-taco-terrie.webp",
+      "source": "File:Tacot.jpg"
+    }
+  },
+  "3-102": {
+    "illustration": {
+      "path": "season-3/illustrations/3-102-sausage-sizzle.webp",
+      "source": "File:Sausage sizzle variant art.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-102-sausage-sizzle.webp",
+      "source": "File:Sausage sizzle variant toy.jpg"
+    }
+  },
+  "3-103": {
+    "illustration": {
+      "path": "season-3/illustrations/3-103-washa.webp",
+      "source": "File:Washa art.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-103-washa.webp",
+      "source": "File:Washa toy.jpg"
+    }
+  },
+  "3-104": {
+    "illustration": {
+      "path": "season-3/illustrations/3-104-vicky-vac.webp",
+      "source": "File:Vicky vac ct art.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-104-vicky-vac.webp",
+      "source": "File:Uasgyvickyvac.jpg"
+    }
+  },
+  "3-105": {
+    "illustration": {
+      "path": "season-3/illustrations/3-105-frost-t-fridge.webp",
+      "source": "File:Frost t fridge ct art.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-105-frost-t-fridge.webp",
+      "source": "File:Frost T Fridge toy.JPG"
+    }
+  },
+  "3-106": {
+    "illustration": {
+      "path": "season-3/illustrations/3-106-blow-anne.webp",
+      "source": "File:SPK 106.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-106-blow-anne.webp",
+      "source": "File:Blowannetoy.JPG"
+    }
+  },
+  "3-107": {
+    "illustration": {
+      "path": "season-3/illustrations/3-107-teenie-tv.webp",
+      "source": "File:Teenie tv ct art.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-107-teenie-tv.webp",
+      "source": "File:Teenie tv toy.jpg"
+    }
+  },
+  "3-108": {
+    "illustration": {
+      "path": "season-3/illustrations/3-108-radio-sue.webp",
+      "source": "File:Radio sue art.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-108-radio-sue.webp",
+      "source": "File:Radio Sue toy.JPG"
+    }
+  },
+  "3-109": {
+    "illustration": {
+      "path": "season-3/illustrations/3-109-chatter.webp",
+      "source": "File:Chatter ct art.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-109-chatter.webp",
+      "source": "File:Chatter toy.jpg"
+    }
+  },
+  "3-110": {
+    "illustration": {
+      "path": "season-3/illustrations/3-110-mobile-mary.webp",
+      "source": "File:Mobile mary ct art.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-110-mobile-mary.webp",
+      "source": "File:Mobile mary toy.jpg"
+    }
+  },
+  "3-111": {
+    "illustration": {
+      "path": "season-3/illustrations/3-111-mixie-maxie.webp",
+      "source": "File:Mixie and maxie art.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-111-mixie-maxie.webp",
+      "source": "File:Mixie and maxie pink.JPG"
+    }
+  },
+  "3-112": {
+    "illustration": {
+      "path": "season-3/illustrations/3-112-washa.webp",
+      "source": "File:Washa variant art.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-112-washa.webp",
+      "source": "File:Washa variant toy.jpg"
+    }
+  },
+  "3-113": {
+    "illustration": {
+      "path": "season-3/illustrations/3-113-vicky-vac.webp",
+      "source": "File:Vicky vac ct variant.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-113-vicky-vac.webp",
+      "source": "File:Vicky vac.jpg"
+    }
+  },
+  "3-114": {
+    "illustration": {
+      "path": "season-3/illustrations/3-114-frost-t-fridge.webp",
+      "source": "File:Frost t fridge ct variant.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-114-frost-t-fridge.webp",
+      "source": "File:Frost T Fridge Variant toy.JPG"
+    }
+  },
+  "3-115": {
+    "illustration": {
+      "path": "season-3/illustrations/3-115-blow-anne.webp",
+      "source": "File:SPK Blowanne.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-115-blow-anne.webp",
+      "source": "File:blow anne variant.JPG"
+    }
+  },
+  "3-116": {
+    "illustration": {
+      "path": "season-3/illustrations/3-116-teenie-tv.webp",
+      "source": "File:Teenie tv ct variant.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-116-teenie-tv.webp",
+      "source": "File:Teenie TV variant toy.jpg"
+    }
+  },
+  "3-117": {
+    "illustration": {
+      "path": "season-3/illustrations/3-117-radio-sue.webp",
+      "source": "File:Radio sue variant art.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-117-radio-sue.webp",
+      "source": "File:Radio Sue Variant toy.JPG"
+    }
+  },
+  "3-118": {
+    "illustration": {
+      "path": "season-3/illustrations/3-118-chatter.webp",
+      "source": "File:Chatter ct variant.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-118-chatter.webp",
+      "source": "File:Chatter variant toy.jpg"
+    }
+  },
+  "3-119": {
+    "illustration": {
+      "path": "season-3/illustrations/3-119-mobile-mary.webp",
+      "source": "File:Mobile mary ct variant art.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-119-mobile-mary.webp",
+      "source": "File:Mobile mary variant toy.jpg"
+    }
+  },
+  "3-120": {
+    "illustration": {
+      "path": "season-3/illustrations/3-120-mixie-maxie.webp",
+      "source": "File:Mixie and maxie variant art.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-120-mixie-maxie.webp",
+      "source": "File:Mixie and maxie.jpg"
+    }
+  },
+  "3-121": {
+    "illustration": {
+      "path": "season-3/illustrations/3-121-stella-stapler.webp",
+      "source": "File:Stella stapler art.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-121-stella-stapler.webp",
+      "source": "File:Stella stapler toy.jpg"
+    }
+  },
+  "3-122": {
+    "illustration": {
+      "path": "season-3/illustrations/3-122-snippy.webp",
+      "source": "File:Snippy art.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-122-snippy.webp",
+      "source": "File:Snippy toy.jpg"
+    }
+  },
+  "3-123": {
+    "illustration": {
+      "path": "season-3/illustrations/3-123-penny-pencil.webp",
+      "source": "File:Penny pencil ct art.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-123-penny-pencil.webp",
+      "source": "File:Penny pencil toy.jpg"
+    }
+  },
+  "3-124": {
+    "illustration": {
+      "path": "season-3/illustrations/3-124-noni-notebook.webp",
+      "source": "File:Noni notebook art.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-124-noni-notebook.webp",
+      "source": "File:Noni notebook toy.jpg"
+    }
+  },
+  "3-125": {
+    "illustration": {
+      "path": "season-3/illustrations/3-125-erica-eraser.webp",
+      "source": "File:Erica eraser ct art.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-125-erica-eraser.webp",
+      "source": "File:Erica eraser toy.jpg"
+    }
+  },
+  "3-126": {
+    "illustration": {
+      "path": "season-3/illustrations/3-126-kelly-calculator.webp",
+      "source": "File:Kelly calculator art.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-126-kelly-calculator.webp",
+      "source": "File:Kelly calculator toy.jpg"
+    }
+  },
+  "3-127": {
+    "illustration": {
+      "path": "season-3/illustrations/3-127-rita-ruler.webp",
+      "source": "File:Rita ruler art.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-127-rita-ruler.webp",
+      "source": "File:Rita ruler toy.jpg"
+    }
+  },
+  "3-128": {
+    "illustration": {
+      "path": "season-3/illustrations/3-128-secret-sally.webp",
+      "source": "File:Secret sally ct art.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-128-secret-sally.webp",
+      "source": "File:Secretsally1.JPG"
+    }
+  },
+  "3-129": {
+    "illustration": {
+      "path": "season-3/illustrations/3-129-stella-stapler.webp",
+      "source": "File:Stella stapler variant art.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-129-stella-stapler.webp",
+      "source": "File:Stella stapler variant toy.jpg"
+    }
+  },
+  "3-130": {
+    "illustration": {
+      "path": "season-3/illustrations/3-130-snippy.webp",
+      "source": "File:Snippy variant art.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-130-snippy.webp",
+      "source": "File:Snippy variant toy.jpg"
+    }
+  },
+  "3-131": {
+    "illustration": {
+      "path": "season-3/illustrations/3-131-penny-pencil.webp",
+      "source": "File:Penny pencil ct variant.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-131-penny-pencil.webp",
+      "source": "File:Penny pencil variant toy.jpg"
+    }
+  },
+  "3-132": {
+    "illustration": {
+      "path": "season-3/illustrations/3-132-noni-notebook.webp",
+      "source": "File:Noni notebook variant art.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-132-noni-notebook.webp",
+      "source": "File:noninotes.jpg"
+    }
+  },
+  "3-133": {
+    "illustration": {
+      "path": "season-3/illustrations/3-133-erica-eraser.webp",
+      "source": "File:Erica eraser ct variant.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-133-erica-eraser.webp",
+      "source": "File:Erica eraser variant toy.jpg"
+    }
+  },
+  "3-134": {
+    "illustration": {
+      "path": "season-3/illustrations/3-134-kelly-calculator.webp",
+      "source": "File:Kelly calculator variant art.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-134-kelly-calculator.webp",
+      "source": "File:Kelly calculator variant toy.jpg"
+    }
+  },
+  "3-135": {
+    "illustration": {
+      "path": "season-3/illustrations/3-135-rita-ruler.webp",
+      "source": "File:Rita ruler variant art.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-135-rita-ruler.webp",
+      "source": "File:Rita ruler variant toy.jpg"
+    }
+  },
+  "3-136": {
+    "illustration": {
+      "path": "season-3/illustrations/3-136-secret-sally.webp",
+      "source": "File:Secret sally ct variant.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-136-secret-sally.webp",
+      "source": "File:Secret sally blue.jpg"
+    }
+  },
+  "3-137": {
+    "illustration": {
+      "path": "season-3/illustrations/3-137-ruby-earring.webp",
+      "source": "File:Ruby earring ct art.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-137-ruby-earring.webp",
+      "source": "File:Ruby earning find.jpg"
+    }
+  },
+  "3-138": {
+    "illustration": {
+      "path": "season-3/illustrations/3-138-chelsea-charm.webp",
+      "source": "File:Chelsea charm ct art.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-138-chelsea-charm.webp",
+      "source": "File:Chelsea charm toy.jpg"
+    }
+  },
+  "3-139": {
+    "illustration": {
+      "path": "season-3/illustrations/3-139-ring-a-rosie.webp",
+      "source": "File:Ring a rosie ct art.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-139-ring-a-rosie.webp",
+      "source": "File:1596961_825276837569316_1288742553_n.jpg"
+    }
+  },
+  "3-140": {
+    "illustration": {
+      "path": "season-3/illustrations/3-140-ticky-tock.webp",
+      "source": "File:Ticky tock ct art.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-140-ticky-tock.webp",
+      "source": "File:Ticky Tock toy.jpg"
+    }
+  },
+  "3-141": {
+    "illustration": {
+      "path": "season-3/illustrations/3-141-brenda-brooch.webp",
+      "source": "File:Brenda brooch ct art.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-141-brenda-brooch.webp",
+      "source": "File:dos of dos fifty wow.jpg"
+    }
+  },
+  "3-142": {
+    "illustration": {
+      "path": "season-3/illustrations/3-142-roxy-ring.webp",
+      "source": "File:Roxy ring ct art.png"
+    },
+    "photo": {
+      "path": "season-3/photos/3-142-roxy-ring.webp",
+      "source": "File:2a96fcd32a78306e300853dd02265a7d copy.jpg"
+    }
+  }
+}

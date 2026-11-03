@@ -1,6 +1,8 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
+import Link from 'next/link'
+import { useSearchParams } from 'next/navigation'
 import { supabase } from '../utils/supabase'
 import type { User } from '@supabase/supabase-js'
 import Modal from '../components/ui/Modal'
@@ -12,6 +14,7 @@ import {
   swatchColor,
   variantLabel,
 } from '../utils/shopkins'
+import { parseSeasonParam, seasonTheme } from '../utils/seasons'
 
 interface Character {
   id: string
@@ -198,11 +201,28 @@ function CatalogCard({
   )
 }
 
+function CatalogLoading() {
+  return (
+    <div className="py-20 text-center font-pixel text-lg text-primary-ink">
+      <span className="sparkle" aria-hidden="true">✦</span> Loading collection catalog...
+    </div>
+  )
+}
+
 export default function Home() {
+  return (
+    <Suspense fallback={<CatalogLoading />}>
+      <Catalog />
+    </Suspense>
+  )
+}
+
+function Catalog() {
+  const searchParams = useSearchParams()
+  const selectedSeason = parseSeasonParam(searchParams.get('season'))
   const [items, setItems] = useState<ShopkinItem[]>([])
   const [loading, setLoading] = useState(true)
   const [search, setSearch] = useState('')
-  const [selectedSeason, setSelectedSeason] = useState('all')
   const [selectedRarity, setSelectedRarity] = useState('all')
   const [selectedTeam, setSelectedTeam] = useState('all')
   const [sortOrder, setSortOrder] = useState<'checklist' | 'newest'>('checklist')
@@ -410,6 +430,19 @@ export default function Home() {
     (selectedTeam !== 'all' ? 1 : 0) +
     selectedColors.length
 
+  function setSelectedSeason(season: string) {
+    const params = new URLSearchParams(searchParams.toString())
+    if (season === 'all') params.delete('season')
+    else params.set('season', season)
+    const query = params.toString()
+    window.history.replaceState(null, '', query ? `?${query}` : window.location.pathname)
+  }
+
+  const seasonCounts = new Map<number, number>()
+  for (const item of items) {
+    if (item.season !== null) seasonCounts.set(item.season, (seasonCounts.get(item.season) ?? 0) + 1)
+  }
+
   function toggleColorFilter(color: string) {
     setSelectedColors((current) =>
       current.includes(color)
@@ -444,6 +477,40 @@ export default function Home() {
           <p className="mx-auto mt-2 max-w-xl text-sm font-semibold text-ink-soft sm:text-base">
             Search characters, explore finishes, and view every mold variant!
           </p>
+
+          {seasons.length > 0 && (
+            <nav aria-label="Season shortcuts" className="mt-5 flex flex-wrap items-center justify-center gap-2">
+              <button
+                type="button"
+                onClick={() => setSelectedSeason('all')}
+                aria-pressed={selectedSeason === 'all'}
+                className={`btn-sm ${selectedSeason === 'all' ? 'btn-candy' : 'btn-ghost'}`}
+              >
+                All seasons
+              </button>
+              {seasons.map((season) => {
+                const isActive = selectedSeason === String(season)
+                return (
+                  <button
+                    key={season}
+                    type="button"
+                    onClick={() => setSelectedSeason(String(season))}
+                    aria-pressed={isActive}
+                    className={`btn-sm ${isActive ? 'btn-candy' : 'btn-ghost'}`}
+                  >
+                    <span className={`rounded-full px-1.5 font-pixel text-[10px] leading-4 ${seasonTheme(season).badge}`}>
+                      S{season}
+                    </span>
+                    Season {season}
+                    <span className="text-[11px] opacity-70">{seasonCounts.get(season)}</span>
+                  </button>
+                )
+              })}
+              <Link href="/seasons" className="px-2 text-xs font-extrabold text-primary-ink underline-offset-2 hover:underline">
+                Season guide →
+              </Link>
+            </nav>
+          )}
         </header>
 
         <div className="window sticky top-[73px] z-30 mb-6">
@@ -607,9 +674,7 @@ export default function Home() {
         </div>
 
         {loading ? (
-          <div className="py-20 text-center font-pixel text-lg text-primary-ink">
-            <span className="sparkle" aria-hidden="true">✦</span> Loading collection catalog...
-          </div>
+          <CatalogLoading />
         ) : visibleItems.length === 0 ? (
           <div className="window mx-auto max-w-md px-6 py-12 text-center">
             <p className="mb-1 text-3xl" aria-hidden="true">🔍</p>

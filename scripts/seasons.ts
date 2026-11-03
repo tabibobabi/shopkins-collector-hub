@@ -1,8 +1,9 @@
 import type { SeasonCatalog } from './catalog'
 import { SEASON_1 } from './season-1-checklist'
 import { SEASON_2 } from './season-2-checklist'
+import { SEASON_3 } from './season-3-checklist'
 
-const CATALOGS: SeasonCatalog[] = [SEASON_1, SEASON_2]
+const CATALOGS: SeasonCatalog[] = [SEASON_1, SEASON_2, SEASON_3]
 
 // Reads `--season=N` (or `--season N`) from the command line; defaults to Season 1.
 export function seasonFromArgs(argv = process.argv): SeasonCatalog {

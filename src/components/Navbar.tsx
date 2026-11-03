@@ -121,6 +121,7 @@ export default function Navbar() {
   const displayName = profileUsername || user?.email?.split('@')[0] || ''
   const navLinks = [
     { href: '/', label: 'Catalog', show: true },
+    { href: '/seasons', label: 'Seasons', show: true },
     { href: '/my-collection', label: 'My Collection', show: Boolean(user) },
   ].filter((link) => link.show)
   const adminLinks = isAdmin
